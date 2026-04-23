@@ -1,7 +1,7 @@
 # Wizara Ya Afya Zanzibar
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.1.4.
-Node version 16 when run npm install
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.0.3
+Node version 22 when run npm install
 
 ## Development server
 
