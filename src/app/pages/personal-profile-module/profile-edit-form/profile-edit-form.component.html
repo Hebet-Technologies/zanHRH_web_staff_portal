@@ -1,0 +1,100 @@
+<div class="position-relative mx-n4 mt-n4">
+    <div class="profile-wid-bg profile-setting-img">
+        <img src="assets/images/profile-bg.jpg" class="profile-wid-img" alt="">
+        <div class="overlay-content">
+            <div class="text-end p-3">
+                <div class="p-0 ms-auto rounded-circle profile-photo-edit">
+                    <a [routerLink]="['/app/profile/personal-profile']"><label for="profile-foreground-img-file-input" class="profile-photo-edit btn btn-light">
+                        <i class="ri-arrow-left-line align-bottom me-1"></i> Back To Profile
+                    </label></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xxl-3">
+        <div class="card mt-n5">
+            <div class="card-body p-4">
+                <div class="text-center">
+                    <div class="profile-user position-relative d-inline-block mx-auto  mb-4">
+                        <div class="position-absolute  bottom-0 end-0">
+                            <label for="customer-image-input" class="mb-0" data-bs-toggle="tooltip" data-bs-placement="right" title="Select Image">
+                                <div class="avatar-xs cursor-pointer">
+                                    <div class="avatar-title bg-light border rounded-circle text-muted">
+                                        <i class="ri-image-fill"></i>
+                                    </div>
+                                </div>
+                            </label>
+                            <input class="form-control d-none" id="customer-image-input" type="file" accept="image/png, image/gif, image/jpeg" (change)="fileChange($event)">
+                        
+                        </div>
+                        <div class="avatar-lg p-1">
+                            <div class="avatar-title bg-light rounded-circle">
+                                <img [src]="imageURL ? imageURL : (profileData?.photo ? imageUrl + profileData.photo : 'assets/img/user.png')" id="customer-img" class="avatar-md rounded-circle object-fit-cover"/>
+                            </div>
+                        </div>
+                    </div>
+                    <h5 class="fs-16 mb-1">{{fullName}}</h5>
+                    <p class="text-muted mb-0">{{roleNames}}</p>
+                </div>
+            </div>
+        </div><!--end card-->
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-center mb-5">
+                    <div class="flex-grow-1">
+                        <h5 class="card-title mb-0">Complete Your Profile</h5>
+                    </div>
+                </div>
+                <div class="progress animated-progess custom-progress progress-label">
+                    <div class="progress-bar bg-danger" role="progressbar" style="width: 30%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
+                        <div class="label">30%</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!--end col-->
+    <div class="col-xxl-9">
+        <div class="card mt-xxl-n5">
+            <div class="card-header">
+                <ul ngbNav #customNav="ngbNav" [activeId]="1" (activeIdChange)="onDetailTabChange($event)" class="nav nav-tabs-custom rounded card-header-tabs border-bottom-0" role="tablist">
+                    <li [ngbNavItem]="1" class="nav-item">
+                        <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                            <i class="fas fa-home"></i>
+                            Personal Details
+                        </a>
+                        <ng-template ngbNavContent>
+                            <app-personal-detail-form [hidden]="activeTab !== 1"></app-personal-detail-form>
+                        </ng-template>
+                    </li>
+                    <li [ngbNavItem]="2" class="nav-item">
+                        <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                            <i class="far fa-user"></i>
+                            Change Password
+                        </a>
+                        <ng-template ngbNavContent>
+                            <app-personal-change-password *ngIf="activeTab === 2"></app-personal-change-password>
+                        </ng-template>
+                    </li>
+                    <li [ngbNavItem]="3" class="nav-item">
+                        <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                            <i class="far fa-envelope"></i>
+                            Privacy Policy
+                        </a>
+                        <ng-template ngbNavContent>
+                            <app-personal-privacy-policy *ngIf="activeTab === 3"></app-personal-privacy-policy>
+                        </ng-template>
+                    </li>
+
+                </ul>
+            </div>
+            <div class="card-body p-4">
+                <div class="tab-content">
+                    <div [ngbNavOutlet]="customNav"></div>
+                </div>
+            </div>
+        </div>
+    </div><!--end col-->
+</div><!--end row-->

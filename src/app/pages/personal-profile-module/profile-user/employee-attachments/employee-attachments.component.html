@@ -1,0 +1,92 @@
+<div class="card">
+    <div class="card-body">
+        <div class="d-flex align-items-center mb-4">
+            <h5 class="card-title flex-grow-1 mb-0">Attachments</h5>
+            <div class="flex-shrink-0">
+                <label (click)="openModal()" class="btn btn-warning"><i class="ri-upload-2-fill me-1 align-bottom"></i> Upload Files</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="table-responsive">
+                    <table class="table table-borderless align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th scope="col">File Name</th>
+                                <th scope="col">Type</th>
+                                <th scope="col">Upload Date</th>
+                                <th scope="col">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let data of employeeAttachments; let i = index">
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar-sm">
+                                            <div class="avatar-title bg-primary-subtle text-primary rounded fs-20">
+                                                 <i class="ri-file-pdf-fill"></i>
+                                            </div>
+                                        </div>
+                                        <div class="ms-3 flex-grow-1">
+                                            <h6 class="fs-15 mb-0">
+                                                <a href="javascript:void(0)">
+                                                {{data.upload_name}}
+                                                </a>
+                                            </h6>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>PDF File</td>
+                                <td>{{data.created_at}}</td>
+                                <td>
+                                    <div class="dropdown" ngbDropdown>
+                                        <button href="javascript:void(0);" class="btn btn-light btn-md arrow-none" id="dropdownMenuLink15" data-bs-toggle="dropdown" aria-expanded="true" ngbDropdownToggle>
+                                            <i class="ri-equalizer-fill"></i>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuLink15" ngbDropdownMenu>
+                                            <li><a class="dropdown-item" href="javascript:void(0);" (click)="openAttachment(data.upload_file_name)"><i class="ri-download-2-fill me-2 align-middle text-muted float-start"></i>Download</a>
+                                            </li>
+                                            <li class="dropdown-divider"></li>
+                                            <li><a class="dropdown-item" href="javascript:void(0);" (click)="confirm(deleteModel,data.employee_attachment_id)" *ngIf="(permission.hasPermission('Delete Personal Attachement') | async) ">
+                                                <i class="ri-delete-bin-5-line me-2 align-middle text-muted float-start"></i>Delete</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="text-center mt-3">
+                    <a href="javascript:void(0);" class="text-success "><i class="mdi mdi-loading mdi-spin fs-20 align-middle me-2"></i>
+                        Load more </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- removeItemModal -->
+<ng-template #deleteModel let-modal>
+    <div class="modal-content">
+        <div class="modal-header">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="btn-close" (click)="modal.dismiss('Cross click')"></button>
+        </div>
+        <div class="modal-body">
+        <div class="mt-2 text-center">
+            <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop" colors="primary:#405189,secondary:#f06548" style="width:90px;height:90px"></lord-icon>
+            <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
+            <h4>You are able to delete this Attachments ?</h4>
+            <p class="text-muted mx-4 mb-0">Deleting your attachment will remove all of your information from our database.
+            </p>
+            </div>
+        </div>
+        <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
+            <button class="btn btn-link link-success fw-medium text-decoration-none" data-bs-dismiss="modal" id="deleteRecord-close" (click)="modal.close('Close click')"><i class="ri-close-line me-1 align-middle"></i>
+            Close</button>
+            <button type="button" class="btn w-sm btn-danger " id="delete-product" (click)="deleteData()" (click)="modal.close('Close click')">Yes, Delete It!</button>
+        </div>
+        </div>
+    </div><!-- /.modal-content -->
+</ng-template>

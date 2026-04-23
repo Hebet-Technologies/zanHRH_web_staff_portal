@@ -1,0 +1,11 @@
+::ng-deep .ng-select .ng-select-container .ng-value-container .ng-value {
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: unset !important;
+}
+
+::ng-deep .ng-dropdown-panel .ng-option {
+  white-space: normal !important;
+  line-height: 1.4;
+  word-break: break-word;
+}

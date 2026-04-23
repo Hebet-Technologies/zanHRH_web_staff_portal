@@ -1,0 +1,40 @@
+<div class="modal-header bg-light p-3">
+    <h5 class="modal-title" id="exampleModalLabel">Add Skill</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal" (click)="closeModal()"></button>
+</div>
+<form (ngSubmit)="saveSkills()" [formGroup]="skillsForm" class="tablelist-form" autocomplete="off">
+    <div class="modal-body">
+        <div class="mb-3">
+            <label for="field-data" class="form-label">Skill <span class="text-danger">*</span></label>
+            <ng-select [items]="skillsList" 
+                bindLabel="skill_name" 
+                bindValue="skill_id" 
+                placeholder="Select..." required 
+                formControlName="skillID" 
+                [ngClass]="{ 'is-invalid': submitted && form['skillID'].errors }">
+            </ng-select>
+            <div *ngIf="submitted && form['skillID'].errors" class="invalid-feedback" align="left">
+                <div *ngIf="form['skillID'].errors['required']">Skill is required</div>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="formFile" class="form-label">Attachment <span class="text-danger">*</span></label>
+            <input
+                class="form-control"
+                type="file"
+                id="formFile"
+                (change)="onFileChange($event)"
+                [ngClass]="{ 'is-invalid': submitted && form['uploadSkillAttachement'].errors }"
+            >
+            <div *ngIf="submitted && form['uploadSkillAttachement'].errors" class="invalid-feedback">
+                <div *ngIf="form['uploadSkillAttachement'].errors['required']">Attachment is required</div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <div class="hstack gap-2 justify-content-end">
+        <button type="button" class="btn btn-light" data-bs-dismiss="modal" (click)="closeModal()">Close</button>
+        <button type="submit" class="btn btn-info" id="add-btn">Save Data</button>
+        </div>
+    </div>
+</form>

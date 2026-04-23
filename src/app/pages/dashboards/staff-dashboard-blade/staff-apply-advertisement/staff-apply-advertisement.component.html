@@ -1,0 +1,111 @@
+<div class="modal-header bg-light p-3">
+    <h5 class="modal-title" id="exampleModalLabel">Apply Advertisement</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"(click)="closeModal()"></button>
+</div>
+
+<form (ngSubmit)="saveApplyAdvertisementForm()" [formGroup]="staffJobRequestForm" class="tablelist-form" autocomplete="off">
+<div class="modal-body">
+    <div class="row">
+        <div class="col-12">
+            <h5 class="mb-2" style="color: rgb(8, 97, 119);">Job Title: <span style="color: rgb(37, 36, 36);"> {{rowSelected.title_name}}</span></h5>
+            <h5 class="mb-3" style="color: rgb(8, 97, 119);">Work Station: <span style="color: rgb(37, 36, 36);"> {{rowSelected.working_area}}</span></h5>
+            <h6 class="mb-3">{{rowSelected.start_date}} <span class="text-danger fw-bold"> To </span> {{ rowSelected.end_date }}</h6>
+
+        </div>
+    </div>
+    <div class="row g-3">
+        <div class="col-lg-6">
+            <div>
+                <label for="field-data" class="form-label">Position <span class="text-danger">*</span></label>
+                <ng-select [items]="advertPositionsList" 
+                    bindLabel="position_name" 
+                    bindValue="staff_adver_position_id" 
+                    placeholder="Select..." required 
+                    formControlName="advertPositionsID" 
+                    [ngClass]="{ 'is-invalid': submitted && form['advertPositionsID'].errors }">
+                </ng-select>
+                <div *ngIf="submitted && form['advertPositionsID'].errors" class="invalid-feedback" align="left">
+                    <div *ngIf="form['advertPositionsID'].errors['required']">Position is required</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div>
+                <label for="field-data" class="form-label">Program <span class="text-danger">*</span></label>
+                <ng-select [items]="advertProgramList" 
+                    bindLabel="program_name" 
+                    bindValue="program_id" 
+                    placeholder="Select..." required 
+                    formControlName="advertProgramID" 
+                    [ngClass]="{ 'is-invalid': submitted && form['advertProgramID'].errors }">
+                </ng-select>
+                <div *ngIf="submitted && form['advertProgramID'].errors" class="invalid-feedback" align="left">
+                    <div *ngIf="form['advertProgramID'].errors['required']">Program is required</div>
+                </div>
+            </div>
+        </div>
+
+        
+        <div class="col-lg-6">
+            <div>
+                <label for="formFile" class="form-label">Upload Application Letter <span class="text-danger">*</span></label>
+                <input
+                    class="form-control"
+                    type="file"
+                    id="formFile"
+                    (change)="onFileChange($event)"
+                    [ngClass]="{ 'is-invalid': submitted && form['uploadApplicationLater'].errors }"
+                >
+                <div *ngIf="submitted && form['uploadApplicationLater'].errors" class="invalid-feedback">
+                    <div *ngIf="form['uploadApplicationLater'].errors['required']">Upload Application Letter is required</div>
+                </div>
+            </div>
+        </div>
+       <div class="col-lg-6">
+            <div>
+                <label for="validationDefault04" class="form-label">Choose Your Current Employment Status <span class="text-danger">*</span></label>
+                <ng-select [items]="statusList"
+                    bindLabel="name"
+                    bindValue="value"
+                    placeholder="Select Status"
+                    formControlName="currentStatus"
+                    [ngClass]="{ 'is-invalid': submitted && form['currentStatus'].errors }">
+                </ng-select>
+                <div *ngIf="submitted && form['currentStatus'].errors" class="invalid-feedback">
+                    <div *ngIf="form['currentStatus'].errors['required']">Current Status is required</div>
+                </div>
+            </div>
+        </div>
+
+        
+        <div class="col-lg-6" *ngIf="showWorkFields">
+            <div>
+                <label for="form-field" class="form-label">Current Working Station <span class="text-danger">*</span></label>
+                <input type="text" id="form-field" class="form-control"  placeholder="Enter Current Working Station " required formControlName="curentWorkingStation" 
+                [ngClass]="{ 'is-invalid': submitted && form['curentWorkingStation'].errors }" />
+                <div *ngIf="submitted && form['curentWorkingStation'].errors" class="invalid-feedback" align="left">
+                    <div *ngIf="form['curentWorkingStation'].errors['required']">Current Working Station is required</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6" *ngIf="showWorkFields">
+            <div>
+                <label for="form-field" class="form-label">Working Position <span class="text-danger">*</span></label>
+                <input type="text" id="form-field" class="form-control"  placeholder="Enter Working Position  " required formControlName="workingPosition" 
+                [ngClass]="{ 'is-invalid': submitted && form['workingPosition'].errors }" />
+                <div *ngIf="submitted && form['workingPosition'].errors" class="invalid-feedback" align="left">
+                    <div *ngIf="form['workingPosition'].errors['required']">Working Position  is required</div>
+                </div>
+            </div>
+        </div>
+        
+        
+    </div>
+</div>
+<div class="modal-footer">
+    <div class="hstack gap-2 justify-content-end">
+    <button type="button" class="btn btn-light" data-bs-dismiss="modal" (click)="closeModal()">Close</button>
+    <button type="submit" class="btn btn-info" id="add-btn">Save Data</button>
+    </div>
+</div>
+</form>

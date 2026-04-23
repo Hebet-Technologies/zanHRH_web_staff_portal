@@ -1,0 +1,111 @@
+<div class="modal-header bg-light p-3">
+    <h5 class="modal-title" id="exampleModalLabel">Create New Training</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"(click)="closeModal()"></button>
+</div>
+
+<form (ngSubmit)="saveTrainingForm()" [formGroup]="trainingRequestForm" class="tablelist-form" autocomplete="off">
+<div class="modal-body">
+    <div class="row">
+        <div class="col-12">
+            <h5 class="mb-2" style="color: rgb(8, 97, 119);">Cadre Name: <span style="color: rgb(37, 36, 36);">{{rowSelected.cader_name}}</span></h5>
+            <h5 class="mb-3" style="color: rgb(8, 97, 119);">Education Level: <span style="color: rgb(37, 36, 36);">{{rowSelected.education_level_name}}</span></h5>
+        </div>
+    </div>
+    <div class="row g-3">
+        <div class="col-lg-6">
+            <div>
+                <label for="field-data" class="form-label">Institute Country <span class="text-danger">*</span></label>
+                <ng-select [items]="instituteCountry" 
+                    bindLabel="country_name" 
+                    bindValue="country_id" 
+                    placeholder="Select..." required 
+                    formControlName="countryID" 
+                    [ngClass]="{ 'is-invalid': submitted && form['countryID'].errors }">
+                </ng-select>
+                <div *ngIf="submitted && form['countryID'].errors" class="invalid-feedback" align="left">
+                    <div *ngIf="form['countryID'].errors['required']">Institute Country is required</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div>
+                <label for="field-data" class="form-label">Institute <span class="text-danger">*</span></label>
+                <ng-select [items]="institutes" 
+                    bindLabel="institute_name" 
+                    bindValue="institute_id" 
+                    placeholder="Select..." required 
+                    formControlName="instituteID" 
+                    [ngClass]="{ 'is-invalid': submitted && form['instituteID'].errors }">
+                </ng-select>
+                <div *ngIf="submitted && form['instituteID'].errors" class="invalid-feedback" align="left">
+                    <div *ngIf="form['instituteID'].errors['required']">Institute is required</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div>
+                <label for="date-field" class="form-label">Start Date  <span class="text-danger">*</span></label>
+                <input
+                class="form-control flatpickr-input"
+                type="text"
+                placeholder="Select Date"
+                mwlFlatpickr
+                [altInput]="true"
+                [enableTime]="true"
+                [convertModelValue]="true"
+                [dateFormat]="'Y-m-d H:i'"
+                [minDate]="minDate"
+                formControlName="startDate"
+                [ngClass]="{ 'is-invalid': submitted && form['startDate'].errors }"
+                >
+                <div *ngIf="submitted && form['startDate'].errors" class="invalid-feedback" align="left">
+                    <div *ngIf="form['startDate'].errors['required']">Start Date is required</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div>
+                <label for="date-field" class="form-label">End Date  <span class="text-danger">*</span></label>
+                <input
+                class="form-control flatpickr-input"
+                type="text"
+                placeholder="Select Date"
+                mwlFlatpickr
+                [altInput]="true"
+                [enableTime]="true"
+                [convertModelValue]="true"
+                [dateFormat]="'Y-m-d H:i'"
+                [minDate]="minEndDate ? minEndDate : minDate"
+                formControlName="endDate"
+                [ngClass]="{ 'is-invalid': submitted && form['endDate'].errors }"
+                >
+                <div *ngIf="submitted && form['endDate'].errors" class="invalid-feedback" align="left">
+                    <div *ngIf="form['endDate'].errors['required']">End Date is required</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-12" *ngIf="showUploadField">
+            <div>
+                <label for="formFile" class="form-label">Upload Admission Letter <span class="text-danger">*</span></label>
+                <input
+                    class="form-control"
+                    type="file"
+                    id="formFile"
+                    (change)="onFileChange($event)"
+                    [ngClass]="{ 'is-invalid': submitted && form['uploadAdmissionLater'].errors }"
+                >
+                <div *ngIf="submitted && form['uploadAdmissionLater'].errors" class="invalid-feedback">
+                    <div *ngIf="form['uploadAdmissionLater'].errors['required']">Upload Admission Letter is required</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <div class="hstack gap-2 justify-content-end">
+    <button type="button" class="btn btn-light" data-bs-dismiss="modal" (click)="closeModal()">Close</button>
+    <button type="submit" class="btn btn-info" id="add-btn">Save Data</button>
+    </div>
+</div>
+</form>
