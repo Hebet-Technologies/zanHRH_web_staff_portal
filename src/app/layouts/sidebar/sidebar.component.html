@@ -1,0 +1,130 @@
+<!-- ========== App Menu ========== -->
+<div class="app-menu navbar-menu">
+  <!-- LOGO -->
+  <div class="navbar-brand-box">
+    <!-- Dark Logo-->
+    <a routerLink="/app/dashboard" class="logo logo-dark">
+      <span class="logo-sm">
+        <img src="assets/img/smz.png" alt="" height="22">
+      </span>
+      <span class="logo-lg">
+        <img src="assets/img/smz.png" alt="" class="mt-3" height="80">
+      </span>
+    </a>
+    <!-- Light Logo-->
+    <a routerLink="/app/dashboard" class="logo logo-light">
+      <span class="logo-sm">
+        <img src="assets/img/smz.png" alt="" height="22">
+      </span>
+      <span class="logo-lg">
+        <img src="assets/img/smz.png" alt="" class="mt-3" height="80">
+      </span>
+      <h5 class="text-white">Human Resource For Health (HRH) </h5>
+    </a>
+    
+    <hr style="color: white;">
+    <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover" id="vertical-hover">
+      <i class="ri-record-circle-line"></i>
+    </button>
+  </div>
+
+  <div id="scrollbar">
+    <div class="container-fluid">
+
+      <div id="two-column-menu">
+      </div>
+      <ngx-simplebar class="sidebar-menu-scroll" style="max-height: calc(100vh - 70px)">
+      <ul class="metismenu list-unstyled navbar-nav" id="navbar-nav">
+          @for(item of menuItems; track $index){
+            @if(item.isTitle){
+              <li class="menu-title"><span data-key="t-menu">{{ item.label | translate }}</span></li>
+            }@else {
+              <li class="nav-item">
+                @if(hasItems(item)){
+                  <!-- Parent menu item -->
+                  <a href="javascript:void(0);" 
+                    class="is-parent nav-link menu-link" 
+                    [ngClass]="{'has-arrow': !item.badge, 'has-dropdown': item.badge}" 
+                    data-bs-toggle="collapse" 
+                    [attr.aria-expanded]="!item.isCollapsed" 
+                    (click)="toggleItem(item); $event.preventDefault()"
+                    [routerLinkActive]="['active']"
+                    [routerLinkActiveOptions]="{ exact: false }">
+                    <i class="{{ item.icon }} icon nav-icon"></i>
+                    <span>{{ item.label | translate }}</span>
+                    @if(item.badge){
+                      <span class="badge badge-pill {{item.badge.variant}}">{{item.badge.text | translate}}</span>
+                    }
+                  </a>
+
+                  <!-- Submenu container -->
+                  <div class="collapse menu-dropdown" [(ngbCollapse)]="item.isCollapsed">
+                    <ul class="nav nav-sm flex-column">
+                      @for(subitem of item.subItems; track $index){
+                        <li class="nav-item">
+                          @if(hasItems(subitem)){
+                            <!-- Level 2 parent -->
+                            <a href="javascript:void(0);" 
+                              class="nav-link" 
+                              [attr.data-parent]="subitem.parentId" 
+                              data-bs-toggle="collapse" 
+                              [attr.aria-expanded]="!subitem.isCollapsed" 
+                              (click)="toggleItem(subitem); $event.preventDefault()"
+                              [routerLinkActive]="['active']"
+                              [routerLinkActiveOptions]="{ exact: false }">
+                              {{ subitem.label | translate}}
+                            </a>
+
+                            <!-- Level 3 submenu -->
+                            <div class="collapse menu-dropdown sub-menu" [(ngbCollapse)]="subitem.isCollapsed">
+                              <ul class="nav nav-sm flex-column">
+                                @for(subSubitem of subitem.subItems; track $index){
+                                  <li class="nav-item">
+                                    <a [routerLink]="subSubitem.link" 
+                                      class="nav-link" 
+                                      [attr.data-parent]="subSubitem.parentId"
+                                      routerLinkActive="active"
+                                      [routerLinkActiveOptions]="{ exact: true }">
+                                      {{ subSubitem.label | translate}}
+                                    </a>
+                                  </li>
+                                }
+                              </ul>
+                            </div>
+                          }@else {
+                            <!-- Regular level 2 link -->
+                            <a [routerLink]="subitem.link" 
+                              class="nav-link" 
+                              [attr.data-parent]="subitem.parentId"
+                              routerLinkActive="active"
+                              [routerLinkActiveOptions]="{ exact: true }">
+                              {{ subitem.label | translate}}
+                            </a>
+                          }
+                        </li>
+                      }
+                    </ul>
+                  </div>
+                }@else {
+                  <!-- Regular menu item without children -->
+                  <a [routerLink]="item.link" 
+                    class="side-nav-link-ref nav-link menu-link"
+                    routerLinkActive="active"
+                    [routerLinkActiveOptions]="{ exact: true }">
+                    <i class="bx {{ item.icon }} icon nav-icon"></i>
+                    <span>{{ item.label | translate }}</span>
+                  </a>
+                }
+              </li>
+            }
+          }
+        </ul>
+
+      </ngx-simplebar>
+    </div>
+  </div>
+  <div class="sidebar-background"></div>
+</div>
+
+<!-- Vertical Overlay-->
+<div class="vertical-overlay" (click)="SidebarHide()"></div>

@@ -1,0 +1,118 @@
+<form (ngSubmit)="savePersonalProfile()" [formGroup]="personalEditForm" class="tablelist-form" autocomplete="off">
+    <div class="row">
+        <div class="col-lg-3 mb-3">
+            <label for="phone-field" class="form-label">Phone No <span class="text-danger">*</span></label>
+            <input type="text" id="phone-field" class="form-control"  placeholder="Enter phone no" required formControlName="phoneNo"  
+            [ngClass]="{ 'is-invalid': submitted && form['phoneNo'].errors }" />
+            <div *ngIf="submitted && form['phoneNo'].errors" class="invalid-feedback" align="left">
+                <div *ngIf="form['phoneNo'].errors['required']">Phone No is required</div>
+                <div *ngIf="form['phoneNo'].errors['pattern']">Invalid phone no format</div>
+            </div>
+        </div>
+        <div class="col-lg-3 mb-3">
+            <label for="validationDefault04" class="form-label">Gender <span class="text-danger">*</span></label>
+            <ng-select [items]="genderList"
+                bindLabel="name"
+                bindValue="value"
+                placeholder="Select Gender"
+                formControlName="gender"
+                [ngClass]="{ 'is-invalid': submitted && form['gender'].errors }">
+            </ng-select>
+            <div *ngIf="submitted && form['gender'].errors" class="invalid-feedback">
+                <div *ngIf="form['gender'].errors['required']">Gender is required</div>
+            </div>
+        </div>
+        <div class="col-lg-3 mb-3">
+            <label for="field-data" class="form-label">Marital Status <span class="text-danger">*</span></label>
+            <ng-select [items]="maritalStatusList" 
+                bindLabel="merital_name" 
+                bindValue="merital_status_id" 
+                placeholder="Select..." required 
+                formControlName="meritalStatusID" 
+                [ngClass]="{ 'is-invalid': submitted && form['meritalStatusID'].errors }">
+            </ng-select>
+            <div *ngIf="submitted && form['meritalStatusID'].errors" class="invalid-feedback" align="left">
+                <div *ngIf="form['meritalStatusID'].errors['required']">Marital Status is required</div>
+            </div>
+        </div>
+        <div class="col-lg-3 mb-3">
+            <label for="form-field" class="form-label">Physical Address <span class="text-danger">*</span></label>
+            <input type="text" id="form-field" class="form-control"  placeholder="Enter Physical Address " required formControlName="physicalAddress" 
+            [ngClass]="{ 'is-invalid': submitted && form['physicalAddress'].errors }" />
+            <div *ngIf="submitted && form['physicalAddress'].errors" class="invalid-feedback" align="left">
+                <div *ngIf="form['physicalAddress'].errors['required']">Physical Address is required</div>
+            </div>
+        </div>
+        <div class="col-lg-4 mb-3">
+            <label for="form-field" class="form-label">Zanzibar Identification (ZanID) Number <span class="text-danger">*</span></label>
+            <input type="text" id="form-field" class="form-control"  placeholder="Enter Zanzibar Identification " required formControlName="zanID" 
+            [ngClass]="{ 'is-invalid': submitted && form['zanID'].errors }" />
+            <div *ngIf="submitted && form['zanID'].errors" class="invalid-feedback" align="left">
+                <div *ngIf="form['zanID'].errors['required']">ZanID is required</div>
+            </div>
+        </div>
+        <div class="col-lg-8 mb-3">
+            <label for="field-data" class="form-label">Shehia <span class="text-danger">*</span></label>
+            <ng-select [items]="shehiaProfileList" 
+                bindLabel="label" 
+                bindValue="location_id" 
+                placeholder="Select..." required 
+                formControlName="shehiaID" 
+                [ngClass]="{ 'is-invalid': submitted && form['shehiaID'].errors }">
+            </ng-select>
+            <div *ngIf="submitted && form['shehiaID'].errors" class="invalid-feedback" align="left">
+                <div *ngIf="form['shehiaID'].errors['required']">Shehia is required</div>
+            </div>
+        </div>
+        <div class="col-lg-4 mb-3">
+            <label for="formFile" class="form-label">Zanzibar Identification (ZanID) File <span class="text-danger">*</span></label>
+            <input
+                class="form-control"
+                type="file"
+                id="formFile"
+                (change)="onFileChange($event)"
+                [ngClass]="{ 'is-invalid': submitted && form['zanIdFILE'].errors }"
+            >
+            <div *ngIf="submitted && form['zanIdFILE'].errors" class="invalid-feedback">
+                <div *ngIf="form['zanIdFILE'].errors['required']">zanIdFILE is required</div>
+            </div>
+        </div>
+        <div class="col-lg-4 mb-3">
+            <label for="field-data" class="form-label">Bank Name <span class="text-danger">*</span></label>
+            <ng-select [items]="bankNameList" 
+                bindLabel="displayName" 
+                bindValue="bank_id" 
+                placeholder="Select..." required 
+                formControlName="bankNameID" 
+                [ngClass]="{ 'is-invalid': submitted && form['bankNameID'].errors }">
+            </ng-select>
+            <div *ngIf="submitted && form['bankNameID'].errors" class="invalid-feedback" align="left">
+                <div *ngIf="form['bankNameID'].errors['required']">Bank Name  is required</div>
+            </div>
+        </div>
+        <div class="col-lg-4 mb-3">
+            <label for="form-field" class="form-label">Bank Account Number <span class="text-danger">*</span></label>
+            <input type="text" id="form-field" class="form-control"  placeholder="Enter Bank Account " required formControlName="bankAccount" 
+            [ngClass]="{ 'is-invalid': submitted && form['bankAccount'].errors }" />
+            <div *ngIf="submitted && form['bankAccount'].errors" class="invalid-feedback" align="left">
+                <div *ngIf="form['bankAccount'].errors['required']">Bank Account is required</div>
+            </div>
+        </div>
+        <div class="col-lg-12">
+            <div class="mb-3">
+                <ng-container *ngIf="profileData.identification_file; else noFile">
+                    <a href="javascript:void(0)" class="link-primary text-decoration-underline" (click)="openAttachment(profileData.identification_file)"> Preview ZanID File</a>
+                </ng-container>
+                <ng-template #noFile>
+                    <span class="text-muted">No ZanID File</span>
+                </ng-template>
+            </div>
+        </div><!--end col-->
+
+        <div class="col-lg-12 mt-3">
+            <div class="hstack gap-2 justify-content-end">
+                <button type="submit" class="btn btn-primary">Updates</button>
+            </div>
+        </div><!--end col-->
+    </div><!--end row-->
+</form>

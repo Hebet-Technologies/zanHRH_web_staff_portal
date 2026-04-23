@@ -1,0 +1,249 @@
+<!-- auth-page wrapper -->
+<div class="auth-page-wrapper auth-bg-cover py-5 d-flex justify-content-center align-items-center min-vh-100">
+  <div class="bg-overlay"></div>
+  <!-- auth-page content -->
+  <div class="auth-page-content overflow-hidden pt-lg-5">
+      <div class="container">
+          <div class="row">
+              <div class="col-lg-12">
+                  <div class="card overflow-hidden m-0">
+                      <div class="row justify-content-center g-0">
+                          <div class="col-lg-6 d-none d-lg-block">
+                              <div class="p-lg-5 p-4 auth-one-bg-staff h-100">
+                                  <!-- <div class="bg-overlay"></div> -->
+                                  <div class="position-relative h-100 d-flex flex-column">
+                                      <!-- <div class="mb-4">
+                                          <a routerLink="" class="d-block">
+                                              <img src="assets/images/logo-light.png" alt="" height="18">
+                                          </a>
+                                      </div> -->
+                                      <div class="mt-auto">
+                                          <div class="mb-3">
+                                              <i class="ri-double-quotes-l display-4 text-success"></i>
+                                          </div>
+
+                                          <!-- <ngb-carousel [showNavigationArrows]="showNavigationArrows">
+                                            <ng-template ngbSlide>
+                                              <div class="carousel-inner text-center text-white-50 pb-5">
+                                                <div class="carousel-item active">
+                                                  <p class="fs-15 fst-italic">" Great! Clean code, clean design, easy for customization. Thanks very much! "</p>
+                                                </div>
+                                              </div>
+                                            </ng-template>
+                                            <ng-template ngbSlide>
+                                              <div class="carousel-inner text-center text-white-50 pb-5">
+                                                <div class="carousel-item active">
+                                                  <p class="fs-15 fst-italic">" The theme is really great with an amazing customer support."</p>
+                                                </div>
+                                              </div>
+                                            </ng-template>
+                                            <ng-template ngbSlide>
+                                              <div class="carousel-inner text-center text-white-50 pb-5">
+                                                <div class="carousel-item active">
+                                                    <p class="fs-15 fst-italic">" Great! Clean code, clean design, easy for customization. Thanks very much! "</p>
+                                                  </div>
+                                                </div>
+                                            </ng-template>
+                                          </ngb-carousel> -->
+                                          <!-- end carousel -->
+
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+
+                          <div class="col-lg-6">
+                              <div class="p-lg-5 p-4">
+                                  <div>
+                                      <h5 class="text-primary">Register Account</h5>
+                                      <p class="text-muted">Create your staff account using your Payroll Number and Date of Birth.</p>
+                                  </div>
+
+                                  <div class="mt-4">
+                                        <form [formGroup]="loadFormValidDate" *ngIf="!showEmployeeData" (ngSubmit)="saveEmployeeData()">
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    <div class="mb-3">
+                                                    <label for="payrol" class="form-label">Payroll Number <span class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control" id="payrol" placeholder="Enter Payroll Number" required formControlName="payrollNumber" [ngClass]="{ 'is-invalid': submitted && form['payrollNumber'].errors }">
+                                                    <div class="invalid-feedback">
+                                                        Please enter payroll number
+                                                    </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="mb-3">
+                                                        <label for="date-field" class="form-label">Date of Birth <span class="text-danger">*</span></label>
+                                                        <input
+                                                        class="form-control flatpickr-input"
+                                                        type="text"
+                                                        placeholder="Select Date"
+                                                        mwlFlatpickr
+                                                        [altInput]="true"
+                                                        [enableTime]="true"
+                                                        [convertModelValue]="true"
+                                                        [dateFormat]="'Y-m-d H:i'"
+                                                        [maxDate]="maxDate"
+                                                        formControlName="dobDate"
+                                                        [ngClass]="{ 'is-invalid': submitted && form['dobDate'].errors }"
+                                                        >
+                                                        <div *ngIf="submitted && form['dobDate'].errors" class="invalid-feedback" align="left">
+                                                            <div *ngIf="form['dobDate'].errors['required']">Date of Birth is required</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <small class="mb-0 text-muted">
+                                                <button type="submit" class="btn btn-md btn-light" >
+                                                    <i class="ri-search-line search-icon"></i> Search
+                                                </button>
+                                            </small>
+
+                                                <div class="mt-5 text-center">
+                                                <div class="signin-other-title">
+                                                    <h5 class="fs-13 mb-2 title text-muted">****************</h5>
+                                                </div>
+                                            </div>
+                                        </form>
+
+                                    
+                                        <div *ngIf="showEmployeeData">
+                                            <div class="row">
+                                                <div class="col-lg-12">
+                                                    <h6 class="text-uppercase fw-semibold mb-1">Full Name</h6>
+                                                    <p class="mb-3"> <span class="text-primary fw-bold"> {{ searchEmployeeListData[0]?.first_name }} {{ searchEmployeeListData[0]?.middle_name }} {{ searchEmployeeListData[0]?.last_name }} {{ searchEmployeeListData[0]?.sur_name }}</span> </p>
+                                                    <div class="table-responsive table-card">
+                                                        <table class="table table-borderless mb-0 table-bordered-bottom">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td class="fw-medium text-uppercase" scope="row">Gender</td>
+                                                                    <td class="email">{{ searchEmployeeListData[0]?.gender }} </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="fw-medium text-uppercase" scope="row">Work Station</td>
+                                                                    <td class="l_score">{{ searchEmployeeListData[0]?.working_station_name }} </td>
+                                                                </tr>
+                                                                
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                        
+
+                                                <div class="col-lg-12">
+                                                    <p class="text-muted mt-4 "><span class="text-danger">* Please provide valid organization email, if you don't have it contact responsible person.</span></p>
+                                                </div>
+                                            </div>
+
+                                            <form [formGroup]="signupForm" (ngSubmit)="saveRegisterEmployee()">
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <div class="mb-3">
+                                                            <label for="useremail" class="form-label">Email <span class="text-danger">*</span></label>
+                                                            <input type="email" class="form-control" id="useremail" placeholder="Enter email address" required formControlName="email" [ngClass]="{ 'is-invalid': submitted && f['email'].errors }">
+                                                            <div class="invalid-feedback">
+                                                                Please enter email
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-12">
+                                                        <div class="mb-3">
+                                                            <label for="validationDefault04" class="form-label">Reporting Chain Starting Point <span class="text-danger">*</span></label>
+                                                            <ng-select [items]="reportChainList"
+                                                                bindLabel="leave_path_name"
+                                                                bindValue="leave_path_id"
+                                                                placeholder="Select Reporting Chain"
+                                                                formControlName="reportChainID"
+                                                                [ngClass]="{ 'is-invalid': submitted && f['reportChainID'].errors }">
+                                                            </ng-select>
+                                                            <div *ngIf="submitted && f['reportChainID'].errors" class="invalid-feedback">
+                                                                <div *ngIf="f['reportChainID'].errors['required']">Reporting Chain is required</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <div class="mb-3">
+                                                            <label for="userpassword" class="form-label">Password <span class="text-danger">*</span></label>
+                                                            <div class="position-relative auth-pass-inputgroup">
+                                                            <input [type]="fieldTextType ? 'text' : 'password'" class="form-control pe-5 password-input" placeholder="Enter password" id="password-input" aria-describedby="passwordInput" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required formControlName="password" [ngClass]="{ 'is-invalid': submitted && f['password'].errors }">
+                                                            <button class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted password-addon" type="button" id="password-addon"><i class="ri-eye-fill align-middle" [ngClass]="{'mdi-eye-off-outline': !fieldTextType, 'mdi-eye-outline': fieldTextType
+                                                            }" (click)="toggleFieldTextType()"></i></button>
+                                                            <div class="invalid-feedback">
+                                                                Please enter password
+                                                            </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <div class="mb-3">
+                                                            <label for="userpassword" class="form-label">Confirm Password <span class="text-danger">*</span></label>
+                                                            <div class="position-relative auth-pass-inputgroup">
+                                                            <input [type]="confirmfieldTextType ? 'text' : 'password'" class="form-control pe-5 password-input" placeholder="Enter confirm password" id="confirm-password-input" aria-describedby="passwordInput" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required formControlName="confirmPassword" [ngClass]="{ 'is-invalid': submitted && f['confirmPassword'].errors }">
+                                                            <button class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted confirm-password-addon" type="button" id="confirm-password-addon"><i class="ri-eye-fill align-middle" [ngClass]="{'mdi-eye-off-outline': !confirmfieldTextType, 'mdi-eye-outline': confirmfieldTextType
+                                                            }" (click)="toggleConfirmFieldTextType()"></i></button>
+                                                            <div class="invalid-feedback">
+                                                                Please enter confirm password
+                                                            </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-lg-12">
+                                                        <div class="mb-2">
+                                                            <p class="mb-0 fs-12 text-muted fst-italic">By registering, you agree to the Ministry of Health system <a href="javascript:void(0);" class="text-primary text-decoration-underline fst-normal fw-medium">Terms of Use</a></p>
+                                                        </div>
+
+                                                        <div id="password-contain" class="p-3 bg-light mb-2 rounded">
+                                                            <h5 class="fs-13">Password must contain:</h5>
+                                                            <p id="pass-length" class="invalid fs-12 mb-2">Minimum <b>8 characters</b></p>
+                                                            <p id="pass-lower" class="invalid fs-12 mb-2">At <b>lowercase</b> letter (a-z)</p>
+                                                            <p id="pass-upper" class="invalid fs-12 mb-2">At least <b>uppercase</b> letter (A-Z)</p>
+                                                            <p id="pass-number" class="invalid fs-12 mb-0">A least <b>number</b> (0-9)</p>
+                                                            <p id="pass-special" class="invalid fs-12 mb-0">At least <b>one special character</b> (e.g. symbols like !, #, $, %)</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="mt-4">
+                                                <button class="btn btn-primary w-100" type="submit">Sign Up</button>
+                                            </div>
+
+                                            </form>
+                                        </div>
+                                       
+                                  </div>
+
+                                  <div class="mt-4 text-center">
+                                      <p class="mb-0">Already have an account ? <a routerLink="/auth" class="fw-semibold text-primary text-decoration-underline"> Signin</a> </p>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  <!-- end card -->
+              </div>
+              <!-- end col -->
+
+          </div>
+          <!-- end row -->
+      </div>
+      <!-- end container -->
+  </div>
+  <!-- end auth page content -->
+
+  <!-- footer -->
+  <footer class="footer">
+      <div class="container">
+          <div class="row">
+              <div class="col-lg-12">
+                  <div class="text-center">
+                      <p class="mb-0">&copy; {{year}} Ministry of Health <i class="mdi mdi-heart text-danger"></i> by Ict Department</p>
+                  </div>
+              </div>
+          </div>  
+      </div>
+  </footer>
+  <!-- end Footer -->
+</div>
+<!-- end auth-page-wrapper -->

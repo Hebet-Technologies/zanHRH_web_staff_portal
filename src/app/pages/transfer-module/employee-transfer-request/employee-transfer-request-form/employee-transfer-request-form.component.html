@@ -1,0 +1,53 @@
+<div class="modal-header bg-light p-3">
+    <h5 class="modal-title" id="exampleModalLabel">Create New Transfer Request</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal" (click)="closeModal()"></button>
+</div>
+<form (ngSubmit)="saveTransfer()" [formGroup]="employeeTransferForm" class="tablelist-form" autocomplete="off">
+    <div class="modal-body">
+        <div class="mb-3">
+            <label for="field-data" class="form-label">Working station You want to go <span class="text-danger">*</span></label>
+            <ng-select [items]="workStationOptions" 
+                bindLabel="working_station_name" 
+                bindValue="working_station_id" 
+                placeholder="Select..." required 
+                formControlName="workingStationID" 
+                [ngClass]="{ 'is-invalid': submitted && form['workingStationID'].errors }">
+            </ng-select>
+            <div *ngIf="submitted && form['workingStationID'].errors" class="invalid-feedback" align="left">
+                <div *ngIf="form['workingStationID'].errors['required']">Working Name is required</div>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="field-data" class="form-label">Reason <span class="text-danger">*</span></label>
+            <ng-select [items]="transfereReasons" 
+                bindLabel="transfer_reason_name" 
+                bindValue="transfer_reason_id" 
+                placeholder="Select..." required 
+                formControlName="transfereReasonsID" 
+                [ngClass]="{ 'is-invalid': submitted && form['transfereReasonsID'].errors }">
+            </ng-select>
+            <div *ngIf="submitted && form['transfereReasonsID'].errors" class="invalid-feedback" align="left">
+                <div *ngIf="form['transfereReasonsID'].errors['required']">Transfere Reason is required</div>
+            </div>
+        </div>
+        <div class="mb-3" *ngIf="showUploadField">
+            <label for="formFile" class="form-label">Upload Reason <span class="text-danger">*</span></label>
+            <input
+                class="form-control"
+                type="file"
+                id="formFile"
+                (change)="onFileChange($event)"
+                [ngClass]="{ 'is-invalid': submitted && form['uploadReason'].errors }"
+            >
+            <div *ngIf="submitted && form['uploadReason'].errors" class="invalid-feedback">
+                <div *ngIf="form['uploadReason'].errors['required']">Upload Reason is required</div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <div class="hstack gap-2 justify-content-end">
+        <button type="button" class="btn btn-light" data-bs-dismiss="modal" (click)="closeModal()">Close</button>
+        <button type="submit" class="btn btn-info" id="add-btn">Save Data</button>
+        </div>
+    </div>
+</form>

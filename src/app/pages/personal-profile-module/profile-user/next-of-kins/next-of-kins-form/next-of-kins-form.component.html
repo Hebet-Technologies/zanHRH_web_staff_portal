@@ -1,0 +1,101 @@
+<div class="modal-header bg-light p-3">
+    <h5 class="modal-title" id="exampleModalLabel">Add Next of Kin / Relative</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal" (click)="closeModal()"></button>
+</div>
+<form (ngSubmit)="saveNextofKins()" [formGroup]="nextofKinsForm" class="tablelist-form" autocomplete="off">
+    <div class="modal-body">
+        <div class="row g-3">
+            <div class="col-lg-4">
+                <div>
+                    <label for="form-field" class="form-label">First Name <span class="text-danger">*</span></label>
+                    <input type="text" id="form-field" class="form-control"  placeholder="Enter First Name " required formControlName="firstName" 
+                    [ngClass]="{ 'is-invalid': submitted && form['firstName'].errors }" />
+                    <div *ngIf="submitted && form['firstName'].errors" class="invalid-feedback" align="left">
+                        <div *ngIf="form['firstName'].errors['required']">First Name is required</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div>
+                    <label for="form-field" class="form-label">Middle Name <span class="text-danger">*</span></label>
+                    <input type="text" id="form-field" class="form-control"  placeholder="Enter Middle Name " required formControlName="middleName" 
+                    [ngClass]="{ 'is-invalid': submitted && form['middleName'].errors }" />
+                    <div *ngIf="submitted && form['middleName'].errors" class="invalid-feedback" align="left">
+                        <div *ngIf="form['middleName'].errors['required']">Middle Name is required</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div>
+                    <label for="form-field" class="form-label">Last Name <span class="text-danger">*</span></label>
+                    <input type="text" id="form-field" class="form-control"  placeholder="Enter Last Name " required formControlName="lastName" 
+                    [ngClass]="{ 'is-invalid': submitted && form['lastName'].errors }" />
+                    <div *ngIf="submitted && form['lastName'].errors" class="invalid-feedback" align="left">
+                        <div *ngIf="form['lastName'].errors['required']">Last Name is required</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div>
+                    <label for="validationDefault04" class="form-label">Gender <span class="text-danger">*</span></label>
+                    <ng-select [items]="genderList"
+                        bindLabel="name"
+                        bindValue="value"
+                        placeholder="Select Gender"
+                        formControlName="gender"
+                        [ngClass]="{ 'is-invalid': submitted && form['gender'].errors }">
+                    </ng-select>
+                    <div *ngIf="submitted && form['gender'].errors" class="invalid-feedback">
+                        <div *ngIf="form['gender'].errors['required']">Gender is required</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <div>
+                    <label for="form-field" class="form-label">Email <span class="text-danger">*</span></label>
+                    <input type="email" id="form-field" class="form-control"  placeholder="Enter Email " required formControlName="email" 
+                    [ngClass]="{ 'is-invalid': submitted && form['email'].errors }" />
+                    <div *ngIf="submitted && form['email'].errors" class="invalid-feedback" align="left">
+                        <div *ngIf="form['email'].errors['required']">Email is required</div>
+                        <div *ngIf="form['email'].errors['pattern']">Invalid email format</div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-lg-6">
+                <div>
+                    <label for="phone-field" class="form-label">Phone No <span class="text-danger">*</span></label>
+                    <input type="text" id="phone-field" class="form-control"  placeholder="Enter phone no" required formControlName="phoneNo" 
+                    [ngClass]="{ 'is-invalid': submitted && form['phoneNo'].errors }" />
+                    <div *ngIf="submitted && form['phoneNo'].errors" class="invalid-feedback" align="left">
+                        <div *ngIf="form['phoneNo'].errors['required']">Phone No is required</div>
+                        <div *ngIf="form['phoneNo'].errors['pattern']">Invalid phone no format</div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div>
+                    <label for="field-data" class="form-label">Relationship <span class="text-danger">*</span></label>
+                    <ng-select [items]="relationList" 
+                        bindLabel="relation_name" 
+                        bindValue="relation_id" 
+                        placeholder="Select..." required 
+                        formControlName="relationID" 
+                        [ngClass]="{ 'is-invalid': submitted && form['relationID'].errors }">
+                    </ng-select>
+                    <div *ngIf="submitted && form['relationID'].errors" class="invalid-feedback" align="left">
+                        <div *ngIf="form['relationID'].errors['required']">Relationship is required</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <div class="hstack gap-2 justify-content-end">
+        <button type="button" class="btn btn-light" data-bs-dismiss="modal" (click)="closeModal()">Close</button>
+        <button type="submit" class="btn btn-info" id="add-btn">Save Data</button>
+        </div>
+    </div>
+</form>

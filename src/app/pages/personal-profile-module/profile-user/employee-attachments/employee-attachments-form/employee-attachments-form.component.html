@@ -1,0 +1,151 @@
+<div class="modal-header bg-light p-3">
+    <h5 class="modal-title" id="exampleModalLabel">Add Attachment</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="closeModal()"></button>
+</div>
+
+<form (ngSubmit)="saveAttachmentsUploadType()" [formGroup]="attachmentsUploadTypeForm" class="tablelist-form" autocomplete="off">
+    <div class="modal-body">
+
+        <!-- Education Level note -->
+        <div class="row mb-3">
+            <div class="col-lg-12">
+                <span style="color: red;">Please choose your current highest Education Level</span>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Education Level select -->
+            <div class="col-lg-6 mb-3">
+                <label class="form-label">Education Level <span class="text-danger">*</span></label>
+                <ng-select
+                    [items]="educationLevel"
+                    bindLabel="education_level_name"
+                    bindValue="education_level_id"
+                    placeholder="Select..."
+                    formControlName="educationLevelID"
+                    (change)="onEducationChange($event)"
+                    [ngClass]="{'is-invalid': submitted && form['educationLevelID'].errors }">
+                </ng-select>
+                <div *ngIf="submitted && form['educationLevelID'].errors" class="invalid-feedback" align="left">
+                    <div *ngIf="form['educationLevelID'].errors['required']">Education Level is required</div>
+                </div>
+            </div>
+
+            <!-- Upload Type select -->
+            <div class="col-lg-6 mb-3">
+                <label class="form-label">Upload Type <span class="text-danger">*</span></label>
+                <ng-select
+                    [items]="attachmentsUploadType"
+                    bindLabel="upload_name"
+                    bindValue="upload_type_id"
+                    placeholder="Select..."
+                    formControlName="attachmentsUploadTypeID"
+                    [ngClass]="{'is-invalid': submitted && form['attachmentsUploadTypeID'].errors }">
+                </ng-select>
+                <div *ngIf="submitted && form['attachmentsUploadTypeID'].errors" class="invalid-feedback" align="left">
+                    <div *ngIf="form['attachmentsUploadTypeID'].errors['required']">Upload Type is required</div>
+                </div>
+            </div>
+
+            <!-- File input -->
+            <div class="col-lg-12 mb-3">
+                <label class="form-label">Attachment <span class="text-danger">*</span></label>
+                <input
+                    type="file"
+                    id="formFile"
+                    class="form-control"
+                    (change)="onFileChange($event)"
+                    [ngClass]="{'is-invalid': submitted && form['uploadAttachmentsType'].errors }"
+                >
+                <div *ngIf="submitted && form['uploadAttachmentsType'].errors" class="invalid-feedback">
+                    <div *ngIf="form['uploadAttachmentsType'].errors['required']">Attachment is required</div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <div class="hstack gap-2 justify-content-end">
+            <button type="button" class="btn btn-light" (click)="closeModal()">Close</button>
+            <button type="submit" class="btn btn-info">Save Data</button>
+        </div>
+    </div>
+</form>
+
+<div class="modal-body">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card" id="leadsList">
+                <div class="card-body">
+                    <div>
+                        <div class="table-responsive table-card">
+                            <table class="table">
+                                <thead>
+                                    <tr class="bg-light text-muted text-uppercase">
+                                        <th class="sort">#</th>
+                                        <th class="sort">File Name</th>
+                                        <th class="sort">Attachment</th>
+                                        <th class="sort">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let data of employeeAttachments; let i = index">
+                                        <td>
+                                            {{ i + 1 }}
+                                        </td>
+                                        <td>
+                                            <ngb-highlight [result]="data.upload_name" [term]="searchTerm">
+                                            </ngb-highlight>
+                                        </td>
+                                        <td>
+                                            <ng-container *ngIf="data.upload_file_name; else noFile">
+                                                <a href="javascript:void(0)" class="text-primary" (click)="openAttachment(data.upload_file_name)"> Preview Attachment</a>
+                                            </ng-container>
+                                            <ng-template #noFile>
+                                                <span class="text-muted">No Attachment</span>
+                                            </ng-template>
+                                        </td>
+                                        <td>
+                                        <ul class="list-inline hstack gap-2 mb-0" *ngIf="!data.is_from_system">
+                                            <li class="list-inline-item me-0" ngbTooltip="Remove" placement="top" data-bs-toggle="tooltip" data-bs-trigger="hover" (click)="confirm(deleteModel,data.employee_attachment_id)" *ngIf="(permission.hasPermission('Delete Personal Skills') | async) ">
+                                                <a class="text-danger d-inline-block remove-item-btn" data-bs-toggle="modal" data-bs-target="#delete">
+                                                    <i class="ri-delete-bin-5-fill fs-16"></i>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- removeItemModal -->
+<ng-template #deleteModel let-modal>
+    <div class="modal-content">
+        <div class="modal-header">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="btn-close" (click)="modal.dismiss('Cross click')"></button>
+        </div>
+        <div class="modal-body">
+        <div class="mt-2 text-center">
+            <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop" colors="primary:#405189,secondary:#f06548" style="width:90px;height:90px"></lord-icon>
+            <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
+            <h4>You are able to delete this Attachments ?</h4>
+            <p class="text-muted mx-4 mb-0">Deleting your attachment will remove all of your information from our database.
+            </p>
+            </div>
+        </div>
+        <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
+            <button class="btn btn-link link-success fw-medium text-decoration-none" data-bs-dismiss="modal" id="deleteRecord-close" (click)="modal.close('Close click')"><i class="ri-close-line me-1 align-middle"></i>
+            Close</button>
+            <button type="button" class="btn w-sm btn-danger " id="delete-product" (click)="deleteData()" (click)="modal.close('Close click')">Yes, Delete It!</button>
+        </div>
+        </div>
+    </div><!-- /.modal-content -->
+</ng-template>

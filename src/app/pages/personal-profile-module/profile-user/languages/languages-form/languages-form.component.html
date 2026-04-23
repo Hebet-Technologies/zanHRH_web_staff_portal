@@ -1,0 +1,99 @@
+<div class="modal-header bg-light p-3">
+    <h5 class="modal-title" id="exampleModalLabel">Add Hobby</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal" (click)="closeModal()"></button>
+</div>
+<form (ngSubmit)="saveLanguage()" [formGroup]="languageForm" class="tablelist-form" autocomplete="off">
+  <div class="modal-body">
+    <div class="mb-3">
+        <label for="field-data" class="form-label">Language <span class="text-danger">*</span></label>
+        <ng-select [items]="languageList" 
+            bindLabel="language_name" 
+            bindValue="language_id" 
+            placeholder="Select..." required 
+            formControlName="languageID" 
+            [ngClass]="{ 'is-invalid': submitted && form['languageID'].errors }">
+        </ng-select>
+        <div *ngIf="submitted && form['languageID'].errors" class="invalid-feedback" align="left">
+            <div *ngIf="form['languageID'].errors['required']">Language is required</div>
+        </div>
+    </div>
+
+
+
+
+    <div class="col-lg-12">
+      <div>
+        <label class="form-label">Speaking <span class="text-danger">*</span></label>
+        <div class="d-flex gap-3">
+          <div class="form-check">
+            <input class="form-check-input" type="radio" value="Excellent" formControlName="speaking" id="speakingExcellent"/>
+            <label class="form-check-label" for="speakingExcellent"> Excellent </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" value="Good" formControlName="speaking" id="speakingGood"/>
+            <label class="form-check-label" for="speakingGood"> Good </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" value="Fair" formControlName="speaking" id="speakingFair"/>
+            <label class="form-check-label" for="speakingFair"> Fair </label>
+          </div>
+        </div>
+        <div *ngIf="submitted && form['speaking'].errors" class="invalid-feedback d-block">
+          <div *ngIf="form['speaking'].errors['required']">Please select an option</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-12 mt-2">
+      <div>
+        <label class="form-label">Reading <span class="text-danger">*</span></label>
+        <div class="d-flex gap-3">
+          <div class="form-check">
+            <input class="form-check-input" type="radio" value="Excellent" formControlName="reading" id="readingExcellent"/>
+            <label class="form-check-label" for="readingExcellent"> Excellent </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" value="Good" formControlName="reading" id="readingGood"/>
+            <label class="form-check-label" for="readingGood"> Good </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" value="Fair" formControlName="reading" id="readingFair"/>
+            <label class="form-check-label" for="readingFair"> Fair </label>
+          </div>
+        </div>
+        <div *ngIf="submitted && form['reading'].errors" class="invalid-feedback d-block">
+          <div *ngIf="form['reading'].errors['required']">Please select an option</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-12 mt-2">
+      <div>
+        <label class="form-label">Writing <span class="text-danger">*</span></label>
+        <div class="d-flex gap-3">
+          <div class="form-check">
+            <input class="form-check-input" type="radio" value="Excellent" formControlName="writing" id="writingExcellent"/>
+            <label class="form-check-label" for="writingExcellent"> Excellent </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" value="Good" formControlName="writing" id="writingGood"/>
+            <label class="form-check-label" for="writingGood"> Good </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" value="Fair" formControlName="writing" id="writingFair"/>
+            <label class="form-check-label" for="writingFair"> Fair </label>
+          </div>
+        </div>
+        <div *ngIf="submitted && form['writing'].errors" class="invalid-feedback d-block">
+          <div *ngIf="form['writing'].errors['required']">Please select an option</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+      <div class="hstack gap-2 justify-content-end">
+      <button type="button" class="btn btn-light" data-bs-dismiss="modal" (click)="closeModal()">Close</button>
+      <button type="submit" class="btn btn-info" id="add-btn">Save Data</button>
+      </div>
+  </div>
+</form>

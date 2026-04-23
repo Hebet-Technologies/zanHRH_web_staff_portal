@@ -1,0 +1,184 @@
+<div class="modal-header bg-light p-3">
+    <h5 class="modal-title" id="exampleModalLabel">Add Referee</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal" (click)="closeModal()"></button>
+</div>
+<form (ngSubmit)="saveReferee()" [formGroup]="refereesForm" class="tablelist-form" autocomplete="off">
+    <div class="modal-body">
+        <div class="row g-3">
+            <div class="col-lg-4">
+                <div>
+                    <label for="form-field" class="form-label">First Name <span class="text-danger">*</span></label>
+                    <input type="text" id="form-field" class="form-control"  placeholder="Enter First Name " required formControlName="firstName" 
+                    [ngClass]="{ 'is-invalid': submitted && form['firstName'].errors }" />
+                    <div *ngIf="submitted && form['firstName'].errors" class="invalid-feedback" align="left">
+                        <div *ngIf="form['firstName'].errors['required']">First Name is required</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div>
+                    <label for="form-field" class="form-label">Middle Name <span class="text-danger">*</span></label>
+                    <input type="text" id="form-field" class="form-control"  placeholder="Enter Middle Name " required formControlName="middleName" 
+                    [ngClass]="{ 'is-invalid': submitted && form['middleName'].errors }" />
+                    <div *ngIf="submitted && form['middleName'].errors" class="invalid-feedback" align="left">
+                        <div *ngIf="form['middleName'].errors['required']">Middle Name is required</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div>
+                    <label for="form-field" class="form-label">Last Name <span class="text-danger">*</span></label>
+                    <input type="text" id="form-field" class="form-control"  placeholder="Enter Last Name " required formControlName="lastName" 
+                    [ngClass]="{ 'is-invalid': submitted && form['lastName'].errors }" />
+                    <div *ngIf="submitted && form['lastName'].errors" class="invalid-feedback" align="left">
+                        <div *ngIf="form['lastName'].errors['required']">Last Name is required</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div>
+                    <label for="phone-field" class="form-label">Phone No <span class="text-danger">*</span></label>
+                    <input type="text" id="phone-field" class="form-control"  placeholder="Enter phone no" required formControlName="phoneNo" 
+                    [ngClass]="{ 'is-invalid': submitted && form['phoneNo'].errors }" />
+                    <div *ngIf="submitted && form['phoneNo'].errors" class="invalid-feedback" align="left">
+                        <div *ngIf="form['phoneNo'].errors['required']">Phone No is required</div>
+                        <div *ngIf="form['phoneNo'].errors['pattern']">Invalid phone no format</div>
+
+                    </div>
+                </div>
+            </div>
+             <div class="col-lg-4">
+                <div>
+                    <label for="form-field" class="form-label">Email <span class="text-danger">*</span></label>
+                    <input type="email" id="form-field" class="form-control"  placeholder="Enter Email " required formControlName="email" 
+                    [ngClass]="{ 'is-invalid': submitted && form['email'].errors }" />
+                    <div *ngIf="submitted && form['email'].errors" class="invalid-feedback" align="left">
+                        <div *ngIf="form['email'].errors['required']">Email is required</div>
+                        <div *ngIf="form['email'].errors['pattern']">Invalid email format</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div>
+                    <label for="date-field" class="form-label">Date of Birth  <span class="text-danger">*</span></label>
+                    <input
+                    class="form-control flatpickr-input"
+                    type="text"
+                    placeholder="Select Date"
+                    mwlFlatpickr
+                    [altInput]="true"
+                    [enableTime]="true"
+                    [convertModelValue]="true"
+                    [dateFormat]="'Y-m-d H:i'"
+                    [maxDate]="maxDate"
+                    formControlName="dob"
+                    [ngClass]="{ 'is-invalid': submitted && form['dob'].errors }"
+                    >
+                    <div *ngIf="submitted && form['dob'].errors" class="invalid-feedback" align="left">
+                        <div *ngIf="form['dob'].errors['required']">Dob is required</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div>
+                    <label for="field-data" class="form-label">District <span class="text-danger">*</span></label>
+                    <ng-select [items]="districtList" 
+                        bindLabel="label" 
+                        bindValue="district_id" 
+                        placeholder="Select..." required 
+                        formControlName="districtID" 
+                        (change)="onDistrictDataChange($event)"
+                        [ngClass]="{ 'is-invalid': submitted && form['districtID'].errors }">
+                    </ng-select>
+                    <div *ngIf="submitted && form['districtID'].errors" class="invalid-feedback" align="left">
+                        <div *ngIf="form['districtID'].errors['required']">District is required</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div>
+                    <label for="field-data" class="form-label">Shehia <span class="text-danger">*</span></label>
+                    <ng-select [items]="shehiaList" 
+                        bindLabel="label" 
+                        bindValue="location_id" 
+                        placeholder="Select..." required 
+                        formControlName="shehiaID" 
+                        [ngClass]="{ 'is-invalid': submitted && form['shehiaID'].errors }">
+                    </ng-select>
+                    <div *ngIf="submitted && form['shehiaID'].errors" class="invalid-feedback" align="left">
+                        <div *ngIf="form['shehiaID'].errors['required']">Shehia is required</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div>
+                    <label for="field-data" class="form-label">Identification Type <span class="text-danger">*</span></label>
+                    <ng-select [items]="identityList" 
+                        bindLabel="identification_name" 
+                        bindValue="identification_id" 
+                        placeholder="Select..." required 
+                        formControlName="identityID" 
+                        (change)="onDistrictDataChange($event)"
+                        [ngClass]="{ 'is-invalid': submitted && form['identityID'].errors }">
+                    </ng-select>
+                    <div *ngIf="submitted && form['identityID'].errors" class="invalid-feedback" align="left">
+                        <div *ngIf="form['identityID'].errors['required']">Identification Type is required</div>
+                    </div>
+                </div>
+            </div>
+             <div class="col-lg-4">
+                <div>
+                    <label for="form-field" class="form-label">Identification Number <span class="text-danger">*</span></label>
+                    <input type="text" id="form-field" class="form-control"  placeholder="Enter Identification Number " required formControlName="identificationNumber" 
+                    [ngClass]="{ 'is-invalid': submitted && form['identificationNumber'].errors }" />
+                    <div *ngIf="submitted && form['identificationNumber'].errors" class="invalid-feedback" align="left">
+                        <div *ngIf="form['identificationNumber'].errors['required']">Identification Number is required</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div>
+                    <label for="form-field" class="form-label">Working Area <span class="text-danger">*</span></label>
+                    <input type="text" id="form-field" class="form-control"  placeholder="Enter Working Area " required formControlName="workingArea" 
+                    [ngClass]="{ 'is-invalid': submitted && form['workingArea'].errors }" />
+                    <div *ngIf="submitted && form['workingArea'].errors" class="invalid-feedback" align="left">
+                        <div *ngIf="form['workingArea'].errors['required']">Working Area is required</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div>
+                    <label for="form-field" class="form-label">Position <span class="text-danger">*</span></label>
+                    <input type="text" id="form-field" class="form-control"  placeholder="Enter Position " required formControlName="position" 
+                    [ngClass]="{ 'is-invalid': submitted && form['position'].errors }" />
+                    <div *ngIf="submitted && form['position'].errors" class="invalid-feedback" align="left">
+                        <div *ngIf="form['position'].errors['required']">Position is required</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div>
+                    <label for="formFile" class="form-label">Attach Passport Size <span class="text-danger">*</span></label>
+                    <input
+                        class="form-control"
+                        type="file"
+                        accept=".jpg,.jpeg,.png,image/jpeg,image/png"
+                        id="formFile"
+                        (change)="onFileChange($event)"
+                        [ngClass]="{ 'is-invalid': submitted && form['passportSize'].errors }"
+                    >
+                    <div *ngIf="submitted && form['passportSize'].errors" class="invalid-feedback">
+                        <div *ngIf="form['passportSize'].errors['required']">Passport Size is required</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <div class="hstack gap-2 justify-content-end">
+        <button type="button" class="btn btn-light" data-bs-dismiss="modal" (click)="closeModal()">Close</button>
+        <button type="submit" class="btn btn-info" id="add-btn">Save Data</button>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,358 @@
+<div class="profile-foreground position-relative mx-n4 mt-n4">
+    <div class="profile-wid-bg">
+        <img src="assets/images/profile-bg.jpg" alt="" class="profile-wid-img" />
+    </div>
+</div>
+
+<div class="pt-4 mb-4 mb-lg-3 pb-lg-4 profile-wrapper">
+    <div class="row g-4">
+        <div class="col-auto">
+            <div class="avatar-lg">
+                <img *ngIf="!profileData.photo" src="assets/img/user.png" alt="user-img" class="img-thumbnail rounded-circle" />
+                <img *ngIf="profileData.photo"[src]="imageUrl + profileData.photo" alt="user-img" class="img-thumbnail rounded-circle" />
+            </div>
+        </div><!--end col-->
+        <div class="col">
+            <div class="p-2">
+                <h3 class="text-white mb-1">{{profileData.first_name}} {{profileData.middle_name}} {{profileData.last_name}} {{profileData.sur_name}}</h3>
+                <p class="text-white text-opacity-75">{{roleNames}}</p>
+                <div class="hstack text-white-50 gap-1">
+                    <div class="me-2"><i class="ri-map-pin-user-line mx-1 text-white text-opacity-75 fs-16 align-middle"></i> {{profileData.label}} </div>
+                    <div><i class="ri-building-line mx-1 text-white text-opacity-75 fs-16 align-middle"></i> {{profileData.country_of_origin_name}}, {{profileData.country_name}}
+                    </div>
+                </div>
+            </div>
+        </div><!--end col-->
+        <div class="col-12 col-lg-auto order-last order-lg-0">
+            <div class="row text text-white-50 text-center">
+                <div class="col-lg-6 col-4">
+                    <div class="p-2">
+                        <h4 class="text-white mb-1">0</h4>
+                        <p class="fs-14 mb-0">Followers</p>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-4">
+                    <div class="p-2">
+                        <h4 class="text-white mb-1">0</h4>
+                        <p class="fs-14 mb-0">Following</p>
+                    </div>
+                </div>
+            </div>
+        </div><!--end col-->
+    </div><!--end row-->
+</div>
+
+
+
+<div class="row">
+    <div class="col-lg-12">
+        <div>
+            <div class="d-flex profile-wrapper">
+                <!-- Nav tabs -->
+                <ul ngbNav #customNav="ngbNav" [activeId]="1" (activeIdChange)="onDetailTabChangeMenu($event)" class="nav nav-pills animation-nav profile-nav gap-2 gap-lg-3 flex-grow-1" role="tablist">
+
+                    <li [ngbNavItem]="1" class="nav-item">
+                        <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                            <i class="ri-airplay-fill d-inline-block d-md-none"></i> <span class="d-none d-md-inline-block">Overview</span>
+                        </a>
+                        <ng-template ngbNavContent *ngIf="activeTabMenu === 1">
+                            <div class="row">
+                                <div class="col-xxl-3">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h5 class="card-title mb-5">Complete Your Profile</h5>
+                                            <div class="progress animated-progess custom-progress progress-label">
+                                                <div class="progress-bar bg-danger" role="progressbar" style="width: 30%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
+                                                    <div class="label">30%</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h5 class="card-title mb-3">Employment Info</h5>
+                                            <div class="table-responsive">
+                                                <table class="table table-borderless mb-0">
+                                                    <tbody>
+                                                        <tr>
+                                                            <th class="ps-0" scope="row">Payroll Number :</th>
+                                                            <td class="text-muted">{{profileData.payroll}}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th class="ps-0" scope="row">Employment Date :</th>
+                                                            <td class="text-muted">{{profileData.employment_date | date :'longDate'}}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th class="ps-0" scope="row">Position :</th>
+                                                            <td class="text-muted">{{profileData.post_category_name}}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th class="ps-0" scope="row">Department :</th>
+                                                            <td class="text-muted">{{profileData.department_name}}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th class="ps-0" scope="row">Cadre :</th>
+                                                            <td class="text-muted">{{profileData.cader_name}}</td>
+                                                        </tr>
+                                                         <tr>
+                                                            <th class="ps-0" scope="row">Seniority :</th>
+                                                            <td class="text-muted">{{profileData.senority_name}}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th class="ps-0" scope="row">Work Station :</th>
+                                                            <td class="text-muted">{{profileData.working_station_name}}</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div><!-- end card body -->
+                                    </div><!-- end card -->
+
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h5 class="card-title mb-3">Contact Info</h5>
+                                            <div class="table-responsive">
+                                                <table class="table table-borderless mb-0">
+                                                    <tbody>
+                                                        <tr>
+                                                            <th class="ps-0" scope="row">E-mail :</th>
+                                                            <td class="text-muted">{{profileData.email}}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th class="ps-0" scope="row">Physical Address :</th>
+                                                            <td class="text-muted">{{profileData.physical_address}}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th class="ps-0" scope="row">Tearm Of Employment :</th>
+                                                            <td class="text-muted">{{profileData.term_of_employment_name}}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th class="ps-0" scope="row">Bank Account :</th>
+                                                            <td class="text-muted">{{profileData.bank_account_number + ' '+'(' + profileData.abraviation + ')'}}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th class="ps-0" scope="row">Identification Number :</th>
+                                                            <td class="text-muted">{{profileData.id_number}}</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        
+
+                                        </div><!-- end card body -->
+                                    </div><!-- end card -->
+
+                                </div><!--end col-->
+                                <div class="col-xxl-9">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h5 class="card-title mb-3">About</h5>
+                                            <div class="row">
+                                                <div class="col-6 col-md-2">
+                                                    <div class="d-flex mt-4">
+                                                        <div class="flex-shrink-0 avatar-xs align-self-center me-3">
+                                                            <div class="avatar-title bg-light rounded-circle fs-16 text-primary">
+                                                                <i class="ri-user-2-fill"></i>
+                                                            </div>
+                                                        </div>
+                                                        <div class="flex-grow-1 overflow-hidden">
+                                                            <p class="mb-1">Gender :</p>
+                                                             <a href="javascript:void(0);" class="fw-semibold">
+                                                                {{profileData.gender}}
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div><!--end col-->
+                                                <div class="col-6 col-md-2">
+                                                    <div class="d-flex mt-4">
+                                                        <div class="flex-shrink-0 avatar-xs align-self-center me-3">
+                                                            <div class="avatar-title bg-light rounded-circle fs-16 text-primary">
+                                                                <i class="ri-global-line"></i>
+                                                            </div>
+                                                        </div>
+                                                        <div class="flex-grow-1 overflow-hidden">
+                                                            <p class="mb-1">Date Of Birth :</p>
+                                                            <a href="javascript:void(0);" class="fw-semibold">
+                                                                {{profileData.date_of_birth}}
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div><!--end col-->
+
+                                                <div class="col-6 col-md-2">
+                                                    <div class="d-flex mt-4">
+                                                        <div class="flex-shrink-0 avatar-xs align-self-center me-3">
+                                                            <div class="avatar-title bg-light rounded-circle fs-16 text-primary">
+                                                                <i class="ri-global-line"></i>
+                                                            </div>
+                                                        </div>
+                                                        <div class="flex-grow-1 overflow-hidden">
+                                                            <p class="mb-1">Marital Status :</p>
+                                                            <a href="javascript:void(0);" class="fw-semibold">
+                                                                {{profileData.merital_name}}
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div><!--end col-->
+
+                                                <div class="col-6 col-md-2">
+                                                    <div class="d-flex mt-4">
+                                                        <div class="flex-shrink-0 avatar-xs align-self-center me-3">
+                                                            <div class="avatar-title bg-light rounded-circle fs-16 text-primary">
+                                                                <i class="ri-global-line"></i>
+                                                            </div>
+                                                        </div>
+                                                        <div class="flex-grow-1 overflow-hidden">
+                                                            <p class="mb-1">Phone Number :</p>
+                                                            <a href="javascript:void(0);" class="fw-semibold">
+                                                                {{profileData.phone_no}}
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div><!--end col-->
+                                                <div class="col-6 col-md-2">
+                                                    <div class="d-flex mt-4">
+                                                        <div class="flex-shrink-0 avatar-xs align-self-center me-3">
+                                                            <div class="avatar-title bg-light rounded-circle fs-16 text-primary">
+                                                                <i class="ri-global-line"></i>
+                                                            </div>
+                                                        </div>
+                                                        <div class="flex-grow-1 overflow-hidden">
+                                                            <p class="mb-1">Education Level :</p>
+                                                            <a href="javascript:void(0);" class="fw-semibold">
+                                                                {{profileData.education_level_name}}
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div><!--end col-->
+
+                                                <div class="col-6 col-md-2">
+                                                    <div class="d-flex mt-4">
+                                                        <div class="flex-shrink-0 avatar-xs align-self-center me-3">
+                                                            <div class="avatar-title bg-light rounded-circle fs-16 text-primary">
+                                                                <i class="ri-global-line"></i>
+                                                            </div>
+                                                        </div>
+                                                        <div class="flex-grow-1 overflow-hidden">
+                                                            <p class="mb-1">Retirement Date :</p>
+                                                            <a href="javascript:void(0);" class="fw-semibold" style="color: rgb(196, 27, 27);">
+                                                                {{profileData.retirement_date}}
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div><!--end col-->
+
+                                            </div><!--end row-->
+                                        </div><!--end card-body-->
+                                    </div><!-- end card -->
+
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="card">
+                                                <div class="card-header align-items-center d-flex">
+                                                    <h4 class="card-title mb-0  me-2">More Details</h4>
+                                                    <div class="flex-shrink-0 ms-auto">
+                                                        <ul ngbNav #customNav="ngbNav" [(activeId)]="activeTab" (activeIdChange)="onDetailTabChange($event)" class="nav justify-content-end nav-tabs-custom rounded card-header-tabs border-bottom-0" role="tablist">
+                                                            <li [ngbNavItem]="1" class="nav-item">
+                                                                <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                                                                    Education
+                                                                </a>
+                                                                <ng-template ngbNavContent>
+                                                                   <app-education-profile *ngIf="activeTab === 1"></app-education-profile>
+                                                                </ng-template>
+                                                            </li>
+                                                            <li [ngbNavItem]="2" class="nav-item">
+                                                                <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                                                                    Work Experience
+                                                                </a>
+                                                                <ng-template ngbNavContent>
+                                                                   <app-work-experience-profile *ngIf="activeTab === 2"></app-work-experience-profile>
+                                                                </ng-template>
+                                                            </li>
+                                                            <li [ngbNavItem]="3" class="nav-item">
+                                                                <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                                                                    Hobbies / Interests
+                                                                </a>
+                                                                <ng-template ngbNavContent>
+                                                                    <app-hobbies-or-interests *ngIf="activeTab === 3"></app-hobbies-or-interests>
+                                                                </ng-template>
+                                                            </li>
+
+                                                            <li [ngbNavItem]="4" class="nav-item">
+                                                                <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                                                                    Skills
+                                                                </a>
+                                                                <ng-template ngbNavContent>
+                                                                    <app-skills *ngIf="activeTab === 4"></app-skills>
+                                                                </ng-template>
+                                                            </li>
+
+                                                            <li [ngbNavItem]="5" class="nav-item">
+                                                                <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                                                                    Language
+                                                                </a>
+                                                                <ng-template ngbNavContent>
+                                                                    <app-languages *ngIf="activeTab === 5"></app-languages>
+                                                                </ng-template>
+                                                            </li>
+
+                                                             <li [ngbNavItem]="6" class="nav-item">
+                                                                <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                                                                    Next of Kins
+                                                                </a>
+                                                                <ng-template ngbNavContent>
+                                                                    <app-next-of-kins *ngIf="activeTab === 6"></app-next-of-kins>
+                                                                </ng-template>
+                                                            </li>
+                                                            <li [ngbNavItem]="7" class="nav-item">
+                                                                <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                                                                    Referees
+                                                                </a>
+                                                                <ng-template ngbNavContent>
+                                                                    <app-referees *ngIf="activeTab === 7"></app-referees>
+                                                                </ng-template>
+                                                            </li>
+
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                                <div class="card-body">
+                                                    <div class="tab-content text-muted">
+                                                        <div [ngbNavOutlet]="customNav"></div>
+                                                    </div>
+                                                </div><!-- end card body -->
+                                            </div><!-- end card -->
+                                        </div><!-- end col -->
+                                    </div><!-- end row -->
+
+                                </div><!--end col-->
+                            </div><!--end row-->
+                        </ng-template>
+                    </li>
+
+                    <li [ngbNavItem]="2" class="nav-item">
+                        <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                            <i class="ri-folder-4-line d-inline-block d-md-none"></i> <span class="d-none d-md-inline-block">Documents</span>
+                        </a>
+                        <ng-template ngbNavContent>
+                            <app-employee-attachments *ngIf="activeTabMenu === 2"></app-employee-attachments>
+                        </ng-template>
+                    </li>
+
+                </ul>
+                <div class="flex-shrink-0">
+                    <a [routerLink]="['/app/profile/personal-profile-form']" class="btn btn-primary"><i class="ri-edit-box-line align-bottom"></i> Edit Profile</a>
+                </div>
+            </div>
+            <!-- Tab panes -->
+            <div class="tab-content pt-4 text-muted">
+                <div [ngbNavOutlet]="customNav"></div>
+            </div><!--end tab-content-->
+        </div>
+    </div><!--end col-->
+</div><!--end row-->
+
+
+
+

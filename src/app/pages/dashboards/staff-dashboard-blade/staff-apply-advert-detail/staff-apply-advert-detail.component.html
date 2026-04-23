@@ -1,0 +1,152 @@
+<div class="modal-header bg-light p-3">
+    <h5 class="modal-title" id="exampleModalLabel">Recent Job Advertisement</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"(click)="closeModal()"></button>
+</div>
+
+<div class="modal-body">
+    <div class="row g-3">
+         <div class="col-xl-12">
+            <div class="card" id="leadsList">
+                <div class="card-header  border-0">
+                    <div class="row align-items-center gy-3">
+                        <div class="col-sm">
+                            <h5 class="card-title mb-2">My Job Applications</h5>
+                            <p class="text-muted">To view more details about job advertisement <span class="text-primary fw-bold"> 'click checkbox' </span></p>
+                        </div>
+                        <div class="col-sm-auto ms-auto">
+                            <div class="hstack gap-2">
+                                <div class="search-box">
+                                    <input type="text" name="searchTerm" class="form-control" placeholder="Search for..." [(ngModel)]="searchTerm" (ngModelChange)="performSearch()">
+                                    <i class="ri-search-line search-icon"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div>
+                        <div class="table-responsive table-card mb-2">
+                            <table class="table table-hover-clickable">
+                                <thead>
+                                    <tr class="bg-light text-muted text-uppercase">
+                                        <th class="sort" (click)="onSort('staff_advertisement_id')"></th>
+                                        <th class="sort" (click)="onSort('end_date')">Close Date </th>
+                                        <th class="sort" (click)="onSort('title_name')">Job Title</th>
+                                        <th class="sort" (click)="onSort('training_app_status')">Attachement</th>
+                                        <th class="sort">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody >
+                                    <tr *ngFor="let data of advertisementListDetail; let i = index" >
+                                        <th scope="row" (click)="openModalAdvertList(contentAdvert, data, cb)">
+                                            <div class="form-check">
+                                                <input #cb class="form-check-input" type="checkbox" >
+                                            </div>
+                                        </th>
+                                        <td (click)="openModalAdvertList(contentAdvert, data, cb)">
+                                            <ngb-highlight [result]="data.end_date" [term]="searchTerm">
+                                            </ngb-highlight>
+                                        </td>
+                                        <td (click)="openModalAdvertList(contentAdvert, data, cb)">
+                                            <ngb-highlight [result]="data.title_name" [term]="searchTerm">
+                                            </ngb-highlight>
+                                        </td>
+                                        <td>
+                                            <ng-container *ngIf="data.upload_file_name; else noFile">
+                                                <a href="javascript:void(0)" class="text-primary" (click)="openAttachment(data.upload_file_name)"> Terms of Reference</a>
+                                            </ng-container>
+                                            <ng-template #noFile>
+                                                <span class="text-muted">No TOR</span>
+                                            </ng-template>
+                                        </td>
+                                        
+                                        <td>
+                                            <ul class="list-inline hstack gap-2 mb-0">
+                                                <li class="list-inline-item">
+                                                    <div class="dropdown" ngbDropdown container="body" placement="bottom-end">
+                                                        <button class="btn btn-soft-secondary btn-sm dropdown arrow-none" ngbTooltip="More" placement="top" type="button" data-bs-toggle="dropdown" aria-expanded="false" ngbDropdownToggle>
+                                                            <i class="ri-more-fill align-middle"></i>
+                                                        </button>
+                                                        <ul class="dropdown-menu dropdown-menu-end" ngbDropdownMenu>
+                                                            <li>
+                                                                <a class="dropdown-item" href="javascript:void(0);" (click)="openModalStaffApplyAdvertisementForm(data)">
+                                                                    <i class="ri-send-plane-line align-bottom me-2 text-muted float-start"></i>
+                                                                    Request
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="row justify-content-md-between align-items-md-center gy-2">
+                            <div class="col col-sm-6">
+                                <div class="dataTables_info mb-2" id="tickets-table_infor" role="status" aria-live="polite">
+                                Showing
+                                {{service.startIndex}} to
+                                {{service.endIndex}} of {{allAdvertisementListDetail.length}}
+                                entries
+                                </div>
+                            </div>
+                            <div class="col col-sm-6">
+                                <div class="text-sm-right float-end listjs-pagination">
+                                <ngb-pagination [collectionSize]="filteredList.length" [maxSize]="3"
+                                    [ellipses]="true" [(page)]="page" [pageSize]="service.pageSize" (pageChange)="changePage($event)"></ngb-pagination>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="elmLoader" *ngIf="isLoading">
+                            <div class="spinner-border text-primary avatar-sm" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--  advert Create Model -->
+                    <ng-template #contentAdvert role="document" let-modal>
+                        <div class="modal-header bg-light p-3 ">
+                            <h5 class="modal-title" id="exampleModalLabel">Job Ads View More Details</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal" (click)="modal.dismiss('Cross click')"></button>
+                        </div>
+                        <div class="modal-body rounded-border" *ngIf="selectedAdvertList" style="border-bottom: 6px solid #588fc7; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;">
+                            
+                            <h6 class="text-uppercase fw-semibold mb-3">Job Title</h6>
+                            <p class="mb-4"> <span class="text-primary fw-bold"> {{ selectedAdvertList.title_name }} </span> </p>
+
+                            <div class="table-responsive table-card">
+                                <table class="table table-borderless mb-0 table-bordered-bottom">
+                                    <tbody>
+                                        <tr>
+                                            <td class="fw-medium" scope="row">Work Station</td>
+                                            <td class="email">{{ selectedAdvertList.working_area }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="fw-medium" scope="row">Reporting To</td>
+                                            <td class="l_score">{{ selectedAdvertList.reporting_place }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="fw-medium" scope="row">Job Description</td>
+                                            <td class="l_score">{{ selectedAdvertList.description }}</td>
+                                        </tr>
+                                        
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+                    </ng-template>
+
+                </div>
+            </div>
+        </div><!-- end col -->
+    </div>
+</div>
+<div class="modal-footer">
+    <div class="hstack gap-2 justify-content-end">
+    <button type="button" class="btn btn-light" data-bs-dismiss="modal" (click)="closeModal()">Close</button>
+    </div>
+</div>

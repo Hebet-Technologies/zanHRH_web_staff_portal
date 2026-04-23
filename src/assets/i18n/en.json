@@ -1,0 +1,39 @@
+{
+  "HEADER": {
+    "MORE": {
+      "TEXT": "More"
+    }
+  },
+  "MENUITEMS": {
+    "MENU": {
+      "TEXT": "MAIN NAVIGATION"
+    },
+    "HOME": {
+      "TEXT": "Dashboard"
+    },
+    "SETUPS": {
+      "TEXT": "System Setups",
+      "BADGE": "New",
+      "LIST": {
+        "ANALYTICS": "Analytics",
+        "CRM": "CRM",
+        "ECOMMERCE": "Ecommerce",
+        "CRYPTO": "Crypto",
+        "PROJECTS": "Projects",
+        "NFT": "NFT",
+        "JOB": "Job"
+      }
+    },
+    "PAGES": {
+      "TEXT": "Pages"
+    },
+    "LANDING": {
+      "TEXT": "Landing",
+      "LIST": {
+        "ONEPAGE": "One Page",
+        "NFTLANDING": "NFT Landing",
+        "JOB": "Job"
+      }
+    }
+  }
+}

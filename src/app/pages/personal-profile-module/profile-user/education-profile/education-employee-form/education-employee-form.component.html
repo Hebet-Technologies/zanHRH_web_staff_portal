@@ -1,0 +1,117 @@
+<div class="modal-header bg-light p-3">
+    <h5 class="modal-title" id="exampleModalLabel">Add New Education Details</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal" (click)="closeModal()"></button>
+</div>
+<form (ngSubmit)="saveEducation()" [formGroup]="educationForm" class="tablelist-form" autocomplete="off">
+    <div class="modal-body">
+        <div class="row g-3">
+            <div class="col-lg-6">
+                <div>
+                    <label for="field-data" class="form-label">Education Level <span class="text-danger">*</span></label>
+                    <ng-select [items]="educationLevel" 
+                        bindLabel="education_level_name" 
+                        bindValue="education_level_id" 
+                        placeholder="Select..." required 
+                        formControlName="educationLevelID" 
+                        (change)="onEducationChange($event)"
+                        [ngClass]="{ 'is-invalid': submitted && form['educationLevelID'].errors }">
+                    </ng-select>
+                    <div *ngIf="submitted && form['educationLevelID'].errors" class="invalid-feedback" align="left">
+                        <div *ngIf="form['educationLevelID'].errors['required']">Education Level is required</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div>
+                    <label for="field-data" class="form-label">Program <span class="text-danger">*</span></label>
+                    <ng-select [items]="programs" 
+                        bindLabel="program_name" 
+                        bindValue="program_id" 
+                        placeholder="Select..." required 
+                        formControlName="programID" 
+                        [ngClass]="{ 'is-invalid': submitted && form['programID'].errors }">
+                    </ng-select>
+                    <div *ngIf="submitted && form['programID'].errors" class="invalid-feedback" align="left">
+                        <div *ngIf="form['programID'].errors['required']">Program is required</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div>
+                    <label for="field-data" class="form-label">Institute Country <span class="text-danger">*</span></label>
+                    <ng-select [items]="instituteCountry" 
+                        bindLabel="country_name" 
+                        bindValue="country_id" 
+                        placeholder="Select..." required 
+                        formControlName="countryID" 
+                        [ngClass]="{ 'is-invalid': submitted && form['countryID'].errors }">
+                    </ng-select>
+                    <div *ngIf="submitted && form['countryID'].errors" class="invalid-feedback" align="left">
+                        <div *ngIf="form['countryID'].errors['required']">Institute Country is required</div>
+                    </div>
+                </div>
+            </div>
+             <div class="col-lg-6">
+                <div>
+                    <label for="field-data" class="form-label">Institute <span class="text-danger">*</span></label>
+                    <ng-select [items]="institutes" 
+                        bindLabel="institute_name" 
+                        bindValue="institute_id" 
+                        placeholder="Select..." required 
+                        formControlName="instituteID" 
+                        [ngClass]="{ 'is-invalid': submitted && form['instituteID'].errors }">
+                    </ng-select>
+                    <div *ngIf="submitted && form['instituteID'].errors" class="invalid-feedback" align="left">
+                        <div *ngIf="form['instituteID'].errors['required']">Institute is required</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <label class="form-label">Start Year <span class="text-danger">*</span></label>
+                <ng-select
+                    [items]="startYears"
+                    bindLabel="name"
+                    bindValue="id"
+                    formControlName="from_year"
+                    placeholder="Select..." required
+                    [ngClass]="{ 'is-invalid': submitted && form['from_year'].errors }">
+                </ng-select>
+                <div *ngIf="submitted && form['from_year'].errors" class="invalid-feedback">
+                    <div *ngIf="form['from_year'].errors['required']">Start year is required</div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <label class="form-label">End Year <span class="text-danger">*</span></label>
+                <ng-select
+                    [items]="endYears"
+                    bindLabel="name"
+                    bindValue="id"
+                    formControlName="to_year"
+                    placeholder="Select..."
+                    [disabled]="!form['from_year'].value"
+                    [ngClass]="{ 'is-invalid': submitted && form['to_year'].errors }">
+                </ng-select>
+                <div *ngIf="submitted && form['to_year'].errors" class="invalid-feedback">
+                    <div *ngIf="form['to_year'].errors['required']">End year is required</div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div>
+                    <label for="gpa-field" class="form-label">GPA / Grade <span class="text-danger">*</span></label>
+                    <input type="text" id="gpa-field" class="form-control"  placeholder="Enter gpa" required formControlName="gpa" 
+                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" 
+                    [ngClass]="{ 'is-invalid': submitted && form['gpa'].errors }" />
+                    <div *ngIf="submitted && form['gpa'].errors" class="invalid-feedback" align="left">
+                        <div *ngIf="form['gpa'].errors['required']">GPA / Grade is required</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <div class="hstack gap-2 justify-content-end">
+        <button type="button" class="btn btn-light" data-bs-dismiss="modal" (click)="closeModal()">Close</button>
+        <button type="submit" class="btn btn-info" id="add-btn">Save Data</button>
+        </div>
+    </div>
+</form>
