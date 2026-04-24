@@ -1,0 +1,11 @@
+.responsive-nav-tabs {
+  @media (max-width: 768px) {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    justify-content: flex-start !important;
+    
+    .nav-link {
+      white-space: nowrap;
+    }
+  }
+}
