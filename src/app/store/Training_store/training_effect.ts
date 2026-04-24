@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { mergeMap, map, catchError, of, switchMap } from "rxjs";
 import { TrainingService } from "src/app/core/services/training-card/training.service";
-import { fetchEmployeeTrainingData, fetchEmployeeTrainingSuccess, fetchEmployeeTrainingFailure, loadTrainingAnnoucement, loadTrainingAnnoucementFailure, loadTrainingAnnoucementSuccess, loadInstituteCountry, loadInstituteCountrySuccess, loadInstituteCountryFailure, loadInstitute, loadInstituteSuccess, loadInstituteFailure, addTrainingForm, addTrainingFormFailure, addTrainingFormSuccess, deleteTrainingForm, deleteTrainingFormFailure, deleteTrainingFormSuccess } from "./training_action";
+import { fetchEmployeeTrainingData, fetchEmployeeTrainingSuccess, fetchEmployeeTrainingFailure, loadTrainingAnnoucement, loadTrainingAnnoucementFailure, loadTrainingAnnoucementSuccess, loadInstituteCountry, loadInstituteCountrySuccess, loadInstituteCountryFailure, loadInstitute, loadInstituteSuccess, loadInstituteFailure, addTrainingForm, addTrainingFormFailure, addTrainingFormSuccess, deleteTrainingForm, deleteTrainingFormFailure, deleteTrainingFormSuccess, loadTrainingApprovedLetter, loadTrainingApprovedLetterFailure, loadTrainingApprovedLetterSuccess } from "./training_action";
 
 @Injectable()
 export class TrainingEffects {
@@ -117,6 +117,21 @@ export class TrainingEffects {
                 ),
                 catchError((error) =>
                 of(deleteTrainingFormFailure({ error: error.message }))
+                )
+            )
+            )
+        )
+    );
+
+    //print approved later
+    loadTrainingApprovedLetterData$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(loadTrainingApprovedLetter),
+            switchMap(({ id }) =>
+            this._trainingService.getTrainingApprovedLetter(id).pipe(
+                map((file: Blob) => loadTrainingApprovedLetterSuccess({ file })),
+                catchError(error =>
+                of(loadTrainingApprovedLetterFailure({ error }))
                 )
             )
             )

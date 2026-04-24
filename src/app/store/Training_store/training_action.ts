@@ -25,3 +25,8 @@ export const loadInstituteCountryFailure = createAction('[Data] Load Institute C
 export const loadInstitute = createAction('[Data] Load Institute',props<{ countryCode: string; educationLevel: string }>());
 export const loadInstituteSuccess = createAction('[Data] Load Institute Success',props<{ institutes: any[] }>());
 export const loadInstituteFailure = createAction('[Data] Load Institute Failure',props<{ error: any }>());
+
+//Approve Latter data
+export const loadTrainingApprovedLetter = createAction('[Training] Load Training Approved Letter', props<{ id: number }>());
+export const loadTrainingApprovedLetterSuccess = createAction('[Training] Load Training Approved Letter Success', props<{ file: Blob }>());
+export const loadTrainingApprovedLetterFailure = createAction('[Training] Load Training Approved Letter Failure', props<{ error: any }>());

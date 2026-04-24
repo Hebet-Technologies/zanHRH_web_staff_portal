@@ -29,4 +29,11 @@ export class TrainingService {
   public getInstitutes(country_code: any, levelId: any): Observable<any>{
     return this.http.get(`${environment.apiUrl}getInstitutes/${country_code}/${levelId}`);
   }
+
+  //print approved data
+  getTrainingApprovedLetter(id: number): Observable<Blob> {
+    return this.http.get(`${environment.apiUrl}getTrainingLetter/${id}`, {
+    responseType: 'blob'
+    });
+  }
 }

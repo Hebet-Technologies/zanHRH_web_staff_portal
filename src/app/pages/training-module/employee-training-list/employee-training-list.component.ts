@@ -7,7 +7,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { PermissionService } from 'src/app/core/services/auth-card/permission.service';
 import { PaginationService } from 'src/app/core/services/pagination.service';
 import { RootReducerState } from 'src/app/store';
-import { addTrainingForm, addTrainingFormFailure, addTrainingFormSuccess, deleteTrainingForm, deleteTrainingFormFailure, deleteTrainingFormSuccess, fetchEmployeeTrainingData, loadInstitute, loadInstituteCountry, loadTrainingAnnoucement } from 'src/app/store/Training_store/training_action';
+import { addTrainingForm, addTrainingFormFailure, addTrainingFormSuccess, deleteTrainingForm, deleteTrainingFormFailure, deleteTrainingFormSuccess, fetchEmployeeTrainingData, loadInstitute, loadInstituteCountry, loadTrainingAnnoucement, loadTrainingApprovedLetter, loadTrainingApprovedLetterSuccess } from 'src/app/store/Training_store/training_action';
 import { selectEmployeeTrainingLoading, selectEmployeeTrainingData, selectTrainingAnnoucement, selectInstituteCountry, selectInstitutes } from 'src/app/store/Training_store/training_selector';
 import { EmployeeTrainingRequestFormComponent } from './employee-training-request-form/employee-training-request-form.component';
 import { TrainingRequestFormPayload } from 'src/app/store/Training_store/training_model';
@@ -55,6 +55,8 @@ export class EmployeeTrainingListComponent implements OnInit, OnDestroy{
     const user = JSON.parse(localStorage.getItem('user')!);
     this.employeeID = user.personalInformationID;
 
+    this.currentDay = new Date();
+
     this.loadTrainingList();
     this.listenAllTrainingActions();
   }
@@ -89,6 +91,22 @@ export class EmployeeTrainingListComponent implements OnInit, OnDestroy{
     this.store.select(selectInstitutes)
     .pipe(takeUntil(this.destroy$))
     .subscribe(data => this.institutes = data || []);
+
+    //file download pdf
+    this.actions$.pipe(
+      ofType(loadTrainingApprovedLetterSuccess),
+      takeUntil(this.destroy$)
+    ).subscribe(({ file }) => {
+      this.isLoading = false;
+      const blob = new Blob([file], { type: 'application/pdf' });
+      const fileURL = window.URL.createObjectURL(blob);
+      window.open(fileURL, '_blank');
+      // 👇 hide loader hapa
+      const loader = document.getElementById('elmLoader');
+      if (loader) {
+        loader.classList.add('d-none');
+      }
+    });
 
   }
 
@@ -181,6 +199,25 @@ export class EmployeeTrainingListComponent implements OnInit, OnDestroy{
   openAttachment(fileName: string): void {
     const fileUrl = `${environment.trainingfileUrl}/${fileName}`;
     window.open(fileUrl, '_blank');
+  }
+  //print letter
+  previewTrainingLetter(id: number): void {
+    const loader = document.getElementById('elmLoader');
+    this.isLoading = true;
+    if (loader) {
+      loader.classList.remove('d-none'); // 👈 show loader
+    }
+    this.store.dispatch(loadTrainingApprovedLetter({ id }));
+  }
+
+  currentDay: any;
+  isWithinDeadline(endDate: string): boolean {
+    const today = new Date(this.currentDay);
+    const end = new Date(endDate);
+    // Ondoa time ili comparison iwe safi
+    today.setHours(0,0,0,0);
+    end.setHours(0,0,0,0);
+    return today <= end;
   }
 
   // currently selected row data
