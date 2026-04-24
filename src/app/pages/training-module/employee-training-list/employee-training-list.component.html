@@ -67,7 +67,7 @@
                                                 'bg-secondary-subtle text-secondary': data.training_app_status === 'Inprogress', 
                                                 'bg-info-subtle text-info': data.training_app_status === 'FORWARDED', 
                                                 'bg-primary-subtle text-primary': data.training_app_status === 'Returns', 
-                                                'bg-success-subtle text-success': data.training_app_status === 'Delivered' 
+                                                'bg-success-subtle text-success': data.training_app_status === 'APPROVED_SHORT_COURSE' 
                                             }">{{data.training_app_status}}
                                         </span>
                                     </td>
@@ -169,7 +169,7 @@
                                             <span class="badge text-uppercase" 
                                                 [ngClass]=" { 
                                                     'bg-warning-subtle text-warning': selectedTraining.training_app_status === 'REQUESTED', 
-                                                    'bg-info-subtle text-info': selectedTraining.training_app_status === 'FORWARDED', 
+                                                    'bg-success-subtle text-success': selectedTraining.training_app_status === 'APPROVED_SHORT_COURSE', 
                                                 }">{{selectedTraining.training_app_status}}
                                             </span>
                                         </td>
