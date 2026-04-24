@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { login } from 'src/app/store/Authentication/authentication.actions';
 import { Store } from '@ngrx/store';
+import { selectAuthLoading } from 'src/app/store/Authentication/authentication-selector';
 
 @Component({
   selector: 'app-cover',
@@ -26,6 +27,8 @@ export class CoverComponent implements OnInit {
   showNavigationArrows: any;
   
   toast!: false;
+  isLoading = false;
+
   constructor(private formBuilder: UntypedFormBuilder,
     private store: Store) {}
 
@@ -36,6 +39,10 @@ export class CoverComponent implements OnInit {
      this.loginForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required],
+    });
+
+    this.store.select(selectAuthLoading).subscribe(loading => {
+      this.isLoading = loading;
     });
   }
 

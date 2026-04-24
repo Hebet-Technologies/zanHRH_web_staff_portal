@@ -23,4 +23,9 @@ export const selectUserPermissions = createSelector(
   (state: AuthenticationState) => state.user?.permissions || []
 );
 
+export const selectAuthLoading = createSelector(
+    selectLayoutState,
+    (state: AuthenticationState) => state.loading
+);
+
 export const selectSeachEmployeeData = createSelector(selectLayoutState,state => state.SearchEmployee);

@@ -7,7 +7,7 @@ import { Store } from '@ngrx/store';
 import { Subject, takeUntil } from 'rxjs';
 import { RootReducerState } from 'src/app/store';
 import { StaffRegistrationPayload } from 'src/app/store/Authentication/auth.models';
-import { selectSeachEmployeeData } from 'src/app/store/Authentication/authentication-selector';
+import { selectAuthLoading, selectSeachEmployeeData } from 'src/app/store/Authentication/authentication-selector';
 import { addStaffRegistration, addStaffRegistrationFailure, addStaffRegistrationSuccess, clearSearchEmployee, loadSearchEmployee, loadSearchEmployeeFailure, loadSearchEmployeeSuccess } from 'src/app/store/Authentication/authentication.actions';
 import Swal from 'sweetalert2';
 
@@ -69,7 +69,9 @@ export class CoverComponent implements OnInit, AfterViewInit {
     });
 
 
-    this.listenSeachEmployeeActions();
+    this.listenSearchEmployeeActions();
+
+    
   }
   ngAfterViewInit(): void {
     this.handleValidation();
@@ -244,7 +246,7 @@ export class CoverComponent implements OnInit, AfterViewInit {
     [addStaffRegistrationFailure.type]: {icon: 'error',title: 'Registration Failed'},
     [loadSearchEmployeeFailure.type]: {icon: 'error',title: 'Failed to load data'},
   };
-  private listenSeachEmployeeActions(): void {
+  private listenSearchEmployeeActions(): void {
     this.actions$.pipe(
       ofType(
         addStaffRegistrationSuccess,addStaffRegistrationFailure,loadSearchEmployeeFailure
