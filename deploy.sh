@@ -6,9 +6,6 @@ git pull origin main
 echo "[INFO] Removing old build..."
 sudo rm -rf dist
 
-echo "[INFO] Installing dependencies..."
-sudo npm install
-
 echo "[INFO] Building project..."
 sudo npm run build
 
