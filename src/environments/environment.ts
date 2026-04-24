@@ -12,6 +12,9 @@ export const environment = {
   trainingfileUrl:'http://127.0.0.1:8000/uploads/Employee/TrainingFile',
   staffAdvertisementfileUrl:'http://127.0.0.1:8000/uploads/staffAdvertisement',
 
+  // apiUrl: 'http://102.214.45.136:8081/api/',
+
+
 
 };
 
