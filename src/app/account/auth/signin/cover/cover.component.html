@@ -100,9 +100,14 @@
                                                 <label class="form-check-label" for="auth-remember-check">Remember me</label>
                                             </div>
 
-                                            <div class="mt-4">
+                                            <!-- <div class="mt-4">
                                                 <button class="btn btn-success w-100" type="submit">Sign In</button>
-                                            </div>
+                                            </div> -->
+
+                                            <button class="btn btn-success w-100" type="submit" [disabled]="isLoading">
+  <span *ngIf="!isLoading">Sign In</span>
+  <span *ngIf="isLoading">Signing in...</span>
+</button>
 
                                             <div class="mt-4 text-center">
                                                 <div class="signin-other-title">
@@ -119,6 +124,12 @@
                                 </div>
                             </div>
                             <!-- end col -->
+
+                             <div *ngIf="isLoading" class="loader-overlay">
+                                <div class="spinner-border text-primary avatar-sm" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </div>
                         </div>
                         <!-- end row -->
                     </div>
@@ -131,6 +142,7 @@
         </div>
         <!-- end container -->
     </div>
+    
     <!-- end auth page content -->
 
     <!-- footer -->

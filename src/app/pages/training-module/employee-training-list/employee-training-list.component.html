@@ -68,7 +68,7 @@
                                                 'bg-info-subtle text-info': data.training_app_status === 'FORWARDED', 
                                                 'bg-primary-subtle text-primary': data.training_app_status === 'Returns', 
                                                 'bg-success-subtle text-success': data.training_app_status === 'APPROVED_SHORT_COURSE' 
-                                            }">{{data.training_app_status}}
+                                            }">{{data.training_app_status.split('_').join(' ')}}
                                         </span>
                                     </td>
                                     <td>
@@ -99,8 +99,6 @@
                                                                 <i class="ri-printer-fill align-bottom me-2 text-muted float-start"></i>
                                                             Print Latter</a>
                                                         </li>
-
-
 
                                                     </ul>
                                                 </div>
@@ -182,7 +180,7 @@
                                                 [ngClass]=" { 
                                                     'bg-warning-subtle text-warning': selectedTraining.training_app_status === 'REQUESTED', 
                                                     'bg-success-subtle text-success': selectedTraining.training_app_status === 'APPROVED_SHORT_COURSE', 
-                                                }">{{selectedTraining.training_app_status}}
+                                                }">{{selectedTraining.training_app_status.split('_').join(' ')}}
                                             </span>
                                         </td>
                                     </tr>

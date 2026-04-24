@@ -6,6 +6,7 @@ export interface AuthenticationState {
     isLoggedIn: boolean;
     user: LoginCredential | null;
     error: any | null;
+    loading: boolean;
 
     SearchEmployee: any;
 
@@ -17,6 +18,7 @@ const initialState: AuthenticationState = {
     isLoggedIn: false,
     user: null,
     error: null,
+    loading: false,
 };
 
 export const authenticationReducer = createReducer(
@@ -24,16 +26,19 @@ export const authenticationReducer = createReducer(
 
     on(login, (state) => ({ 
         ...state, 
+        loading: true,
         error: null 
     })),
     on(loginSuccess, (state, { user }) => ({ 
         ...state, 
         isLoggedIn: true, 
         user, 
+        loading: false,
         error: null, 
     })),
     on(loginFailure, (state, { error }) => ({ 
         ...state, 
+        loading: false,
         error 
     })),
     on(logout, (state) => ({ 
