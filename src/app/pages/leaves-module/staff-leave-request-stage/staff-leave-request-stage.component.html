@@ -1,0 +1,203 @@
+<!-- Start Breadcrumbs -->
+<app-breadcrumbs title="Leave" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
+
+<div class="row">
+    <div class="col-xxl-9">
+        <div class="card" id="leadsList">
+            <div class="card-header  border-0">
+                <div class="row align-items-center gy-3">
+                    <div class="col-sm">
+                        <h5 class="card-title mb-2">View Staff Request Leave Stage</h5>
+                        <p class="text-muted">To view more details about staff request leave stage <span class="text-primary fw-bold"> 'click row /  check box' </span></p>
+                    </div>
+                    <div class="col-sm-auto ms-auto">
+                        <div class="hstack gap-2">
+
+                            <div class="d-flex justify-content-sm gap-2">
+                                <div class="search-box ms-2">
+                                    <input type="text" name="searchTerm" class="form-control" placeholder="Search for..." [(ngModel)]="searchTerm" (ngModelChange)="performSearch()">
+                                    <i class="ri-search-line search-icon"></i>
+                                </div>
+
+                                <div class="w-md">
+                                    <select class="form-select w-auto" data-choices data-choices-search-false (change)="staffRequestStageTable.changePageSize($any($event.target).value)">
+                                        <option *ngFor="let size of pageSizes" [value]="size">{{size}}</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-body">
+                <div>
+                    <div class="table-responsive table-card mb-2">
+                        <table class="table table-hover-clickable">
+                            <thead>
+                                <tr class="bg-light text-muted text-uppercase">
+                                    <th class="sort" (click)="onSort('leave_request_id')"></th>
+                                    <th class="sort" (click)="onSort('first_name')"> Full Name</th>
+                                    <th class="sort" (click)="onSort('phone_no')">Phone Number</th>
+                                    <th class="sort" (click)="onSort('leave_type')">Leave Type</th>
+                                    <th class="sort" (click)="onSort('working_station_name')">Working Station</th>
+                                    <th class="sort" (click)="onSort('proposed_start_date')">Start Date</th>
+                                    <th class="sort" (click)="onSort('proposed_end_date')">End Date</th>
+                                    <th class="sort" (click)="onSort('leave_path_name')">Leave Path</th>
+                                </tr>
+                            </thead>
+                            <tbody >
+                                <tr *ngFor="let data of staffRequestStageTable.data$ | async; let i = index">
+                                    <th scope="row" (click)="openModalLeaveStage(contentLeaveStage, data, cb)">
+                                        <div class="form-check">
+                                            <input #cb class="form-check-input" type="checkbox" >
+                                        </div>
+                                    </th>
+                                    <td (click)="openModalLeaveStage(contentLeaveStage, data, cb)">
+                                        <ngb-highlight [result]="data.first_name + ' ' + data.middle_name + ' ' + data.last_name + ' ' + data.sur_name" [term]="searchTerm">
+                                        </ngb-highlight>
+                                    </td>
+                                    <td (click)="openModalLeaveStage(contentLeaveStage, data, cb)">
+                                        <ngb-highlight [result]="data.phone_no" [term]="searchTerm">
+                                        </ngb-highlight>
+                                    </td>
+                                    <td (click)="openModalLeaveStage(contentLeaveStage, data, cb)">
+                                        <ngb-highlight [result]="data.leave_type" [term]="searchTerm">
+                                        </ngb-highlight>
+                                    </td>
+                                    <td (click)="openModalLeaveStage(contentLeaveStage, data, cb)">
+                                        <ngb-highlight [result]="data.working_station_name" [term]="searchTerm">
+                                        </ngb-highlight>
+                                    </td>
+                                    <td (click)="openModalLeaveStage(contentLeaveStage, data, cb)">
+                                        <ngb-highlight [result]="data.proposed_start_date" [term]="searchTerm">
+                                        </ngb-highlight>
+                                    </td>
+                                     <td (click)="openModalLeaveStage(contentLeaveStage, data, cb)">
+                                        <ngb-highlight [result]="data.proposed_end_date" [term]="searchTerm">
+                                        </ngb-highlight>
+                                    </td>
+                                     <td (click)="openModalLeaveStage(contentLeaveStage, data, cb)">
+                                        <ngb-highlight [result]="data.leave_path_name" [term]="searchTerm">
+                                        </ngb-highlight>
+                                    </td>
+
+                                </tr>
+                            </tbody>
+
+                        </table>
+                        
+                    </div>
+                    <div class="row justify-content-md-between align-items-md-center gy-2">
+                        <div class="col col-sm-6">
+                            <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">
+                                Showing {{staffRequestStageTable.startIndex}} to {{staffRequestStageTable.endIndex}} of {{staffRequestStageTable.total}} entries
+
+                            </div>
+                        </div>
+                        <!-- Pagination -->
+                        <div class="col col-sm-6">
+                            <div class="text-sm-right float-end listjs-pagination">
+                             <ngb-pagination
+                                [collectionSize]="staffRequestStageTable.total"
+                                [(page)]="staffRequestStageTable.page"
+                                [pageSize]="staffRequestStageTable.pageSize"
+                                [maxSize]="3"
+                                [ellipses]="true"
+                                (pageChange)="staffRequestStageTable.changePage($event)">
+                            </ngb-pagination>
+                            </div>
+                        </div>
+                        <!-- End Pagination -->
+                    </div>
+                    <div id="elmLoader" *ngIf="isLoading">
+                        <div class="spinner-border text-primary avatar-sm" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- MyLeave Create Model -->
+                <ng-template #contentLeaveStage role="document" let-modal>
+                    <div class="modal-header bg-light p-3 ">
+                        <h5 class="modal-title" id="exampleModalLabel">Leave Request Stage View More Details</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal" (click)="modal.dismiss('Cross click')"></button>
+                    </div>
+                    <div class="modal-body rounded-border" *ngIf="selectedLeaveStage" style="border-bottom: 6px solid #588fc7; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;">
+                        
+                        <h6 class="text-uppercase fw-semibold mb-3">Full Name</h6>
+                        <p class="mb-4">{{ selectedLeaveStage.first_name }} {{ selectedLeaveStage.middle_name }} {{ selectedLeaveStage.last_name }} {{ selectedLeaveStage.sur_name }}</p>
+
+                        <h6 class="text-uppercase fw-semibold mb-3">Phone Number</h6>
+                        <p class="mb-4 ">{{ selectedLeaveStage.phone_no }}</p>
+                        <div class="table-responsive table-card">
+                            <table class="table table-borderless mb-0 table-bordered-bottom">
+                                <tbody>
+                                    <tr>
+                                        <td class="fw-medium" scope="row">Working Station</td>
+                                        <td class="designation">{{ selectedLeaveStage.working_station_name }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-medium" scope="row">Department Name</td>
+                                        <td class="designation">{{ selectedLeaveStage.department_name }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-medium" scope="row">Position</td>
+                                        <td class="email">{{ selectedLeaveStage.post_category_name }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-medium" scope="row">Leave Path</td>
+                                        <td class="email">{{ selectedLeaveStage.leave_path_name }}</td>
+                                    </tr>
+                             
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </ng-template>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-xxl-3">
+        <div class="card">
+            <div class="card-header align-items-center d-flex">
+                <h4 class="card-title mb-0 flex-grow-1">Total No of Leave Requests</h4>
+                <div class="flex-shrink-0">
+                    <button type="button" class="btn btn-soft-primary btn-sm">
+                        Export Report
+                    </button>
+                </div>
+            </div>
+            
+            <div class="card-body">
+                <p class="text-muted">“View the total number of leave requests for each department”</p>
+                <div id="fuzzysearch-list">
+                    <input type="text" class="fuzzy-search form-control mb-3" placeholder="Search ..." [(ngModel)]="searchTermPath" (input)="performSearchLeavePath()" />
+                    <ngx-simplebar style="height: 500px;" class="mx-n3">
+                        <ul class="list list-group list-group-flush mb-0">
+                            <li class="list-group-item" data-id="1" *ngFor="let item of filteredLeavePath">
+                                <div class="d-flex">
+                                    <div class="flex-grow-1">
+                                        <h5 class="fs-13 mb-1"><a href="javascript:void(0);" class="link name text-body">{{item.name}}</a></h5>
+                                    </div>
+                                    <div class="flex-shrink-0 ms-2">
+                                        <div>
+                                            <button type="button" class="btn btn-sm btn-light">{{item.count}}</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </ngx-simplebar>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end col -->
+</div>
+

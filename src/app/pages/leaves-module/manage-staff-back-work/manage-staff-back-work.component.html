@@ -1,0 +1,239 @@
+<!-- Start Breadcrumbs -->
+<app-breadcrumbs title="Leave" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
+
+<div class="row">
+    <div class="col-xxl-12">
+        <div class="card" id="leadsList">
+            <div class="card-header  border-0">
+                <div class="row align-items-center gy-3">
+                    <div class="col-sm">
+                        <h5 class="card-title mb-2">View Staff Return to Work Request</h5>
+                        <p class="text-muted">To view more details about staff return to work request <span class="text-primary fw-bold"> 'click row /  check box' </span></p>
+                    </div>
+                    <div class="col-sm-auto ms-auto">
+                        <div class="hstack gap-2">
+
+                            <div class="d-flex justify-content-sm gap-2">
+                                <div class="search-box ms-2">
+                                    <input type="text" name="searchTerm" class="form-control" placeholder="Search for..." [(ngModel)]="searchTerm" (ngModelChange)="performSearch()">
+                                    <i class="ri-search-line search-icon"></i>
+                                </div>
+
+                                <div class="w-md">
+                                    <select class="form-select w-auto" data-choices data-choices-search-false (change)="staffBackToWorkTable.changePageSize($any($event.target).value)">
+                                        <option *ngFor="let size of pageSizes" [value]="size">{{size}}</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-body">
+                <div>
+                    <div class="table-responsive table-card mb-2">
+                        <table class="table table-hover-clickable">
+                            <thead>
+                                <tr class="bg-light text-muted text-uppercase">
+                                    <th class="sort" (click)="onSort('leave_request_id')"></th>
+                                    <th class="sort" (click)="onSort('first_name')"> Full Name</th>
+                                    <th class="sort" (click)="onSort('phone_number')">Phone Number</th>
+                                    <th class="sort" (click)="onSort('leave_type')">Leave Type</th>
+                                    <th class="sort" (click)="onSort('working_station_name')">Working Station</th>
+                                    <th class="sort" (click)="onSort('post_category_name')">Position</th>
+                                    <th class="sort" (click)="onSort('start_date')">Start Date</th>
+                                    <th class="sort" (click)="onSort('end_date')">End Date</th>
+                                    <th class="sort">Action</th>
+
+                                </tr>
+                            </thead>
+                            <tbody >
+                                <tr *ngFor="let data of staffBackToWorkTable.data$ | async; let i = index">
+                                    <th scope="row" (click)="onClickChatData(data)">
+                                        <div class="form-check">
+                                            <input [checked]="selectedId === data.leave_request_id" class="form-check-input" type="checkbox" >
+                                        </div>
+                                    </th>
+                                    <td (click)="onClickChatData(data)">
+                                        <ngb-highlight [result]="data.first_name + ' ' + data.middle_name + ' ' + data.last_name + ' ' + data.sur_name" [term]="searchTerm">
+                                        </ngb-highlight>
+                                    </td>
+                                    <td (click)="onClickChatData(data)">
+                                        <ngb-highlight [result]="data.phone_number" [term]="searchTerm">
+                                        </ngb-highlight>
+                                    </td>
+                                    <td (click)="onClickChatData(data)">
+                                        <ngb-highlight [result]="data.leave_type" [term]="searchTerm">
+                                        </ngb-highlight>
+                                    </td>
+                                    <td (click)="onClickChatData(data)">
+                                        <ngb-highlight [result]="data.working_station_name" [term]="searchTerm">
+                                        </ngb-highlight>
+                                    </td>
+                                     <td (click)="onClickChatData(data)">
+                                        <ngb-highlight [result]="data.post_category_name" [term]="searchTerm">
+                                        </ngb-highlight>
+                                    </td>
+                                    <td (click)="onClickChatData(data)">
+                                        <ngb-highlight [result]="data.start_date" [term]="searchTerm">
+                                        </ngb-highlight>
+                                    </td>
+                                     <td (click)="onClickChatData(data)">
+                                        <ngb-highlight [result]="data.end_date" [term]="searchTerm">
+                                        </ngb-highlight>
+                                    </td>
+                                    <td>
+                                        <ul class="list-inline hstack gap-2 mb-0">
+                                            <li class="list-inline-item me-0" data-bs-toggle="tooltip" data-bs-trigger="hover" ngbTooltip="Print Latter" placement="top"  *ngIf="(permission.hasPermission('Approve Leave Request') | async) && data.status !== 'RETURN_REQUESTED'" (click)="generatePDFStaffBackToWork(data.leave_request_id)">
+                                                <a href="javascript:void(0);" data-bs-toggle="modal" class="text-primary d-inline-block edit-item-btn" >
+                                                <i class="ri-printer-fill fs-16"></i>
+                                                </a>
+                                            </li>
+                                            <li class="list-inline-item me-0" data-bs-toggle="tooltip" data-bs-trigger="hover" ngbTooltip="Confirm Request" placement="top" *ngIf="(permission.hasPermission('Forward Leave Request') | async) && data.can_confirm && data.status === 'RETURN_REQUESTED'">
+                                                <a href="javascript:void(0);" class="text-warning d-inline-block edit-item-btn"  (click)="openModalSatffReturnToLeave(data)">
+                                                <b><i class="ri-arrow-go-back-fill fs-16"></i></b>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </td>
+
+                                </tr>
+                            </tbody>
+
+                        </table>
+                        
+                    </div>
+                    <div class="row justify-content-md-between align-items-md-center gy-2">
+                        <div class="col col-sm-6">
+                            <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">
+                                Showing {{staffBackToWorkTable.startIndex}} to {{staffBackToWorkTable.endIndex}} of {{staffBackToWorkTable.total}} entries
+
+                            </div>
+                        </div>
+                        <!-- Pagination -->
+                        <div class="col col-sm-6">
+                            <div class="text-sm-right float-end listjs-pagination">
+                             <ngb-pagination
+                                [collectionSize]="staffBackToWorkTable.total"
+                                [(page)]="staffBackToWorkTable.page"
+                                [pageSize]="staffBackToWorkTable.pageSize"
+                                [maxSize]="3"
+                                [ellipses]="true"
+                                (pageChange)="staffBackToWorkTable.changePage($event)">
+                            </ngb-pagination>
+                            </div>
+                        </div>
+                        <!-- End Pagination -->
+                    </div>
+                    <div id="elmLoader" *ngIf="isLoading">
+                        <div class="spinner-border text-primary avatar-sm" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end col -->
+</div>
+
+
+
+<!-- Chat User -->
+<div class="email-chat-detail" id="emailchat-detailElem">
+    <div class="card mb-0">
+        <div class="card-header align-items-center d-flex bg-primary text-white-50">
+            <div class="flex-grow-1">
+                <h5 class="fs-13 text-white mb-1 profile-username">{{ selectedStaffToWorkRequest?.first_name }} {{ selectedStaffToWorkRequest?.middle_name }} {{ selectedStaffToWorkRequest?.last_name }} {{ selectedStaffToWorkRequest?.sur_name }}</h5>
+                <p class="mb-0 fs-12 lh-1">Active</p>
+            </div>
+            <div class="flex-shrink-0">
+                <div class="mt-n3 me-n3">
+                    <button type="button" class="btn btn-link text-white fs-16 text-decoration-none" id="emailchat-btn-close" (click)="closeChat()"><i class="ri-close-fill"></i></button>
+                </div>
+            </div>
+        </div><!-- end card header -->
+
+        <div class="card-body p-0">
+            <div id="users-chat">
+                <ngx-simplebar class="chat-conversation p-3" id="chat-conversation" data-simplebar style="height: 250px;">
+                    <ul class="list-unstyled chat-conversation-list chat-sm" id="users-conversation">
+
+                        <li class="chat-list right">
+                            <div class="conversation-list">
+                                <div class="user-chat-content">
+                                    <div class="ctext-wrap">
+                                        <div class="ctext-wrap-content">
+                                            <p class="mb-0 ctext-content"><b>Returning Date:</b></p>
+                                            <p class="mb-0 ctext-content">{{ selectedStaffToWorkRequest?.required_returned_date }}</p>
+                                        </div>
+                                        <div class="dropdown align-self-start message-box-drop" ngbDropdown>
+                                            <a class="dropdown-toggle" href="javascript:void(0);" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ngbDropdownToggle>
+                                                <i class="ri-more-2-fill"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="conversation-name"><small class="text-muted time">System</small> <span class="text-success check-message-icon"><i class="ri-check-double-line align-bottom"></i></span></div>
+                                </div>
+                            </div>
+                        </li>
+
+                        <li class="chat-list left">
+                            <div class="conversation-list">
+                                <div class="chat-avatar">
+                                    <img src="assets/img/user.png" alt="">
+                                </div>
+                                <div class="user-chat-content">
+                                    <div class="ctext-wrap">
+                                        <div class="ctext-wrap-content">
+                                            <p class="mb-0 ctext-content"><b>Returned Date:</b></p>
+                                            <p class="mb-0 ctext-content">{{ selectedStaffToWorkRequest?.staff_returned_date }}</p>
+                                        </div>
+                                        <div class="dropdown align-self-start message-box-drop" ngbDropdown>
+                                            <a class="dropdown-toggle" href="javascript:void(0);" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ngbDropdownToggle>
+                                                <i class="ri-more-2-fill"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="conversation-name"><small class="text-muted time">Staff</small> <span class="text-success check-message-icon"><i class="ri-check-double-line align-bottom"></i></span></div>
+                                </div>
+                            </div>
+                        </li>
+
+                        <li class="chat-list left">
+                            <div class="conversation-list">
+                                <div class="chat-avatar">
+                                    <img src="assets/img/user.png" alt="">
+                                </div>
+                                <div class="user-chat-content">
+                                    <div class="ctext-wrap">
+                                        <div class="ctext-wrap-content">
+                                            <p class="mb-0 ctext-content"><b>Description:</b></p>
+                                            <p class="mb-0 ctext-content">{{ selectedStaffToWorkRequest?.description }}</p>
+                                        </div>
+                                        <div class="dropdown align-self-start message-box-drop" ngbDropdown>
+                                            <a class="dropdown-toggle" href="javascript:void(0);" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ngbDropdownToggle>
+                                                <i class="ri-more-2-fill"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="conversation-name"><small class="text-muted time">Staff</small> <span class="text-success check-message-icon"><i class="ri-check-double-line align-bottom"></i></span></div>
+                                </div>
+                            </div>
+                        </li>
+                        <!-- chat-list -->
+                    </ul>
+                </ngx-simplebar>
+            </div>
+
+            <div class="border-top border-top-dashed">
+                <div class="row g-2 mx-3 mt-2 mb-3">
+                    <span>&nbsp;</span>
+                </div>
+            </div>
+        </div><!-- end cardbody -->
+    </div>
+</div>
+<!-- end email chat detail -->

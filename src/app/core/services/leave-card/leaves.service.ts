@@ -47,4 +47,40 @@ export class LeavesService {
     responseType: 'blob'
     });
   }
+  // managemet of leave request
+  getStaffOnLeave(): Observable<any>{
+    return this.http.get(`${environment.apiUrl}viewStaffOnLeave`);
+  }
+  getStaffWaitingLeave(): Observable<any>{
+    return this.http.get(`${environment.apiUrl}viewStaffWaitingLeave`);
+  }
+  getStaffLeaveOverdue(): Observable<any>{
+    return this.http.get(`${environment.apiUrl}viewStaffLeaveOverdue`);
+  }
+  getStaffLeaveRequestStage(): Observable<any>{
+    return this.http.get(`${environment.apiUrl}viewLeaveRequests`);
+  }
+  getStaffDeniedRequest(): Observable<any>{
+    return this.http.get(`${environment.apiUrl}viewStaffDeniedLeave`);
+  }
+  //general leave latter
+  getGeneralLeaveLetter(id: number): Observable<Blob> {
+    return this.http.get(`${environment.apiUrl}getLeaveLetter/${id}`, {
+    responseType: 'blob'
+    });
+  }
+  getStaffBackToWork(): Observable<any>{
+    return this.http.get(`${environment.apiUrl}viewReturnedToWork`);
+  }
+  saveConfirmReturnToWork(data: any): Observable<any>{
+    return this.http.post(`${environment.apiUrl}confirmReturnToWork`, data);
+  }
+
+
+
+
+
+
+
+
 }

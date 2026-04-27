@@ -5,7 +5,7 @@ import { catchError, map, mergeMap, switchMap, tap } from 'rxjs/operators';
 
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { LeavesService } from "src/app/core/services/leave-card/leaves.service";
-import { fetchLeaveData, fetchLeaveSuccess, fetchLeaveFailure, loadLeaveStatusRequestForm, loadLeaveStatusRequestFormFailure, loadLeaveStatusRequestFormSuccess, loadPersonalDetail, loadPersonalDetailFailure, loadPersonalDetailSuccess, loadRepresentatives, loadRepresentativesFailure, loadRepresentativesSuccess, loadCountry, loadCountryFailure, loadCountrySuccess, loadLeaveHistoryData, loadLeaveHistoryFailure, loadLeaveHistorySuccess, addLeave, addLeaveFailure, addLeaveSuccess, deleteLeave, deleteLeaveFailure, deleteLeaveSuccess, loadLeaveLetter, loadLeaveLetterFailure, loadLeaveLetterSuccess, addLeaveReturnToWork, addLeaveReturnToWorkFailure, addLeaveReturnToWorkSuccess, loadLeaveReturnedToWorkLetter, loadLeaveReturnedToWorkLetterFailure, loadLeaveReturnedToWorkLetterSuccess } from "./leave_action";
+import { fetchLeaveData, fetchLeaveSuccess, fetchLeaveFailure, loadLeaveStatusRequestForm, loadLeaveStatusRequestFormFailure, loadLeaveStatusRequestFormSuccess, loadPersonalDetail, loadPersonalDetailFailure, loadPersonalDetailSuccess, loadRepresentatives, loadRepresentativesFailure, loadRepresentativesSuccess, loadCountry, loadCountryFailure, loadCountrySuccess, loadLeaveHistoryData, loadLeaveHistoryFailure, loadLeaveHistorySuccess, addLeave, addLeaveFailure, addLeaveSuccess, deleteLeave, deleteLeaveFailure, deleteLeaveSuccess, loadLeaveLetter, loadLeaveLetterFailure, loadLeaveLetterSuccess, addLeaveReturnToWork, addLeaveReturnToWorkFailure, addLeaveReturnToWorkSuccess, loadLeaveReturnedToWorkLetter, loadLeaveReturnedToWorkLetterFailure, loadLeaveReturnedToWorkLetterSuccess, fetchStaffOnLeave, fetchStaffOnLeaveFailure, fetchStaffOnLeaveSuccess, fetchStaffWaitingForLeave, fetchStaffWaitingForLeaveFailure, fetchStaffWaitingForLeaveSuccess, fetchStaffOverdueLeave, fetchStaffOverdueLeaveFailure, fetchStaffOverdueLeaveSuccess, fetchStaffLeaveRequestStage, fetchStaffLeaveRequestStageFailure, fetchStaffLeaveRequestStageSuccess, fetchStaffDeniedLeaveRequest, fetchStaffDeniedLeaveRequestFailure, fetchStaffDeniedLeaveRequestSuccess, loadGeneralStaffLeaveLetterSuccess, loadGeneralStaffLeaveLetter, loadGeneralStaffLeaveLetterFailure, fetchStaffBackToWork, fetchStaffBackToWorkFailure, fetchStaffBackToWorkSuccess, addConfirmLeaveReturnToWork, addConfirmLeaveReturnToWorkFailure, addConfirmLeaveReturnToWorkSuccess } from "./leave_action";
 
 @Injectable()
 export class LeaveEffects {
@@ -162,7 +162,6 @@ export class LeaveEffects {
         )       
     );
 
-
     deleteLeaveFormData$ = createEffect(() =>
         this.actions$.pipe(
             ofType(deleteLeave),
@@ -228,6 +227,146 @@ export class LeaveEffects {
         )
     )
     );
+
+    //management of leave request
+    //staff on leave
+    fetchStaffOnLeave$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(fetchStaffOnLeave),
+            mergeMap(() =>
+                this._leaveApiService.getStaffOnLeave().pipe(
+                    map((res) => {
+                        const StaffOnLeave = res.current;
+                        return fetchStaffOnLeaveSuccess({ StaffOnLeave })
+                    }),
+                    catchError((error) =>
+                        of(fetchStaffOnLeaveFailure({ error: error.message || 'Failed to fetch staff on leave' }))
+                    )
+                )
+            ),
+        ),
+    );
+    //staff waiting for leave
+    fetchStaffWaitingForLeave$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(fetchStaffWaitingForLeave),
+            mergeMap(() =>
+                this._leaveApiService.getStaffWaitingLeave().pipe(
+                    map((res) => {
+                        const staffWaitingForLeave = res.current;
+                        return fetchStaffWaitingForLeaveSuccess({ staffWaitingForLeave })
+                    }),
+                    catchError((error) =>
+                        of(fetchStaffWaitingForLeaveFailure({ error: error.message || 'Failed to fetch staff waiting for leave' }))
+                    )
+                )
+            ),
+        ),
+    );
+    //staff overdue leave
+    fetchStaffOverdueLeave$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(fetchStaffOverdueLeave),
+            mergeMap(() =>
+                this._leaveApiService.getStaffLeaveOverdue().pipe(
+                    map((res) => {
+                        const staffOverdueLeave = res.current;
+                        return fetchStaffOverdueLeaveSuccess({ staffOverdueLeave })
+                    }),
+                    catchError((error) =>
+                        of(fetchStaffOverdueLeaveFailure({ error: error.message || 'Failed to fetch staff overdue for leave' }))
+                    )
+                )
+            ),
+        ),
+    );
+    //staff leave request stage
+    fetchStaffLeaveRequestStage$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(fetchStaffLeaveRequestStage),
+            mergeMap(() =>
+                this._leaveApiService.getStaffLeaveRequestStage().pipe(
+                    map((res) => {
+                        const staffLeaveRequestStage = res.data;
+                        return fetchStaffLeaveRequestStageSuccess({ staffLeaveRequestStage })
+                    }),
+                    catchError((error) =>
+                        of(fetchStaffLeaveRequestStageFailure({ error: error.message || 'Failed to fetch staff leave request stage' }))
+                    )
+                )
+            ),
+        ),
+    );
+    //staff denied leave request
+    fetchStaffDeniedLeaveRequest$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(fetchStaffDeniedLeaveRequest),
+            mergeMap(() =>
+                this._leaveApiService.getStaffDeniedRequest().pipe(
+                    map((res) => {
+                        const staffDeniedLeaveRequest = res.current;
+                        return fetchStaffDeniedLeaveRequestSuccess({ staffDeniedLeaveRequest })
+                    }),
+                    catchError((error) =>
+                        of(fetchStaffDeniedLeaveRequestFailure({ error: error.message || 'Failed to fetch staff denied leave request' }))
+                    )
+                )
+            ),
+        ),
+    );
+    //general staff leave letter
+    loadGeneralStaffLeaveLetter$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(loadGeneralStaffLeaveLetter),
+            switchMap(({ id }) =>
+            this._leaveApiService.getGeneralLeaveLetter(id).pipe(
+                map((file: Blob) => loadGeneralStaffLeaveLetterSuccess({ file })),
+                catchError(error =>
+                of(loadGeneralStaffLeaveLetterFailure({ error }))
+                )
+            )
+            )
+        )
+    );
+    //manage staff back to work
+    fetchStaffBackToWork$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(fetchStaffBackToWork),
+            mergeMap(() =>
+                this._leaveApiService.getStaffBackToWork().pipe(
+                    map((res) => {
+                        const staffBackToWork = res.current;
+                        return fetchStaffBackToWorkSuccess({ staffBackToWork })
+                    }),
+                    catchError((error) =>
+                        of(fetchStaffBackToWorkFailure({ error: error.message || 'Failed to fetch staff back to work data' }))
+                    )
+                )
+            ),
+        ),
+    );
+    //add ya kawaida tu hii
+    addConfirmLeaveReturnToWork$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(addConfirmLeaveReturnToWork),
+            mergeMap(({ newData }) =>
+            this._leaveApiService.saveConfirmReturnToWork(newData).pipe(
+                mergeMap(() => {
+                const user = JSON.parse(localStorage.getItem('user')!);
+                const employeeID = user.personalInformationID;
+                return [
+                    addConfirmLeaveReturnToWorkSuccess(),
+                    fetchStaffBackToWork()
+                ];
+                }),
+                catchError(error =>
+                of(addConfirmLeaveReturnToWorkFailure({ error: error.message || 'Error occurred' }))
+                )
+            )
+            )
+        )
+    );
+ 
 
 
     constructor(
