@@ -135,18 +135,20 @@ export class SidebarComponent implements OnInit, AfterViewInit {
    * Unapofungua menu moja, nyingine zote zinafungwa
    */
   toggleItem(clickedItem: any) {
-    // First, close all top-level menus
-    this.menuItems.forEach(item => {
-      // Don't close the clicked item yet
-      if (item !== clickedItem) {
-        item.isCollapsed = true;
-        // Also close all subitems of other menus
-        if (item.subItems) {
-          this.closeAllSubItems(item.subItems);
+    // Kama ni TOP LEVEL
+    const isTopLevel = this.menuItems.includes(clickedItem);
+    if (isTopLevel) {
+      // close nyingine zote
+      this.menuItems.forEach(item => {
+        if (item !== clickedItem) {
+          item.isCollapsed = true;
+          if (item.subItems) {
+            this.closeAllSubItems(item.subItems);
+          }
         }
-      }
-    });
-    
+      });
+    }
+
     // Then toggle the clicked item
     if (clickedItem.isCollapsed !== undefined) {
       clickedItem.isCollapsed = !clickedItem.isCollapsed;

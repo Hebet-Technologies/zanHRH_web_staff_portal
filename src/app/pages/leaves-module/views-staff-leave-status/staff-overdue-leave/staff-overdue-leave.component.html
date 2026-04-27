@@ -1,0 +1,133 @@
+<!-- Start Breadcrumbs -->
+<app-breadcrumbs title="Leave" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
+<!-- End Breadcrumbs -->
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card" id="leadsList">
+            <div class="card-header  border-0">
+                <div class="row align-items-center gy-3">
+                    <div class="col-sm">
+                        <h5 class="card-title mb-2">View Staff Overdue Leave</h5>
+                    </div>
+                    <div class="col-sm-auto ms-auto">
+                        <div class="hstack gap-2">
+
+                            <div class="d-flex justify-content-sm gap-2">
+                                <div class="search-box ms-2">
+                                    <input type="text" name="searchTerm" class="form-control" placeholder="Search for..." [(ngModel)]="searchTerm" (ngModelChange)="performSearch()">
+                                    <i class="ri-search-line search-icon"></i>
+                                </div>
+
+                                <div class="w-md">
+                                    <select class="form-select w-auto" data-choices data-choices-search-false (change)="staffOverdueLeaveTable.changePageSize($any($event.target).value)">
+                                        <option *ngFor="let size of pageSizes" [value]="size">{{size}}</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div>
+                    <div class="table-responsive table-card mb-2">
+                    <table class="table">
+                        <thead>
+                        <tr class="bg-light text-muted text-uppercase">
+                            <th class="sort" (click)="onSort('leave_request_id')">#</th>
+                            <th class="sort" (click)="onSort('first_name')"> Full Name</th>
+                            <th class="sort" (click)="onSort('phone_number')">Phone Number</th>
+                            <th class="sort" (click)="onSort('leave_type')">Leave Type</th>
+                            <th class="sort" (click)="onSort('working_station_name')">Working Station</th>
+                            <th class="sort" (click)="onSort('department_name')">Department</th>
+                            <th class="sort" (click)="onSort('post_category_name')">Position</th>
+                            <th class="sort" (click)="onSort('start_date')">Start Date</th>
+                            <th class="sort" (click)="onSort('end_date')">End Date</th>
+                            <th class="sort">Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let data of staffOverdueLeaveTable.data$ | async; let i = index">
+                            <td>
+                                {{ (staffOverdueLeaveTable.page - 1) * staffOverdueLeaveTable.pageSize + i + 1 }}
+                            </td>
+                            <td>
+                                <ngb-highlight [result]="data.first_name + ' ' + data.middle_name + ' ' + data.last_name + ' ' + data.sur_name" [term]="searchTerm">
+                                </ngb-highlight>
+                            </td>
+                            <td>
+                                <ngb-highlight [result]="data.phone_number" [term]="searchTerm">
+                                </ngb-highlight>
+                            </td>
+                            <td>
+                                <ngb-highlight [result]="data.leave_type" [term]="searchTerm">
+                                </ngb-highlight>
+                            </td>
+                            <td>
+                                <ngb-highlight [result]="data.working_station_name" [term]="searchTerm">
+                                </ngb-highlight>
+                            </td>
+                            <td>
+                                <ngb-highlight [result]="data.department_name" [term]="searchTerm">
+                                </ngb-highlight>
+                            </td>
+                            <td>
+                                <ngb-highlight [result]="data.post_category_name" [term]="searchTerm">
+                                </ngb-highlight>
+                            </td>
+                            <td>
+                                <ngb-highlight [result]="data.start_date" [term]="searchTerm">
+                                </ngb-highlight>
+                            </td>
+                            <td>
+                                <ngb-highlight [result]="data.end_date" [term]="searchTerm">
+                                </ngb-highlight>
+                            </td>
+
+                            <td>
+                                <ul class="list-inline hstack gap-2 mb-0">
+                                    <li class="list-inline-item me-0" data-bs-toggle="tooltip" data-bs-trigger="hover" ngbTooltip="Print Latter" placement="top"  *ngIf="(permission.hasPermission('View Leave Request') | async)" (click)="generatePDFStaffOverdueLeave(data.leave_request_id)">
+                                        <a href="javascript:void(0);" data-bs-toggle="modal" class="text-default d-inline-block edit-item-btn" >
+                                        <i class="ri-printer-fill fs-16"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                    </div>
+                    <div class="row justify-content-md-between align-items-md-center gy-2">
+                    <div class="col col-sm-6">
+                        <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">
+                        Showing {{staffOverdueLeaveTable.startIndex}} to {{staffOverdueLeaveTable.endIndex}} of {{staffOverdueLeaveTable.total}} entries
+                        </div>
+                    </div>
+                    <div class="col col-sm-6">
+                        <div class="text-sm-right float-end listjs-pagination">
+                        <ngb-pagination
+                                [collectionSize]="staffOverdueLeaveTable.total"
+                                [(page)]="staffOverdueLeaveTable.page"
+                                [pageSize]="staffOverdueLeaveTable.pageSize"
+                                [maxSize]="3"
+                                [ellipses]="true"
+                                (pageChange)="staffOverdueLeaveTable.changePage($event)">
+                            </ngb-pagination>
+                        </div>
+                    </div>
+                    </div>
+                    <div *ngIf="isLoading" id="elmLoader">
+                        <div class="spinner-border text-primary avatar-sm" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!--end col-->
+</div>
+<!--end row-->

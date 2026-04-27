@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { LeaveRequestPayload, LeaveReturnToWorkPayload } from './leave_model';
+import { ConfirmLeaveReturnToWorkPayload, LeaveRequestPayload, LeaveReturnToWorkPayload } from './leave_model';
 
 // View Leave
 export const fetchLeaveData = createAction('[Data] Fetch Leave');
@@ -46,3 +46,41 @@ export const loadLeaveReturnedToWorkLetter = createAction('[Leave] Load Leave Re
 export const loadLeaveReturnedToWorkLetterSuccess = createAction('[Leave] Load Leave Returned To Work Letter Success',props<{ file: Blob }>());
 export const loadLeaveReturnedToWorkLetterFailure = createAction('[Leave] Load Leave Returned To Work Letter Failure',props<{ error: any }>());
 
+
+
+
+
+//management of leave request
+
+//staff on leave
+export const fetchStaffOnLeave = createAction('[Data] Fetch Staff On Leave');
+export const fetchStaffOnLeaveSuccess = createAction('[Data] Fetch Staff On Leave Success', props<{ StaffOnLeave: any[] }>());
+export const fetchStaffOnLeaveFailure = createAction('[Data] Fetch Staff On Leave Failure', props<{ error: string }>());
+//staff waiting for leave
+export const fetchStaffWaitingForLeave = createAction('[Data] Fetch Staff Waiting For Leave');
+export const fetchStaffWaitingForLeaveSuccess = createAction('[Data] Fetch Staff Waiting For Leave Success', props<{ staffWaitingForLeave: any[] }>());
+export const fetchStaffWaitingForLeaveFailure = createAction('[Data] Fetch Staff Waiting For Leave Failure', props<{ error: string }>());
+//staff overdue leave 
+export const fetchStaffOverdueLeave = createAction('[Data] Fetch Staff Overdue Leave');
+export const fetchStaffOverdueLeaveSuccess = createAction('[Data] Fetch Staff Overdue Leave Success', props<{ staffOverdueLeave: any[] }>());
+export const fetchStaffOverdueLeaveFailure = createAction('[Data] Fetch Staff Overdue Leave Failure', props<{ error: string }>());
+// staff leave requests stage
+export const fetchStaffLeaveRequestStage = createAction('[Data] Fetch Staff Leave Request Stage');
+export const fetchStaffLeaveRequestStageSuccess = createAction('[Data] Fetch Staff Leave Request Stage Success', props<{ staffLeaveRequestStage: any[] }>());
+export const fetchStaffLeaveRequestStageFailure = createAction('[Data] Fetch Staff Leave Request Stage Failure', props<{ error: string }>());
+// staff denied leave request
+export const fetchStaffDeniedLeaveRequest = createAction('[Data] Fetch Staff Denied Leave Request');
+export const fetchStaffDeniedLeaveRequestSuccess = createAction('[Data] Fetch Staff Denied Leave Request Success', props<{ staffDeniedLeaveRequest: any[] }>());
+export const fetchStaffDeniedLeaveRequestFailure = createAction('[Data] Fetch Staff Denied Leave Request Failure', props<{ error: string }>());
+//general staff leave latter
+export const loadGeneralStaffLeaveLetter = createAction('[Leave] Load General Staff Leave Letter', props<{ id: number }>());
+export const loadGeneralStaffLeaveLetterSuccess = createAction('[Leave] Load General Staff Leave Letter Success', props<{ file: Blob }>());
+export const loadGeneralStaffLeaveLetterFailure = createAction('[Leave] Load General Staff Leave Letter Failure', props<{ error: any }>());
+//manage staff back to work
+export const fetchStaffBackToWork = createAction('[Data] Fetch Staff Back To Work');
+export const fetchStaffBackToWorkSuccess = createAction('[Data] Fetch Staff Back To Work Success', props<{ staffBackToWork: any[] }>());
+export const fetchStaffBackToWorkFailure = createAction('[Data] Fetch Staff Back To Work Failure', props<{ error: string }>());
+// add Confirm Leave Return to Work Form
+export const addConfirmLeaveReturnToWork = createAction('[Data] Add Confirm Leave Return To Work',props<{ newData: ConfirmLeaveReturnToWorkPayload }>());
+export const addConfirmLeaveReturnToWorkSuccess = createAction('[Data] Add Confirm Leave Return To Work Success',);
+export const addConfirmLeaveReturnToWorkFailure = createAction('[Data] Add Confirm Leave Return To Work Failure',props<{ error: string }>());

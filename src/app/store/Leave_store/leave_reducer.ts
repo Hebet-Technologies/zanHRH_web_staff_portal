@@ -1,5 +1,5 @@
 import { Action, createReducer, on } from '@ngrx/store';
-import { fetchLeaveData, fetchLeaveSuccess, fetchLeaveFailure, addLeave, addLeaveSuccess, addLeaveFailure, deleteLeaveSuccess, loadLeaveStatusRequestFormSuccess, loadPersonalDetailSuccess, loadRepresentativesSuccess, loadCountrySuccess, loadLeaveHistoryData, loadLeaveHistoryFailure, loadLeaveHistorySuccess, addLeaveReturnToWork, addLeaveReturnToWorkFailure, addLeaveReturnToWorkSuccess } from './leave_action';
+import { fetchLeaveData, fetchLeaveSuccess, fetchLeaveFailure, addLeave, addLeaveSuccess, addLeaveFailure, deleteLeaveSuccess, loadLeaveStatusRequestFormSuccess, loadPersonalDetailSuccess, loadRepresentativesSuccess, loadCountrySuccess, loadLeaveHistoryData, loadLeaveHistoryFailure, loadLeaveHistorySuccess, addLeaveReturnToWork, addLeaveReturnToWorkFailure, addLeaveReturnToWorkSuccess, fetchStaffOnLeave, fetchStaffOnLeaveFailure, fetchStaffOnLeaveSuccess, fetchStaffWaitingForLeave, fetchStaffWaitingForLeaveFailure, fetchStaffWaitingForLeaveSuccess, fetchStaffOverdueLeaveFailure, fetchStaffOverdueLeaveSuccess, fetchStaffOverdueLeave, fetchStaffLeaveRequestStage, fetchStaffLeaveRequestStageFailure, fetchStaffLeaveRequestStageSuccess, fetchStaffDeniedLeaveRequest, fetchStaffDeniedLeaveRequestFailure, fetchStaffDeniedLeaveRequestSuccess, fetchStaffBackToWork, fetchStaffBackToWorkFailure, fetchStaffBackToWorkSuccess, addConfirmLeaveReturnToWork, addConfirmLeaveReturnToWorkFailure, addConfirmLeaveReturnToWorkSuccess } from './leave_action';
 
 export interface LeaveState {
     LeaveRequest: any[];
@@ -8,6 +8,14 @@ export interface LeaveState {
     Representatives: any[];
     LeaveHistory: any[];
     Countrys: any[];
+
+    StaffOnLeaves: any[];
+    StaffWaitingForLeave: any[];
+    StaffOverdueLeave: any[];
+    StaffLeaveRequestStage: any[];
+    StaffDeniedLeaveRequest: any[];
+    StaffBackToWork: any[];
+
     loading: boolean;
     error: any;
 }
@@ -19,6 +27,15 @@ export const initialState: LeaveState = {
     Representatives: [],
     LeaveHistory: [],
     Countrys: [],
+
+    StaffOnLeaves: [],
+    StaffWaitingForLeave: [],
+    StaffOverdueLeave: [],
+    StaffLeaveRequestStage: [],
+    StaffDeniedLeaveRequest: [],
+    StaffBackToWork: [],
+
+
     loading: false,
     error: null,
 };
@@ -59,6 +76,41 @@ export const LeaveReducer = createReducer(
     on(addLeaveReturnToWorkSuccess, (state) => ({...state,loading: false,})),
     on(addLeaveReturnToWorkFailure, (state, { error }) => ({...state,loading: false,error })),
 
+    //management of leave request
+
+    //staff on leave
+    on(fetchStaffOnLeave, (state) => ({...state, loading: true, error: null })),
+    on(fetchStaffOnLeaveSuccess, (state, { StaffOnLeave }) => ({...state, StaffOnLeaves: StaffOnLeave, loading: false })),
+    on(fetchStaffOnLeaveFailure, (state, { error }) => ({...state,error, loading: false })),
+    //staff waiting for leave
+    on(fetchStaffWaitingForLeave, (state) => ({...state, loading: true, error: null })),
+    on(fetchStaffWaitingForLeaveSuccess, (state, { staffWaitingForLeave }) => ({...state, StaffWaitingForLeave: staffWaitingForLeave, loading: false })),
+    on(fetchStaffWaitingForLeaveFailure, (state, { error }) => ({...state,error, loading: false })),
+
+    //staff overdue leave
+    on(fetchStaffOverdueLeave, (state) => ({...state, loading: true, error: null })),
+    on(fetchStaffOverdueLeaveSuccess, (state, { staffOverdueLeave }) => ({...state, StaffOverdueLeave: staffOverdueLeave, loading: false })),
+    on(fetchStaffOverdueLeaveFailure, (state, { error }) => ({...state,error, loading: false })),
+
+    //staff leave requests stage
+    on(fetchStaffLeaveRequestStage, (state) => ({...state, loading: true, error: null })),
+    on(fetchStaffLeaveRequestStageSuccess, (state, { staffLeaveRequestStage }) => ({...state, StaffLeaveRequestStage: staffLeaveRequestStage, loading: false })),
+    on(fetchStaffLeaveRequestStageFailure, (state, { error }) => ({...state,error, loading: false })),
+
+    //staff denied leave request
+    on(fetchStaffDeniedLeaveRequest, (state) => ({...state, loading: true, error: null })),
+    on(fetchStaffDeniedLeaveRequestSuccess, (state, { staffDeniedLeaveRequest }) => ({...state, StaffDeniedLeaveRequest: staffDeniedLeaveRequest, loading: false })),
+    on(fetchStaffDeniedLeaveRequestFailure, (state, { error }) => ({...state,error, loading: false })),
+
+    //staff back to work
+    on(fetchStaffBackToWork, (state) => ({...state, loading: true, error: null })),
+    on(fetchStaffBackToWorkSuccess, (state, { staffBackToWork }) => ({...state, StaffBackToWork: staffBackToWork, loading: false })),
+    on(fetchStaffBackToWorkFailure, (state, { error }) => ({...state,error, loading: false })),
+
+    //Confirm leave return to work form
+    on(addConfirmLeaveReturnToWork, (state) => ({...state,loading: true,error: null})),
+    on(addConfirmLeaveReturnToWorkSuccess, (state) => ({...state,loading: false,})),
+    on(addConfirmLeaveReturnToWorkFailure, (state, { error }) => ({...state,loading: false,error })),
 
 );
 

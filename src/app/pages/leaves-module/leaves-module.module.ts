@@ -15,6 +15,15 @@ import { defineElement } from '@lordicon/element';
 import lottie from 'lottie-web';
 import { LeaveRequestEmployeeFormComponent } from './leave-request-employee/leave-request-employee-form/leave-request-employee-form.component';
 import { ReturnToLeaveRequestEmployeeFormComponent } from './leave-request-employee/return-to-leave-request-employee-form/return-to-leave-request-employee-form.component';
+import { StaffOnLeaveComponent } from './views-staff-leave-status/staff-on-leave/staff-on-leave.component';
+import { StaffWaitingForLeaveComponent } from './views-staff-leave-status/staff-waiting-for-leave/staff-waiting-for-leave.component';
+import { StaffOverdueLeaveComponent } from './views-staff-leave-status/staff-overdue-leave/staff-overdue-leave.component';
+import { StaffLeaveRequestStageComponent } from './staff-leave-request-stage/staff-leave-request-stage.component';
+import { NgPipesModule } from 'ngx-pipes';
+import { SimplebarAngularModule } from 'simplebar-angular';
+import { StaffDeniedLeaveRequestComponent } from './views-staff-leave-status/staff-denied-leave-request/staff-denied-leave-request.component';
+import { ManageStaffBackWorkComponent } from './manage-staff-back-work/manage-staff-back-work.component';
+import { StaffBackToWorkFormComponent } from './manage-staff-back-work/staff-back-to-work-form/staff-back-to-work-form.component';
 
 
 @NgModule({
@@ -22,7 +31,14 @@ import { ReturnToLeaveRequestEmployeeFormComponent } from './leave-request-emplo
     LeaveRequestEmployeeComponent,
     SortByLeavePipe,
     LeaveRequestEmployeeFormComponent,
-    ReturnToLeaveRequestEmployeeFormComponent
+    ReturnToLeaveRequestEmployeeFormComponent,
+    StaffOnLeaveComponent,
+    StaffWaitingForLeaveComponent,
+    StaffOverdueLeaveComponent,
+    StaffLeaveRequestStageComponent,
+    StaffDeniedLeaveRequestComponent,
+    ManageStaffBackWorkComponent,
+    StaffBackToWorkFormComponent
   ],
   imports: [
     CommonModule,
@@ -37,7 +53,9 @@ import { ReturnToLeaveRequestEmployeeFormComponent } from './leave-request-emplo
     FlatpickrModule,
     NgSelectModule,
     SharedModule,
-    NgbNavModule
+    NgbNavModule,
+    SimplebarAngularModule,
+    NgPipesModule
   ],
   providers: [
     DatePipe

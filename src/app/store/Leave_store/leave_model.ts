@@ -14,3 +14,8 @@ export interface LeaveReturnToWorkPayload {
   description: string;
   returned_date: string;
 }
+export interface ConfirmLeaveReturnToWorkPayload {
+  leave_request_id: number;
+  description: string;
+  returned_date: string;
+}

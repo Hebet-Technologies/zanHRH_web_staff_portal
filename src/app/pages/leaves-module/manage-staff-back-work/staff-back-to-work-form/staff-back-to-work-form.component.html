@@ -1,0 +1,50 @@
+<div class="modal-header bg-light p-3">
+    <h5 class="modal-title" id="exampleModalLabel">Return To Work</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"(click)="closeModal()"></button>
+</div>
+<form (ngSubmit)="saveConfirmLeaveReturnToWork()" [formGroup]="confirmReturnToleaveRequestForm" class="tablelist-form" autocomplete="off">
+<div class="modal-body">
+    <div class="row mb-3">
+        <div class="col-md-12">Full Name: <b><span class="text-primary fw-bold"> {{ rowdataSelected?.first_name }} {{ rowdataSelected?.middle_name }} {{ rowdataSelected?.last_name }} {{ rowdataSelected?.sur_name }} ({{ rowdataSelected?.leave_type }} )</span></b></div>
+    </div>
+    <div class="row g-3">
+        <div class="col-lg-12">
+            <div>
+            <label for="formFile" class="form-label">Description <span class="text-danger">*</span></label>
+            <textarea class="form-control" formControlName="description" placeholder="Tell your leader that you are returning to work..." rows="3" [ngClass]="{ 'is-invalid': submitted && form['description'].errors }"></textarea>
+            <div *ngIf="submitted && form['description'].errors" class="invalid-feedback">
+                <div *ngIf="form['description'].errors['required']">Description is required</div>
+            </div>
+            </div>
+        </div>
+
+        <div class="col-lg-12">
+            <div>
+                <label for="date-field" class="form-label">Retruned Date  <span class="text-danger">*</span></label>
+                <input
+                class="form-control flatpickr-input"
+                type="text"
+                placeholder="Select Date"
+                mwlFlatpickr
+                [altInput]="true"
+                [enableTime]="true"
+                [convertModelValue]="true"
+                [dateFormat]="'Y-m-d H:i'"
+                [maxDate]="maxDate"
+                formControlName="returnedDate"
+                [ngClass]="{ 'is-invalid': submitted && form['returnedDate'].errors }"
+                >
+                <div *ngIf="submitted && form['returnedDate'].errors" class="invalid-feedback" align="left">
+                    <div *ngIf="form['returnedDate'].errors['required']">Retruned Date is required</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <div class="hstack gap-2 justify-content-end">
+    <button type="button" class="btn btn-light" data-bs-dismiss="modal" (click)="closeModal()">Close</button>
+    <button type="submit" class="btn btn-info" id="add-btn">Save Data</button>
+    </div>
+</div>
+</form>

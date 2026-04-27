@@ -11,6 +11,14 @@ export const selectPersonalDetail = createSelector(selectLeaveState,state => sta
 export const selectRepresentatives = createSelector(selectLeaveState,state => state.Representatives);
 export const selectCountry = createSelector(selectLeaveState,state => state.Countrys);
 
+//management of leave request
+export const selectStaffOnLeave = createSelector(selectLeaveState,state => state.StaffOnLeaves);
+export const selectStaffWaitingForLeave = createSelector(selectLeaveState,state => state.StaffWaitingForLeave);
+export const selectStaffOverdueLeave = createSelector(selectLeaveState,state => state.StaffOverdueLeave);
+export const selectStaffLeaveRequestStage = createSelector(selectLeaveState,state => state.StaffLeaveRequestStage);
+export const selectStaffDeniedLeaveRequest = createSelector(selectLeaveState,state => state.StaffDeniedLeaveRequest);
+export const selectStaffBackToWork = createSelector(selectLeaveState,state => state.StaffBackToWork);
+
 //load and error data
 export const selectLeaveLoading = createSelector(selectLeaveState,(state: LeaveState) => state.loading);
 export const selectLeaveError = createSelector(selectLeaveState,(state: LeaveState) => state.error);
