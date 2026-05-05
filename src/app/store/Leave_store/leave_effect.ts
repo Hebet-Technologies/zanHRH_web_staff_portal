@@ -5,7 +5,7 @@ import { catchError, map, mergeMap, switchMap, tap } from 'rxjs/operators';
 
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { LeavesService } from "src/app/core/services/leave-card/leaves.service";
-import { fetchLeaveData, fetchLeaveSuccess, fetchLeaveFailure, loadLeaveStatusRequestForm, loadLeaveStatusRequestFormFailure, loadLeaveStatusRequestFormSuccess, loadPersonalDetail, loadPersonalDetailFailure, loadPersonalDetailSuccess, loadRepresentatives, loadRepresentativesFailure, loadRepresentativesSuccess, loadCountry, loadCountryFailure, loadCountrySuccess, loadLeaveHistoryData, loadLeaveHistoryFailure, loadLeaveHistorySuccess, addLeave, addLeaveFailure, addLeaveSuccess, deleteLeave, deleteLeaveFailure, deleteLeaveSuccess, loadLeaveLetter, loadLeaveLetterFailure, loadLeaveLetterSuccess, addLeaveReturnToWork, addLeaveReturnToWorkFailure, addLeaveReturnToWorkSuccess, loadLeaveReturnedToWorkLetter, loadLeaveReturnedToWorkLetterFailure, loadLeaveReturnedToWorkLetterSuccess, fetchStaffOnLeave, fetchStaffOnLeaveFailure, fetchStaffOnLeaveSuccess, fetchStaffWaitingForLeave, fetchStaffWaitingForLeaveFailure, fetchStaffWaitingForLeaveSuccess, fetchStaffOverdueLeave, fetchStaffOverdueLeaveFailure, fetchStaffOverdueLeaveSuccess, fetchStaffLeaveRequestStage, fetchStaffLeaveRequestStageFailure, fetchStaffLeaveRequestStageSuccess, fetchStaffDeniedLeaveRequest, fetchStaffDeniedLeaveRequestFailure, fetchStaffDeniedLeaveRequestSuccess, loadGeneralStaffLeaveLetterSuccess, loadGeneralStaffLeaveLetter, loadGeneralStaffLeaveLetterFailure, fetchStaffBackToWork, fetchStaffBackToWorkFailure, fetchStaffBackToWorkSuccess, addConfirmLeaveReturnToWork, addConfirmLeaveReturnToWorkFailure, addConfirmLeaveReturnToWorkSuccess } from "./leave_action";
+import { fetchLeaveData, fetchLeaveSuccess, fetchLeaveFailure, loadLeaveStatusRequestForm, loadLeaveStatusRequestFormFailure, loadLeaveStatusRequestFormSuccess, loadPersonalDetail, loadPersonalDetailFailure, loadPersonalDetailSuccess, loadRepresentatives, loadRepresentativesFailure, loadRepresentativesSuccess, loadCountry, loadCountryFailure, loadCountrySuccess, loadLeaveHistoryData, loadLeaveHistoryFailure, loadLeaveHistorySuccess, addLeave, addLeaveFailure, addLeaveSuccess, deleteLeave, deleteLeaveFailure, deleteLeaveSuccess, loadLeaveLetter, loadLeaveLetterFailure, loadLeaveLetterSuccess, addLeaveReturnToWork, addLeaveReturnToWorkFailure, addLeaveReturnToWorkSuccess, loadLeaveReturnedToWorkLetter, loadLeaveReturnedToWorkLetterFailure, loadLeaveReturnedToWorkLetterSuccess, fetchStaffOnLeave, fetchStaffOnLeaveFailure, fetchStaffOnLeaveSuccess, fetchStaffWaitingForLeave, fetchStaffWaitingForLeaveFailure, fetchStaffWaitingForLeaveSuccess, fetchStaffOverdueLeave, fetchStaffOverdueLeaveFailure, fetchStaffOverdueLeaveSuccess, fetchStaffLeaveRequestStage, fetchStaffLeaveRequestStageFailure, fetchStaffLeaveRequestStageSuccess, fetchStaffDeniedLeaveRequest, fetchStaffDeniedLeaveRequestFailure, fetchStaffDeniedLeaveRequestSuccess, loadGeneralStaffLeaveLetterSuccess, loadGeneralStaffLeaveLetter, loadGeneralStaffLeaveLetterFailure, fetchStaffBackToWork, fetchStaffBackToWorkFailure, fetchStaffBackToWorkSuccess, addConfirmLeaveReturnToWork, addConfirmLeaveReturnToWorkFailure, addConfirmLeaveReturnToWorkSuccess, fetchLeaveRequestToApprove, fetchLeaveRequestToApproveFailure, fetchLeaveRequestToApproveSuccess } from "./leave_action";
 
 @Injectable()
 export class LeaveEffects {
@@ -365,6 +365,23 @@ export class LeaveEffects {
             )
             )
         )
+    );
+    //get leave request to approve
+    fetchLeaveRequestToApprove$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(fetchLeaveRequestToApprove),
+            mergeMap(() =>
+                this._leaveApiService.getLeaveRequestToApprove().pipe(
+                    map((res) => {
+                        const leaveRequestToApprove = res.data;
+                        return fetchLeaveRequestToApproveSuccess({ leaveRequestToApprove })
+                    }),
+                    catchError((error) =>
+                        of(fetchLeaveRequestToApproveFailure({ error: error.message || 'Failed to fetch leave request to approve' }))
+                    )
+                )
+            ),
+        ),
     );
  
 

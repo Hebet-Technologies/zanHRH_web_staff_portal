@@ -98,21 +98,6 @@ export class StaffLeaveRequestStageComponent implements OnInit,OnDestroy{
     );
   }
 
-
-
-
-
-
-    //print letter
-  generatePDFStaffRequestStage(id: number): void {
-    const loader = document.getElementById('elmLoader');
-    this.isLoading = true;
-    if (loader) {
-      loader.classList.remove('d-none'); // 👈 show loader
-    }
-    // this.store.dispatch(loadTrainingApprovedLetter({ id }));
-  }
-
   // SEARCH start
   performSearch() {
     this.staffRequestStageTable.search(this.searchTerm, [
@@ -121,6 +106,7 @@ export class StaffLeaveRequestStageComponent implements OnInit,OnDestroy{
       'last_name',
       'sur_name',
       'phone_no',
+      'leave_type',
       'working_station_name',
       'department_name',
       'post_category_name',

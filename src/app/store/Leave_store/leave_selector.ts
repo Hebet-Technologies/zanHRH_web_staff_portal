@@ -18,6 +18,8 @@ export const selectStaffOverdueLeave = createSelector(selectLeaveState,state => 
 export const selectStaffLeaveRequestStage = createSelector(selectLeaveState,state => state.StaffLeaveRequestStage);
 export const selectStaffDeniedLeaveRequest = createSelector(selectLeaveState,state => state.StaffDeniedLeaveRequest);
 export const selectStaffBackToWork = createSelector(selectLeaveState,state => state.StaffBackToWork);
+export const selectLeaveRequestToApprove = createSelector(selectLeaveState,state => state.LeaveRequestToApprove);
+export const selectSelectedLeaveRequest = createSelector(selectLeaveState,state => state.SelectedLeaveRequest);
 
 //load and error data
 export const selectLeaveLoading = createSelector(selectLeaveState,(state: LeaveState) => state.loading);

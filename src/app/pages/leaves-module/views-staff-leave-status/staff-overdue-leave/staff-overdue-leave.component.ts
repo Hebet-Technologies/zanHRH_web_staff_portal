@@ -90,6 +90,7 @@ export class StaffOverdueLeaveComponent implements OnInit,OnDestroy{
       'last_name',
       'sur_name',
       'phone_number',
+      'leave_type',
       'working_station_name',
       'department_name',
       'post_category_name',

@@ -180,18 +180,18 @@
                                                 [ngClass]=" { 
                                                     'bg-warning-subtle text-warning': selectedTraining.training_app_status === 'REQUESTED', 
                                                     'bg-success-subtle text-success': selectedTraining.training_app_status === 'APPROVED_SHORT_COURSE', 
+                                                    'bg-info-subtle text-info': selectedTraining.training_app_status === 'FORWARDED', 
                                                 }">{{selectedTraining.training_app_status.split('_').join(' ')}}
                                             </span>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td class="fw-medium" scope="row">Path</td>
-                                        <td class="contacted_date"><span class="text-success fw-bold"> PS </span></td>
+                                        <td class="contacted_date"><span class="text-success fw-bold"> {{ selectedTraining.training_path_name }} </span></td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
-
                     </div>
                 </ng-template>
 

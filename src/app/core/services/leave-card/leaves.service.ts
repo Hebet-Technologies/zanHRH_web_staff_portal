@@ -75,7 +75,9 @@ export class LeavesService {
   saveConfirmReturnToWork(data: any): Observable<any>{
     return this.http.post(`${environment.apiUrl}confirmReturnToWork`, data);
   }
-
+  getLeaveRequestToApprove(): Observable<any>{
+    return this.http.get(`${environment.apiUrl}viewLeaveToApprove`);
+  }
 
 
 

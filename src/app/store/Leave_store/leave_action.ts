@@ -84,3 +84,9 @@ export const fetchStaffBackToWorkFailure = createAction('[Data] Fetch Staff Back
 export const addConfirmLeaveReturnToWork = createAction('[Data] Add Confirm Leave Return To Work',props<{ newData: ConfirmLeaveReturnToWorkPayload }>());
 export const addConfirmLeaveReturnToWorkSuccess = createAction('[Data] Add Confirm Leave Return To Work Success',);
 export const addConfirmLeaveReturnToWorkFailure = createAction('[Data] Add Confirm Leave Return To Work Failure',props<{ error: string }>());
+//get leave request to approve
+export const fetchLeaveRequestToApprove = createAction('[Data] Fetch Leave Request To Approve');
+export const fetchLeaveRequestToApproveSuccess = createAction('[Data] Fetch Leave Request To Approve Success', props<{ leaveRequestToApprove: any[] }>());
+export const fetchLeaveRequestToApproveFailure = createAction('[Data] Fetch Leave Request To Approve Failure', props<{ error: string }>());
+//row selected data approve leave request
+export const setSelectedLeaveRequest = createAction('[Leave] Set Selected',props<{ data: any }>());
