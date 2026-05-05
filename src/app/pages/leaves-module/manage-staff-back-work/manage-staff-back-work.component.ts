@@ -1,13 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Actions } from '@ngrx/effects';
+import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { Subject, takeUntil } from 'rxjs';
 import { PermissionService } from 'src/app/core/services/auth-card/permission.service';
 import { TableService } from 'src/app/core/services/table.service';
 import { RootReducerState } from 'src/app/store';
-import { addConfirmLeaveReturnToWork, fetchStaffBackToWork } from 'src/app/store/Leave_store/leave_action';
+import { addConfirmLeaveReturnToWork, fetchStaffBackToWork, loadLeaveReturnedToWorkLetter, loadLeaveReturnedToWorkLetterSuccess } from 'src/app/store/Leave_store/leave_action';
 import { selectLeaveLoading, selectStaffBackToWork } from 'src/app/store/Leave_store/leave_selector';
 import { StaffBackToWorkFormComponent } from './staff-back-to-work-form/staff-back-to-work-form.component';
 import { ConfirmLeaveReturnToWorkPayload } from 'src/app/store/Leave_store/leave_model';
@@ -59,19 +59,19 @@ export class ManageStaffBackWorkComponent implements OnInit,OnDestroy{
     });
 
     //file download pdf
-    // this.actions$.pipe(
-    //   ofType(loadGeneralStaffLeaveLetterSuccess),
-    //   takeUntil(this.destroy$)
-    // ).subscribe(({ file }) => {
-    //   const blob = new Blob([file], { type: 'application/pdf' });
-    //   const fileURL = window.URL.createObjectURL(blob);
-    //   window.open(fileURL, '_blank');
-    //   // 👇 hide loader hapa
-    //   const loader = document.getElementById('elmLoader');
-    //   if (loader) {
-    //     loader.classList.add('d-none');
-    //   }
-    // });
+    this.actions$.pipe(
+      ofType(loadLeaveReturnedToWorkLetterSuccess),
+      takeUntil(this.destroy$)
+    ).subscribe(({ file }) => {
+      const blob = new Blob([file], { type: 'application/pdf' });
+      const fileURL = window.URL.createObjectURL(blob);
+      window.open(fileURL, '_blank');
+      // 👇 hide loader hapa
+      const loader = document.getElementById('elmLoader');
+      if (loader) {
+        loader.classList.add('d-none');
+      }
+    });
   }
 
   openModalSatffReturnToLeave(rowData: any) {
@@ -112,7 +112,7 @@ export class ManageStaffBackWorkComponent implements OnInit,OnDestroy{
     if (loader) {
       loader.classList.remove('d-none'); // 👈 show loader
     }
-    // this.store.dispatch(loadGeneralStaffLeaveLetter({ id }));
+    this.store.dispatch(loadLeaveReturnedToWorkLetter({ id }));
   }
 
   // SEARCH start
@@ -123,6 +123,7 @@ export class ManageStaffBackWorkComponent implements OnInit,OnDestroy{
       'last_name',
       'sur_name',
       'phone_number',
+      'leave_type',
       'working_station_name',
       'post_category_name',
       'start_date',

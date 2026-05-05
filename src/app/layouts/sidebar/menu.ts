@@ -68,61 +68,68 @@ export const MENU: MenuItem[] = [
         parentId: 30,
         permission: 'View Leave Request'
       },
-      {
-        id: 36,
-        label: 'Staff Leave Request Stage',
-        link: '/app/leave/staff-leave-request-stage',
-        parentId: 30,
-        permission: 'View Leave Request'
-      },
-      {
-        id: 38,
-        label: 'Return to Work Request',
-        link: '/app/leave/staff-back-to-work',
-        parentId: 30,
-        permission: 'View Leave Request'
-      },
-      {
-        id: 32,
-        label: 'View Staff Leave Status',
-        parentId: 30,
-        isCollapsed: true,
-        permission: 'Leave Module',
-        subItems: [
-          {
-            id: 33,
-            label: 'Staff On Leave',
-            link: '/app/leave/staff-on-leave',
-            parentId: 32,
-            permission: 'Forward Leave Request'
+      // {
+      //   id: 39,
+      //   label: 'Approve Leave Request',
+      //   link: '/app/leave/manage-approve-leave-request',
+      //   parentId: 30,
+      //   permission: 'View Leave Request'
+      // },
+      // {
+      //   id: 36,
+      //   label: 'Staff Leave Request Stage',
+      //   link: '/app/leave/staff-leave-request-stage',
+      //   parentId: 30,
+      //   permission: 'View Leave Request'
+      // },
+      // {
+      //   id: 38,
+      //   label: 'Return to Work Request',
+      //   link: '/app/leave/staff-back-to-work',
+      //   parentId: 30,
+      //   permission: 'View Leave Request'
+      // },
+      // {
+      //   id: 32,
+      //   label: 'View Staff Leave Status',
+      //   parentId: 30,
+      //   isCollapsed: true,
+      //   permission: 'Leave Module',
+      //   subItems: [
+      //     {
+      //       id: 33,
+      //       label: 'Staff On Leave',
+      //       link: '/app/leave/staff-on-leave',
+      //       parentId: 32,
+      //       permission: 'Forward Leave Request'
 
-          },
-          {
-            id: 34,
-            label: 'Waiting For Leave',
-            link: '/app/leave/staff-waiting-for-leave',
-            parentId: 32,
-            permission: 'Forward Leave Request'
-          },
-          {
-            id: 35,
-            label: 'Staff Overdue Leave',
-            link: '/app/leave/staff-overdue-leave',
-            parentId: 32,
-            permission: 'Forward Leave Request' 
-          },
-          {
-            id: 37,
-            label: 'Denied Leave Request',
-            link: '/app/leave/staff-denied-leave-request',
-            parentId: 32,
-            permission: 'Forward Leave Request'
-          }
+      //     },
+      //     {
+      //       id: 34,
+      //       label: 'Waiting For Leave',
+      //       link: '/app/leave/staff-waiting-for-leave',
+      //       parentId: 32,
+      //       permission: 'Forward Leave Request'
+      //     },
+      //     {
+      //       id: 35,
+      //       label: 'Staff Overdue Leave',
+      //       link: '/app/leave/staff-overdue-leave',
+      //       parentId: 32,
+      //       permission: 'Forward Leave Request' 
+      //     },
+      //     {
+      //       id: 37,
+      //       label: 'Denied Leave Request',
+      //       link: '/app/leave/staff-denied-leave-request',
+      //       parentId: 32,
+      //       permission: 'Forward Leave Request'
+      //     }
 
 
 
-        ]
-      },
+      //   ]
+      // },
 
 
 

@@ -24,6 +24,8 @@ import { SimplebarAngularModule } from 'simplebar-angular';
 import { StaffDeniedLeaveRequestComponent } from './views-staff-leave-status/staff-denied-leave-request/staff-denied-leave-request.component';
 import { ManageStaffBackWorkComponent } from './manage-staff-back-work/manage-staff-back-work.component';
 import { StaffBackToWorkFormComponent } from './manage-staff-back-work/staff-back-to-work-form/staff-back-to-work-form.component';
+import { ManageApproveLeaveRequestComponent } from './manage-approve-leave-request/manage-approve-leave-request.component';
+import { ApproveLeaveRequestDetailsComponent } from './manage-approve-leave-request/approve-leave-request-details/approve-leave-request-details.component';
 
 
 @NgModule({
@@ -38,7 +40,9 @@ import { StaffBackToWorkFormComponent } from './manage-staff-back-work/staff-bac
     StaffLeaveRequestStageComponent,
     StaffDeniedLeaveRequestComponent,
     ManageStaffBackWorkComponent,
-    StaffBackToWorkFormComponent
+    StaffBackToWorkFormComponent,
+    ManageApproveLeaveRequestComponent,
+    ApproveLeaveRequestDetailsComponent
   ],
   imports: [
     CommonModule,

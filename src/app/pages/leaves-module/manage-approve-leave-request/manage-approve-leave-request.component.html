@@ -1,0 +1,332 @@
+<!-- Start Breadcrumbs -->
+<app-breadcrumbs title="Leave" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
+
+<div class="row">
+    <div class="col-xxl-9">
+        <div class="card" id="leadsList">
+            <div class="card-header  border-0">
+                <div class="row align-items-center gy-3">
+                    <div class="col-sm">
+                        <h5 class="card-title mb-2">View Staff Request Leave Stage</h5>
+                        <p class="text-muted">To view more details about staff request leave stage <span class="text-primary fw-bold"> 'click row /  check box' </span></p>
+                    </div>
+                    <div class="col-sm-auto ms-auto">
+                        <div class="hstack gap-2">
+
+                            <div class="d-flex justify-content-sm gap-2">
+                                <div class="search-box ms-2">
+                                    <input type="text" name="searchTerm" class="form-control" placeholder="Search for..." [(ngModel)]="searchTerm" (ngModelChange)="performSearch()">
+                                    <i class="ri-search-line search-icon"></i>
+                                </div>
+
+                                <div class="w-md">
+                                    <select class="form-select w-auto" data-choices data-choices-search-false (change)="staffApproveRequestTable.changePageSize($any($event.target).value)">
+                                        <option *ngFor="let size of pageSizes" [value]="size">{{size}}</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-body">
+                <div>
+                    <div class="table-responsive table-card mb-2">
+                        <table class="table table-hover-clickable">
+                            <thead>
+                                <tr class="bg-light text-muted text-uppercase">
+                                    <th class="sort" (click)="onSort('colored')"></th>
+                                    <th class="sort" (click)="onSort('leave_request_id')"></th>
+                                    <th class="sort" (click)="onSort('first_name')"> Full Name</th>
+                                    <th class="sort" (click)="onSort('phone_number')">Phone Number</th>
+                                    <th class="sort" (click)="onSort('leave_type')">Leave Type</th>
+                                    <th class="sort" (click)="onSort('working_station_name')">Working Station</th>
+                                    <th class="sort" (click)="onSort('requested_date')">Requested Date</th>
+                                    <th class="sort" (click)="onSort('proposed_start_date')">Start Date</th>
+                                    <th class="sort" (click)="onSort('proposed_end_date')">End Date</th>
+                                    <th class="sort">Action</th>
+
+                                </tr>
+                            </thead>
+                            <tbody >
+                                <tr *ngFor="let data of staffApproveRequestTable.data$ | async; let i = index">
+                                    <td>
+                                        <div class="avatar-xs" *ngIf="data.colored">
+                                            <div 
+                                                class="avatar-title rounded-circle fs-16"
+                                                [ngClass]="getColorClasses(data.color_type)">
+                                                <i class="ri-arrow-right-up-fill"></i>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <th scope="row" (click)="openModalApproveRequest(contentLeaveStage, data, cb)">
+                                        <div class="form-check">
+                                            <input #cb class="form-check-input" type="checkbox" >
+                                        </div>
+                                    </th>
+                                    <td (click)="openModalApproveRequest(contentLeaveStage, data, cb)">
+                                        <ngb-highlight [result]="data.first_name + ' ' + data.middle_name + ' ' + data.last_name + ' ' + data.sur_name" [term]="searchTerm">
+                                        </ngb-highlight>
+                                    </td>
+                                    <td (click)="openModalApproveRequest(contentLeaveStage, data, cb)">
+                                        <ngb-highlight [result]="data.phone_number" [term]="searchTerm">
+                                        </ngb-highlight>
+                                    </td>
+                                    <td (click)="openModalApproveRequest(contentLeaveStage, data, cb)">
+                                        <ngb-highlight [result]="data.leave_type" [term]="searchTerm">
+                                        </ngb-highlight>
+                                    </td>
+                                    <td (click)="openModalApproveRequest(contentLeaveStage, data, cb)">
+                                        <ngb-highlight [result]="data.working_station_name" [term]="searchTerm">
+                                        </ngb-highlight>
+                                    </td>
+                                    <td (click)="openModalApproveRequest(contentLeaveStage, data, cb)">
+                                        <ngb-highlight [result]="data.requested_date" [term]="searchTerm">
+                                        </ngb-highlight>
+                                    </td>
+                                    <td (click)="openModalApproveRequest(contentLeaveStage, data, cb)">
+                                        <ngb-highlight [result]="data.proposed_start_date" [term]="searchTerm">
+                                        </ngb-highlight>
+                                    </td>
+                                     <td (click)="openModalApproveRequest(contentLeaveStage, data, cb)">
+                                        <ngb-highlight [result]="data.proposed_end_date" [term]="searchTerm">
+                                        </ngb-highlight>
+                                    </td>
+                                    <td>
+                                        <ul class="list-inline hstack gap-2 mb-0">
+                                            <li class="list-inline-item me-0" data-bs-toggle="tooltip" data-bs-trigger="hover" ngbTooltip="View More" placement="top"  *ngIf="(permission.hasPermission('View Leave Request') | async)">
+                                                <a href="javascript:void(0);" class="btn btn-soft-success btn-sm mt-2 mt-sm-0" (click)="goToDetails(data)">
+                                                    <i class="ri-folder-fill align-middle me-1"></i> Details
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </td>
+
+                                </tr>
+                            </tbody>
+
+                        </table>
+                        
+                    </div>
+                    <div class="row justify-content-md-between align-items-md-center gy-2">
+                        <div class="col col-sm-6">
+                            <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">
+                                Showing {{staffApproveRequestTable.startIndex}} to {{staffApproveRequestTable.endIndex}} of {{staffApproveRequestTable.total}} entries
+
+                            </div>
+                        </div>
+                        <!-- Pagination -->
+                        <div class="col col-sm-6">
+                            <div class="text-sm-right float-end listjs-pagination">
+                             <ngb-pagination
+                                [collectionSize]="staffApproveRequestTable.total"
+                                [(page)]="staffApproveRequestTable.page"
+                                [pageSize]="staffApproveRequestTable.pageSize"
+                                [maxSize]="3"
+                                [ellipses]="true"
+                                (pageChange)="staffApproveRequestTable.changePage($event)">
+                            </ngb-pagination>
+                            </div>
+                        </div>
+                        <!-- End Pagination -->
+                    </div>
+                    <div id="elmLoader" *ngIf="isLoading">
+                        <div class="spinner-border text-primary avatar-sm" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- MyLeave Create Model -->
+                <ng-template #contentLeaveStage role="document" let-modal>
+                    <div class="modal-header bg-light p-3 ">
+                        <h5 class="modal-title" id="exampleModalLabel">Approve Leave Request More Details</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal" (click)="modal.dismiss('Cross click')"></button>
+                    </div>
+                    <div class="modal-body rounded-border" *ngIf="selectedApproveRequest" style="border-bottom: 6px solid #588fc7; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;">
+                        
+                        <h6 class="text-uppercase fw-semibold mb-3">Full Name</h6>
+                        <p class="mb-4">{{ selectedApproveRequest.first_name }} {{ selectedApproveRequest.middle_name }} {{ selectedApproveRequest.last_name }} {{ selectedApproveRequest.sur_name }}</p>
+
+                        <h6 class="text-uppercase fw-semibold mb-3">Phone Number</h6>
+                        <p class="mb-4 ">{{ selectedApproveRequest.phone_number }}</p>
+                        <div class="table-responsive table-card">
+                            <table class="table table-borderless mb-0 table-bordered-bottom">
+                                <tbody>
+                                    <tr>
+                                        <td class="fw-medium" scope="row">Working Station</td>
+                                        <td class="designation">{{ selectedApproveRequest.working_station_name }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-medium" scope="row">Department Name</td>
+                                        <td class="designation">{{ selectedApproveRequest.department_name }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-medium" scope="row">Position</td>
+                                        <td class="email">{{ selectedApproveRequest.post_category_name }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-medium" scope="row">Attachment</td>
+                                        <td class="email">
+                                            <ng-container *ngIf="selectedApproveRequest.upload_file_name; else noFile">
+                                                <a href="javascript:void(0)" class="text-primary" (click)="openAttachment(selectedApproveRequest.upload_file_name)"> Preview Attachment</a>
+                                            </ng-container>
+                                            <ng-template #noFile>
+                                                <span class="text-muted">No Attachment</span>
+                                            </ng-template>
+                                        </td>
+                                    </tr>
+                             
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </ng-template>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-xxl-3">
+        <div class="card">
+            <div class="card-header align-items-center d-flex">
+                <h4 class="card-title mb-0 flex-grow-1">Total No of Leave Requests</h4>
+                <div class="flex-shrink-0">
+                    <button type="button" class="btn btn-soft-primary btn-sm">
+                        Export Report
+                    </button>
+                </div>
+            </div>
+            
+            <div class="card-body">
+                <h6 class="text-muted text-uppercase fw-semibold mb-4">Color Representation</h6>
+                <div class="mt-3">
+                    <div class="row align-items-center g-2">
+                        <div class="col-auto">
+                            <div class="p-1">
+                                <h6 class="mb-0">Wakurugenzi Wa Idara</h6>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="p-1">
+                                <div class="progress animated-progess progress-sm">
+                                    <div class="progress-bar bg-danger" role="progressbar" style="width: 50%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end row -->
+
+                    <div class="row align-items-center g-2">
+                        <div class="col-auto">
+                            <div class="p-1">
+                                <h6 class="mb-0">Wakuu wa Taasisi</h6>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="p-1">
+                                <div class="progress animated-progess progress-sm">
+                                    <div class="progress-bar bg-primary" role="progressbar" style="width: 50%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end row -->
+
+                    <div class="row align-items-center g-2">
+                        <div class="col-auto">
+                            <div class="p-1">
+                                <h6 class="mb-0">Wakuu wa Vitengo</h6>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="p-1">
+                                <div class="progress animated-progess progress-sm">
+                                    <div class="progress-bar bg-warning" role="progressbar" style="width: 50%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end row -->
+
+                    <div class="row align-items-center g-2">
+                        <div class="col-auto">
+                            <div class="p-1">
+                                <h6 class="mb-0">Wakuu wa Program/Miradi</h6>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="p-1">
+                                <div class="progress animated-progess progress-sm">
+                                    <div class="progress-bar bg-info" role="progressbar" style="width: 50%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end row -->
+
+                    <div class="row align-items-center g-2">
+                        <div class="col-auto">
+                            <div class="p-1">
+                                <h6 class="mb-0">Wakuu wa Wabaraza</h6>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="p-1">
+                                <div class="progress animated-progess progress-sm">
+                                    <div class="progress-bar bg-success" role="progressbar" style="width: 50%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- end row -->
+
+                     <div class="row align-items-center g-2">
+                        <div class="col-auto">
+                            <div class="p-1">
+                                <h6 class="mb-0">Wateule Kupitia TOR</h6>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="p-1">
+                                <div class="progress animated-progess progress-sm">
+                                    <div class="progress-bar bg-secondary" role="progressbar" style="width: 50%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- end row -->
+                </div>
+
+
+
+                <p class="text-muted mt-4">“View the total number of leave requests for each working station”</p>
+                <div id="fuzzysearch-list">
+                    <input type="text" class="fuzzy-search form-control mb-3" placeholder="Search ..." [(ngModel)]="searchTermPath" (input)="performSearchLeavePath()" />
+                    <ngx-simplebar style="height: 500px;" class="mx-n3">
+                        <ul class="list list-group list-group-flush mb-0">
+                            <li class="list-group-item" data-id="1" *ngFor="let item of filteredApprovedRequests">
+                                <div class="d-flex">
+                                    <div class="flex-grow-1">
+                                        <h5 class="fs-13 mb-1"><a href="javascript:void(0);" class="link name text-body">{{item.name}}</a></h5>
+                                    </div>
+                                    <div class="flex-shrink-0 ms-2">
+                                        <div>
+                                            <button type="button" class="btn btn-sm btn-light">{{item.count}}</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </ngx-simplebar>
+                </div>
+                
+
+            </div>
+        </div>
+    </div>
+    <!-- end col -->
+</div>
+

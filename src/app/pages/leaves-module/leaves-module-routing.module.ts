@@ -7,6 +7,8 @@ import { StaffOverdueLeaveComponent } from './views-staff-leave-status/staff-ove
 import { StaffLeaveRequestStageComponent } from './staff-leave-request-stage/staff-leave-request-stage.component';
 import { StaffDeniedLeaveRequestComponent } from './views-staff-leave-status/staff-denied-leave-request/staff-denied-leave-request.component';
 import { ManageStaffBackWorkComponent } from './manage-staff-back-work/manage-staff-back-work.component';
+import { ManageApproveLeaveRequestComponent } from './manage-approve-leave-request/manage-approve-leave-request.component';
+import { ApproveLeaveRequestDetailsComponent } from './manage-approve-leave-request/approve-leave-request-details/approve-leave-request-details.component';
 
 const routes: Routes = [
   {
@@ -36,7 +38,17 @@ const routes: Routes = [
   {
     path: "staff-back-to-work",
     component: ManageStaffBackWorkComponent
+  },
+  {
+    path: "manage-approve-leave-request",
+    component: ManageApproveLeaveRequestComponent
+  },
+  {
+    path: "approve-leave-request-details",
+    component: ApproveLeaveRequestDetailsComponent
   }
+
+
   
   
 

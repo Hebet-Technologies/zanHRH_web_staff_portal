@@ -1,5 +1,5 @@
 import { Action, createReducer, on } from '@ngrx/store';
-import { fetchLeaveData, fetchLeaveSuccess, fetchLeaveFailure, addLeave, addLeaveSuccess, addLeaveFailure, deleteLeaveSuccess, loadLeaveStatusRequestFormSuccess, loadPersonalDetailSuccess, loadRepresentativesSuccess, loadCountrySuccess, loadLeaveHistoryData, loadLeaveHistoryFailure, loadLeaveHistorySuccess, addLeaveReturnToWork, addLeaveReturnToWorkFailure, addLeaveReturnToWorkSuccess, fetchStaffOnLeave, fetchStaffOnLeaveFailure, fetchStaffOnLeaveSuccess, fetchStaffWaitingForLeave, fetchStaffWaitingForLeaveFailure, fetchStaffWaitingForLeaveSuccess, fetchStaffOverdueLeaveFailure, fetchStaffOverdueLeaveSuccess, fetchStaffOverdueLeave, fetchStaffLeaveRequestStage, fetchStaffLeaveRequestStageFailure, fetchStaffLeaveRequestStageSuccess, fetchStaffDeniedLeaveRequest, fetchStaffDeniedLeaveRequestFailure, fetchStaffDeniedLeaveRequestSuccess, fetchStaffBackToWork, fetchStaffBackToWorkFailure, fetchStaffBackToWorkSuccess, addConfirmLeaveReturnToWork, addConfirmLeaveReturnToWorkFailure, addConfirmLeaveReturnToWorkSuccess } from './leave_action';
+import { fetchLeaveData, fetchLeaveSuccess, fetchLeaveFailure, addLeave, addLeaveSuccess, addLeaveFailure, deleteLeaveSuccess, loadLeaveStatusRequestFormSuccess, loadPersonalDetailSuccess, loadRepresentativesSuccess, loadCountrySuccess, loadLeaveHistoryData, loadLeaveHistoryFailure, loadLeaveHistorySuccess, addLeaveReturnToWork, addLeaveReturnToWorkFailure, addLeaveReturnToWorkSuccess, fetchStaffOnLeave, fetchStaffOnLeaveFailure, fetchStaffOnLeaveSuccess, fetchStaffWaitingForLeave, fetchStaffWaitingForLeaveFailure, fetchStaffWaitingForLeaveSuccess, fetchStaffOverdueLeaveFailure, fetchStaffOverdueLeaveSuccess, fetchStaffOverdueLeave, fetchStaffLeaveRequestStage, fetchStaffLeaveRequestStageFailure, fetchStaffLeaveRequestStageSuccess, fetchStaffDeniedLeaveRequest, fetchStaffDeniedLeaveRequestFailure, fetchStaffDeniedLeaveRequestSuccess, fetchStaffBackToWork, fetchStaffBackToWorkFailure, fetchStaffBackToWorkSuccess, addConfirmLeaveReturnToWork, addConfirmLeaveReturnToWorkFailure, addConfirmLeaveReturnToWorkSuccess, fetchLeaveRequestToApprove, fetchLeaveRequestToApproveFailure, fetchLeaveRequestToApproveSuccess, setSelectedLeaveRequest } from './leave_action';
 
 export interface LeaveState {
     LeaveRequest: any[];
@@ -15,6 +15,9 @@ export interface LeaveState {
     StaffLeaveRequestStage: any[];
     StaffDeniedLeaveRequest: any[];
     StaffBackToWork: any[];
+    LeaveRequestToApprove: any[];
+    SelectedLeaveRequest: any;
+
 
     loading: boolean;
     error: any;
@@ -34,6 +37,8 @@ export const initialState: LeaveState = {
     StaffLeaveRequestStage: [],
     StaffDeniedLeaveRequest: [],
     StaffBackToWork: [],
+    LeaveRequestToApprove: [],
+    SelectedLeaveRequest: null,
 
 
     loading: false,
@@ -111,6 +116,15 @@ export const LeaveReducer = createReducer(
     on(addConfirmLeaveReturnToWork, (state) => ({...state,loading: true,error: null})),
     on(addConfirmLeaveReturnToWorkSuccess, (state) => ({...state,loading: false,})),
     on(addConfirmLeaveReturnToWorkFailure, (state, { error }) => ({...state,loading: false,error })),
+
+    //get leave request to approve
+    on(fetchLeaveRequestToApprove, (state) => ({...state, loading: true, error: null })),
+    on(fetchLeaveRequestToApproveSuccess, (state, { leaveRequestToApprove }) => ({...state, LeaveRequestToApprove: leaveRequestToApprove, loading: false })),
+    on(fetchLeaveRequestToApproveFailure, (state, { error }) => ({...state,error, loading: false })),
+
+    // set selected leave request
+    on(setSelectedLeaveRequest, (state, { data }) => ({...state, SelectedLeaveRequest: data })),
+
 
 );
 
