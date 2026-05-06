@@ -97,13 +97,10 @@
             </div>
             <div class="col-lg-4">
                 <div>
-                    <label for="gpa-field" class="form-label">GPA / Grade <span class="text-danger">*</span></label>
-                    <input type="text" id="gpa-field" class="form-control"  placeholder="Enter gpa" required formControlName="gpa" 
+                    <label for="gpa-field" class="form-label">GPA / Grade </label>
+                    <input type="text" id="gpa-field" class="form-control"  placeholder="Enter gpa" formControlName="gpa" 
                     oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" 
                     [ngClass]="{ 'is-invalid': submitted && form['gpa'].errors }" />
-                    <div *ngIf="submitted && form['gpa'].errors" class="invalid-feedback" align="left">
-                        <div *ngIf="form['gpa'].errors['required']">GPA / Grade is required</div>
-                    </div>
                 </div>
             </div>
         </div>

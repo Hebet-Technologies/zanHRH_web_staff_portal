@@ -64,7 +64,7 @@
                                             [ngClass]=" { 
                                                 'bg-warning-subtle text-warning': data.training_app_status === 'REQUESTED', 
                                                 'bg-danger-subtle text-danger': data.training_app_status === 'Cancelled', 
-                                                'bg-secondary-subtle text-secondary': data.training_app_status === 'Inprogress', 
+                                                'bg-secondary-subtle text-secondary': data.training_app_status === 'AWAITING_TRAINING_CONTRACT', 
                                                 'bg-info-subtle text-info': data.training_app_status === 'FORWARDED', 
                                                 'bg-primary-subtle text-primary': data.training_app_status === 'Returns', 
                                                 'bg-success-subtle text-success': data.training_app_status === 'APPROVED_SHORT_COURSE' 
@@ -181,6 +181,7 @@
                                                     'bg-warning-subtle text-warning': selectedTraining.training_app_status === 'REQUESTED', 
                                                     'bg-success-subtle text-success': selectedTraining.training_app_status === 'APPROVED_SHORT_COURSE', 
                                                     'bg-info-subtle text-info': selectedTraining.training_app_status === 'FORWARDED', 
+                                                    'bg-secondary-subtle text-secondary': selectedTraining.training_app_status === 'AWAITING_TRAINING_CONTRACT', 
                                                 }">{{selectedTraining.training_app_status.split('_').join(' ')}}
                                             </span>
                                         </td>

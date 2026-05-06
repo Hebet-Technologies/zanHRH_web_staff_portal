@@ -48,7 +48,7 @@ export class EducationEmployeeFormComponent implements OnInit, OnDestroy{
       instituteID: [null, Validators.required],
       from_year: [null, Validators.required],
       to_year: [null, Validators.required],
-      gpa: [null, Validators.required],
+      gpa: [null],
 
     });
   }
@@ -129,7 +129,9 @@ export class EducationEmployeeFormComponent implements OnInit, OnDestroy{
       program_id: this.form['programID'].value,
       from_year: this.form['from_year'].value,
       to_year: this.form['to_year'].value,
-      gpa: this.form['gpa'].value,
+      gpa: this.form['gpa'].value
+      ? Number(this.form['gpa'].value)
+      : null,
     };
     // console.log('all data submited',payload)
     this.submitForm.emit(payload);
