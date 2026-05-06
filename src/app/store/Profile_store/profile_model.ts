@@ -6,7 +6,7 @@ export interface ProfileEducationPayload {
   program_id: number;
   from_year: number;
   to_year: number;
-  gpa: number;
+  gpa: number | null;
 }
 
 export interface ProfileWorkExperiencePayload {
