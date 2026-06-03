@@ -63,7 +63,7 @@
                                         <span class="badge text-uppercase" 
                                             [ngClass]=" { 
                                                 'bg-warning-subtle text-warning': data.training_app_status === 'REQUESTED', 
-                                                'bg-danger-subtle text-danger': data.training_app_status === 'Cancelled', 
+                                                'bg-danger-subtle text-danger': data.training_app_status === 'DENIED', 
                                                 'bg-secondary-subtle text-secondary': data.training_app_status === 'AWAITING_TRAINING_CONTRACT', 
                                                 'bg-info-subtle text-info': data.training_app_status === 'FORWARDED', 
                                                 'bg-primary-subtle text-primary': data.training_app_status === 'Returns', 
@@ -179,6 +179,7 @@
                                             <span class="badge text-uppercase" 
                                                 [ngClass]=" { 
                                                     'bg-warning-subtle text-warning': selectedTraining.training_app_status === 'REQUESTED', 
+                                                    'bg-danger-subtle text-danger': selectedTraining.training_app_status === 'DENIED', 
                                                     'bg-success-subtle text-success': selectedTraining.training_app_status === 'APPROVED_SHORT_COURSE', 
                                                     'bg-info-subtle text-info': selectedTraining.training_app_status === 'FORWARDED', 
                                                     'bg-secondary-subtle text-secondary': selectedTraining.training_app_status === 'AWAITING_TRAINING_CONTRACT', 
