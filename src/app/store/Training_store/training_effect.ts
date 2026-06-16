@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { mergeMap, map, catchError, of, switchMap } from "rxjs";
 import { TrainingService } from "src/app/core/services/training-card/training.service";
-import { fetchEmployeeTrainingData, fetchEmployeeTrainingSuccess, fetchEmployeeTrainingFailure, loadTrainingAnnoucement, loadTrainingAnnoucementFailure, loadTrainingAnnoucementSuccess, loadInstituteCountry, loadInstituteCountrySuccess, loadInstituteCountryFailure, loadInstitute, loadInstituteSuccess, loadInstituteFailure, addTrainingForm, addTrainingFormFailure, addTrainingFormSuccess, deleteTrainingForm, deleteTrainingFormFailure, deleteTrainingFormSuccess, loadTrainingApprovedLetter, loadTrainingApprovedLetterFailure, loadTrainingApprovedLetterSuccess } from "./training_action";
+import { fetchEmployeeTrainingData, fetchEmployeeTrainingSuccess, fetchEmployeeTrainingFailure, loadTrainingAnnoucement, loadTrainingAnnoucementFailure, loadTrainingAnnoucementSuccess, loadInstituteCountry, loadInstituteCountrySuccess, loadInstituteCountryFailure, loadInstitute, loadInstituteSuccess, loadInstituteFailure, addTrainingForm, addTrainingFormFailure, addTrainingFormSuccess, deleteTrainingForm, deleteTrainingFormFailure, deleteTrainingFormSuccess, loadTrainingApprovedLetter, loadTrainingApprovedLetterFailure, loadTrainingApprovedLetterSuccess, uploadTrainingAdmisionLater, uploadTrainingAdmisionLaterFailure, uploadTrainingAdmisionLaterSuccess } from "./training_action";
 
 @Injectable()
 export class TrainingEffects {
@@ -135,6 +135,37 @@ export class TrainingEffects {
                 )
             )
             )
+        )
+    );
+    uploadTrainingAdmisionLaterForm$ = createEffect(() =>
+        this.actions$.pipe(
+        ofType(uploadTrainingAdmisionLater),
+        mergeMap(({ newData }) => {
+            // Convert to FormData because backend expects file
+            const formData = new FormData();
+            formData.append('training_application_id', newData.training_application_id.toString());
+            formData.append('institute_id', newData.institute_id.toString());
+            formData.append('training_app_status_id', newData.training_app_status_id.toString());
+
+            if (newData.admission_letter) {
+            formData.append('admission_letter', newData.admission_letter);
+            }
+            const user = JSON.parse(localStorage.getItem('user')!);
+            const employeeID = user.personalInformationID;
+            return this._trainingService.uploadTrainingAdmisionLaterApi(formData).pipe(
+                mergeMap(res => {
+                if (res.statusCode === 201) {
+                    return [
+                        uploadTrainingAdmisionLaterSuccess(), // trigger success for component
+                        fetchEmployeeTrainingData({ personal_informationID: employeeID }) // refresh table
+                    ];
+                } else {
+                    return [uploadTrainingAdmisionLaterFailure({ error: res.message })];
+                }
+                }),
+                catchError(err => of(uploadTrainingAdmisionLaterFailure({ error: err.message })))
+            );
+        })
         )
     );
 

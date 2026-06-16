@@ -7,13 +7,14 @@ import { Subject, takeUntil } from 'rxjs';
 import { PermissionService } from 'src/app/core/services/auth-card/permission.service';
 import { PaginationService } from 'src/app/core/services/pagination.service';
 import { RootReducerState } from 'src/app/store';
-import { addTrainingForm, addTrainingFormFailure, addTrainingFormSuccess, deleteTrainingForm, deleteTrainingFormFailure, deleteTrainingFormSuccess, fetchEmployeeTrainingData, loadInstitute, loadInstituteCountry, loadTrainingAnnoucement, loadTrainingApprovedLetter, loadTrainingApprovedLetterSuccess } from 'src/app/store/Training_store/training_action';
+import { addTrainingForm, addTrainingFormFailure, addTrainingFormSuccess, deleteTrainingForm, deleteTrainingFormFailure, deleteTrainingFormSuccess, fetchEmployeeTrainingData, loadInstitute, loadInstituteCountry, loadTrainingAnnoucement, loadTrainingApprovedLetter, loadTrainingApprovedLetterSuccess, uploadTrainingAdmisionLater, uploadTrainingAdmisionLaterFailure, uploadTrainingAdmisionLaterSuccess } from 'src/app/store/Training_store/training_action';
 import { selectEmployeeTrainingLoading, selectEmployeeTrainingData, selectTrainingAnnoucement, selectInstituteCountry, selectInstitutes } from 'src/app/store/Training_store/training_selector';
 import { EmployeeTrainingRequestFormComponent } from './employee-training-request-form/employee-training-request-form.component';
-import { TrainingRequestFormPayload } from 'src/app/store/Training_store/training_model';
+import { TrainingRequestFormPayload, UploadTrainingAdmisionLaterPayload } from 'src/app/store/Training_store/training_model';
 import { deleteEmployeeTransfer } from 'src/app/store/Transfer_store/transfer_action';
 import Swal from 'sweetalert2';
 import { environment } from 'src/environments/environment';
+import { EmployeeUploadAdmissionLaterComponent } from './employee-upload-admission-later/employee-upload-admission-later.component';
 
 @Component({
   selector: 'app-employee-training-list',
@@ -154,11 +155,48 @@ export class EmployeeTrainingListComponent implements OnInit, OnDestroy{
     });
   }
 
+
+  openModalUploadAdmisionLaterForTrainingForm(data:any) {
+    const modalRef = this.modalService.open(EmployeeUploadAdmissionLaterComponent, { size: 'lg', centered: true });
+    modalRef.componentInstance.rowSelected = data; 
+
+    modalRef.componentInstance.instituteCountry = this.instituteCountry;
+    modalRef.componentInstance.onCountryChange = (countryId: number) => {
+      this.onInstituteCountryChange(countryId);
+    };
+    // send institutes
+    modalRef.componentInstance.institutes = this.institutes;
+    // reactive update
+    this.store.select(selectInstitutes)
+    .pipe(takeUntil(this.destroy$))
+    .subscribe(data => {
+      this.institutes = data || [];
+      if (modalRef.componentInstance) {
+        modalRef.componentInstance.institutes = this.institutes;
+      }
+    });
+
+    modalRef.componentInstance.submitForm.subscribe((data: any) => {
+      const user = JSON.parse(localStorage.getItem('user')!);
+      const payload: UploadTrainingAdmisionLaterPayload = {
+        ...data
+      };
+      this.store.dispatch(uploadTrainingAdmisionLater({ newData: payload }));
+      modalRef.close();
+    });
+    modalRef.componentInstance.close.subscribe(() => {
+      modalRef.close();
+    });
+  }
+
   //ujumbe unaokuja ndio huu hapa start
   private actionMessages: any = {
     //ADD transfer
     [addTrainingFormSuccess.type]: {icon: 'success',title: 'Training submitted',closeModal: true,timer: 2000},
     [addTrainingFormFailure.type]: {icon: 'error',title: 'Training failed'},
+    //UPLOAD
+    [uploadTrainingAdmisionLaterSuccess.type]: {icon: 'success',title: 'Admission letter uploaded',closeModal: true,timer: 2000},
+    [uploadTrainingAdmisionLaterFailure.type]: {icon: 'error',title: 'Upload failed'},
     //DELETE
     [deleteTrainingFormSuccess.type]: {icon: 'success',title: 'Deleted successfully',timer: 1500},
     [deleteTrainingFormFailure.type]: {icon: 'error',title: 'Delete failed'}
@@ -166,7 +204,8 @@ export class EmployeeTrainingListComponent implements OnInit, OnDestroy{
   private listenAllTrainingActions(): void {
     this.actions$.pipe(
       ofType(
-        addTrainingFormSuccess,addTrainingFormFailure,deleteTrainingFormSuccess,deleteTrainingFormFailure
+        addTrainingFormSuccess,addTrainingFormFailure,deleteTrainingFormSuccess,deleteTrainingFormFailure,
+        uploadTrainingAdmisionLaterSuccess,uploadTrainingAdmisionLaterFailure
       ),
       takeUntil(this.destroy$)
     ).subscribe((action: any) => {

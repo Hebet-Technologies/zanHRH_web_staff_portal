@@ -1,5 +1,5 @@
 import { createAction, props } from "@ngrx/store";
-import { TrainingRequestFormPayload } from "./training_model";
+import { TrainingRequestFormPayload, UploadTrainingAdmisionLaterPayload } from "./training_model";
 
 // View Employee Training hii ni ikiwa api ni ya kupata data za get ila inatumia method za post
 export const fetchEmployeeTrainingData = createAction('[Data] Fetch Employee Training',props<{ personal_informationID: any[] }>());
@@ -25,6 +25,10 @@ export const loadInstituteCountryFailure = createAction('[Data] Load Institute C
 export const loadInstitute = createAction('[Data] Load Institute',props<{ countryCode: string; educationLevel: string }>());
 export const loadInstituteSuccess = createAction('[Data] Load Institute Success',props<{ institutes: any[] }>());
 export const loadInstituteFailure = createAction('[Data] Load Institute Failure',props<{ error: any }>());
+//upload Training Admision Later
+export const uploadTrainingAdmisionLater = createAction('[Data] Upload Training Admision Later', props<{ newData: UploadTrainingAdmisionLaterPayload }>());
+export const uploadTrainingAdmisionLaterSuccess = createAction('[Data] Upload Training Admision Later Success');
+export const uploadTrainingAdmisionLaterFailure = createAction('[Data] Upload Training Admision Later Failure', props<{ error: string }>());
 
 //Approve Latter data
 export const loadTrainingApprovedLetter = createAction('[Training] Load Training Approved Letter', props<{ id: number }>());

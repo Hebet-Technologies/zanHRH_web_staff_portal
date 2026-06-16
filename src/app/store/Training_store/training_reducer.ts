@@ -1,5 +1,5 @@
 import { createReducer, Action, on } from "@ngrx/store";
-import { fetchEmployeeTrainingData, fetchEmployeeTrainingSuccess, fetchEmployeeTrainingFailure, loadTrainingAnnoucementSuccess, loadInstituteCountrySuccess, loadInstituteSuccess, addTrainingForm, addTrainingFormFailure, addTrainingFormSuccess, deleteTrainingFormSuccess } from "./training_action";
+import { fetchEmployeeTrainingData, fetchEmployeeTrainingSuccess, fetchEmployeeTrainingFailure, loadTrainingAnnoucementSuccess, loadInstituteCountrySuccess, loadInstituteSuccess, addTrainingForm, addTrainingFormFailure, addTrainingFormSuccess, deleteTrainingFormSuccess, uploadTrainingAdmisionLater, uploadTrainingAdmisionLaterFailure, uploadTrainingAdmisionLaterSuccess } from "./training_action";
 
 export interface TrainingState {
     EmployeeTrainingList: any[];
@@ -45,7 +45,11 @@ export const TrainingReducer = createReducer(
             error: null
         };
     }),
-    
+
+    on(uploadTrainingAdmisionLater, (state) => ({...state,loading: true,error: null})),
+    on(uploadTrainingAdmisionLaterSuccess, (state) => ({...state,loading: false})),
+    on(uploadTrainingAdmisionLaterFailure, (state, { error }) => ({...state,loading: false,error})),
+
     on(loadInstituteCountrySuccess, (state, { country }) => ({...state,InstituteCountry: country})),
     on(loadInstituteSuccess, (state, { institutes }) => ({...state,Institutes: institutes})),
     

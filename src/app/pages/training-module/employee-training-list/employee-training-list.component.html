@@ -62,11 +62,11 @@
                                     <td class="status">
                                         <span class="badge text-uppercase" 
                                             [ngClass]=" { 
-                                                'bg-warning-subtle text-warning': data.training_app_status === 'REQUESTED', 
+                                                'bg-warning-subtle text-warning': data.training_app_status === 'REQUESTED' || data.training_app_status === 'AWAITING_ADMISSION_LATTER_APPROVAL', 
                                                 'bg-danger-subtle text-danger': data.training_app_status === 'DENIED', 
                                                 'bg-secondary-subtle text-secondary': data.training_app_status === 'AWAITING_TRAINING_CONTRACT', 
                                                 'bg-info-subtle text-info': data.training_app_status === 'FORWARDED', 
-                                                'bg-primary-subtle text-primary': data.training_app_status === 'Returns', 
+                                                'bg-primary-subtle text-primary': data.training_app_status === 'AWAITING_ADMISSION_LATTER', 
                                                 'bg-success-subtle text-success': data.training_app_status === 'APPROVED_SHORT_COURSE' 
                                             }">{{data.training_app_status.split('_').join(' ')}}
                                         </span>
@@ -98,6 +98,16 @@
                                                             <a class="dropdown-item edit-item-btn" href="javascript:void(0);" data-bs-toggle="modal" (click)="previewTrainingLetter(data.training_application_id)">
                                                                 <i class="ri-printer-fill align-bottom me-2 text-muted float-start"></i>
                                                             Print Latter</a>
+                                                        </li>
+                                                        <li *ngIf="data.training_app_status == 'AWAITING_ADMISSION_LATTER'">
+                                                            <a class="dropdown-item edit-item-btn" href="javascript:void(0);" data-bs-toggle="modal" (click)="previewTrainingLetter(data.training_application_id)">
+                                                                <i class="ri-printer-fill align-bottom me-2 text-muted float-start"></i>
+                                                            Print Latter</a>
+                                                        </li>
+                                                        <li *ngIf="data.training_app_status == 'AWAITING_ADMISSION_LATTER'">
+                                                            <a class="dropdown-item edit-item-btn" href="javascript:void(0);" data-bs-toggle="modal" (click)="openModalUploadAdmisionLaterForTrainingForm(data)">
+                                                                <i class="ri-upload-2-fill align-bottom me-2 text-muted float-start"></i>
+                                                            Upload Latter</a>
                                                         </li>
 
                                                     </ul>
@@ -178,7 +188,8 @@
                                         <td class="status">
                                             <span class="badge text-uppercase" 
                                                 [ngClass]=" { 
-                                                    'bg-warning-subtle text-warning': selectedTraining.training_app_status === 'REQUESTED', 
+                                                    'bg-warning-subtle text-warning': selectedTraining.training_app_status === 'REQUESTED' || selectedTraining.training_app_status === 'AWAITING_ADMISSION_LATTER_APPROVAL', 
+                                                    'bg-primary-subtle text-primary': selectedTraining.training_app_status === 'AWAITING_ADMISSION_LATTER', 
                                                     'bg-danger-subtle text-danger': selectedTraining.training_app_status === 'DENIED', 
                                                     'bg-success-subtle text-success': selectedTraining.training_app_status === 'APPROVED_SHORT_COURSE', 
                                                     'bg-info-subtle text-info': selectedTraining.training_app_status === 'FORWARDED', 
