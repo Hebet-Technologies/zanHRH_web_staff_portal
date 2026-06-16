@@ -19,13 +19,15 @@ import { NgPipesModule } from 'ngx-pipes';
 import { SimplebarAngularModule } from 'simplebar-angular';
 import { EmployeeTrainingRequestFormComponent } from './employee-training-list/employee-training-request-form/employee-training-request-form.component';
 import { StaffApplyAdvertisementComponent } from '../dashboards/staff-dashboard-blade/staff-apply-advertisement/staff-apply-advertisement.component';
+import { EmployeeUploadAdmissionLaterComponent } from './employee-training-list/employee-upload-admission-later/employee-upload-admission-later.component';
 
 @NgModule({
   declarations: [
     EmployeeTrainingListComponent,
     SortByTrainingPipe,
     EmployeeTrainingRequestFormComponent,
-    StaffApplyAdvertisementComponent
+    StaffApplyAdvertisementComponent,
+    EmployeeUploadAdmissionLaterComponent
   ],
   imports: [
     CommonModule,

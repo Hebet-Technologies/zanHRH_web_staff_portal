@@ -29,6 +29,9 @@ export class TrainingService {
   public getInstitutes(country_code: any, levelId: any): Observable<any>{
     return this.http.get(`${environment.apiUrl}getInstitutes/${country_code}/${levelId}`);
   }
+  public uploadTrainingAdmisionLaterApi(data: any): Observable<any>{
+    return this.http.post<any>(`${environment.apiUrl}uploadTrainingAdmissionLatter`, data);
+  }
 
   //print approved data
   getTrainingApprovedLetter(id: number): Observable<Blob> {

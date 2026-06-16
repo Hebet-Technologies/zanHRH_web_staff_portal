@@ -6,3 +6,10 @@ export interface TrainingRequestFormPayload {
   end_date: number;
   admission_letter?: File;
 }
+
+export interface UploadTrainingAdmisionLaterPayload {
+  training_application_id: number;
+  institute_id: number;
+  training_app_status_id: number;
+  admission_letter?: File;
+}

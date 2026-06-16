@@ -146,7 +146,7 @@ export class EmployeeTrainingRequestFormComponent implements OnInit, OnDestroy{
       end_date: this.datePipe.transform(formValue.endDate, 'yyyy-MM-dd'),
       admission_letter: this.selectedFile || undefined
     };
-    console.log(payload)
+    // console.log(payload)
     this.submitForm.emit(payload);
   }
 
