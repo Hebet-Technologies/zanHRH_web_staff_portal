@@ -1,6 +1,8 @@
-import { Component, OnInit, EventEmitter, Output, Inject, ViewChild, TemplateRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, EventEmitter, Output, Inject, ViewChild, TemplateRef } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { EventService } from '../../core/services/event.service';
+import { RealtimeService } from '../../core/services/realtime.service';
+import { Subscription } from 'rxjs';
 
 //Logout
 import { environment } from '../../../environments/environment';
@@ -23,7 +25,7 @@ import { logout } from 'src/app/store/Authentication/authentication.actions';
   templateUrl: './topbar.component.html',
   styleUrls: ['./topbar.component.scss']
 })
-export class TopbarComponent implements OnInit {
+export class TopbarComponent implements OnInit, OnDestroy {
   messages: any
   element: any;
   mode: string | undefined;
@@ -47,22 +49,20 @@ export class TopbarComponent implements OnInit {
   profileName: any;
   imageUrl = environment.imagePath;
 
-  constructor(@Inject(DOCUMENT) private document: any, private eventService: EventService, public languageService: LanguageService, private modalService: NgbModal,
-    public _cookiesService: CookieService, public translate: TranslateService, 
-    // private authService: AuthenticationService, private authFackservice: AuthfakeauthenticationService,
+  realtimeSub?: Subscription;
+  liveNotifications: any[] = [];
+
+  constructor(@Inject(DOCUMENT) private document: any, private eventService: EventService, private realtimeService: RealtimeService, public languageService: LanguageService, private modalService: NgbModal,
+    public _cookiesService: CookieService, public translate: TranslateService,
     private store: Store,
-    private router: Router, 
-    // private TokenStorageService: TokenStorageService
+    private router: Router,
   ) { }
 
   ngOnInit(): void {
     this.profileName = JSON.parse(localStorage.getItem('user')!);
 
-    // this.userData = this.TokenStorageService.getUser();
     this.element = document.documentElement;
 
-
-    // Cookies wise Language set
     this.cookieValue = this._cookiesService.get('lang');
     const val = this.listLang.filter(x => x.lang === this.cookieValue);
     this.countryName = val.map(element => element.text);
@@ -72,9 +72,7 @@ export class TopbarComponent implements OnInit {
       this.flagvalue = val.map(element => element.flag);
     }
 
-    // Fetch Data
     this.allnotifications = allNotification;
-
     this.messages = messages;
     this.cartData = cartData;
     this.cart_length = this.cartData.length;
@@ -82,6 +80,26 @@ export class TopbarComponent implements OnInit {
       var item_price = item.quantity * item.price
       this.total += item_price
     });
+
+    // Realtime notifications
+    this.realtimeSub = this.realtimeService.notifications$.subscribe((evt: any) => {
+      if (evt.data && evt.data.title) {
+        this.liveNotifications.unshift({
+          id: Date.now(),
+          title: evt.data.title,
+          message: evt.data.message,
+          event: evt.event,
+          category: evt.data.category,
+          entity: evt.data.entity,
+          occurred_at: evt.data.occurred_at,
+        });
+        this.totalNotify = this.liveNotifications.length;
+      }
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.realtimeSub?.unsubscribe();
   }
 
   /**

@@ -138,6 +138,23 @@ export const MENU: MenuItem[] = [
   },
 
   {
+    id: 50,
+    label: 'Help Desk',
+    icon: 'ri-customer-service-2-line',
+    isCollapsed: true,
+    permission: ['View Help Desk Ticket', 'Manage Help Desk Category'],
+    subItems: [
+      {
+        id: 51,
+        label: 'Tickets',
+        link: '/app/help-desk/tickets',
+        parentId: 50,
+        permission: 'View Help Desk Ticket'
+      }
+    ]
+  },
+
+  {
     id: 40,
     label: 'Transfer',
     icon: 'ri-apps-2-line',

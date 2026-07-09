@@ -1,0 +1,89 @@
+<div class="row">
+  <div class="col-lg-12">
+    <div class="card">
+      <div class="card-header border-0">
+        <div class="row align-items-center gy-3">
+          <div class="col-sm">
+            <h5 class="card-title mb-0">My Requests</h5>
+          </div>
+          <div class="col-sm-auto ms-auto">
+            <a routerLink="/app/help-desk/tickets/create" class="btn btn-primary btn-sm">
+              <i class="ri-add-line align-bottom me-1"></i> Create Ticket
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-body border border-dashed border-end-0 border-start-0">
+        <form (ngSubmit)="applyFilters()">
+          <div class="row g-3">
+            <div class="col-xxl-4 col-sm-6">
+              <div class="search-box">
+                <input type="text" class="form-control search" placeholder="Search subject..."
+                  name="search" [(ngModel)]="search">
+                <i class="ri-search-line search-icon"></i>
+              </div>
+            </div>
+            <div class="col-xxl-3 col-sm-4">
+              <select class="form-select" name="status" [(ngModel)]="status">
+                <option *ngFor="let item of statuses" [value]="item.value">{{ item.label }}</option>
+              </select>
+            </div>
+            <div class="col-xxl-2 col-sm-4 d-flex gap-1">
+              <button type="submit" class="btn btn-primary w-100"><i class="ri-equalizer-fill"></i></button>
+              <button type="button" class="btn btn-light" (click)="resetFilters()"><i class="ri-restart-line"></i></button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div class="card-body">
+        <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+
+        <div class="table-responsive table-card mb-1">
+          <table class="table align-middle table-nowrap">
+            <thead class="text-muted table-light">
+              <tr>
+                <th>Reference</th>
+                <th>Subject</th>
+                <th>Category</th>
+                <th>Status</th>
+                <th>Priority</th>
+                <th>Assignee</th>
+                <th>Replies</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let ticket of tickets">
+                <td class="fw-medium">{{ ticket.reference }}</td>
+                <td>
+                  <a [routerLink]="['/app/help-desk/tickets', ticket.uuid]" class="text-body fw-medium">
+                    {{ ticket.subject || ticket.content | slice:0:60 }}
+                  </a>
+                </td>
+                <td>{{ ticket.category?.name || '—' }}</td>
+                <td><span [class]="statusClass(ticket.status)">{{ ticket.status }}</span></td>
+                <td><span [class]="priorityClass(ticket.priority)">{{ ticket.priority }}</span></td>
+                <td>{{ ticket.assignee?.full_name || 'Unassigned' }}</td>
+                <td class="text-center">{{ ticket.comments_count || 0 }}</td>
+                <td>
+                  <a [routerLink]="['/app/help-desk/tickets', ticket.uuid]" class="btn btn-sm btn-soft-primary">
+                    <i class="ri-chat-1-line"></i>
+                  </a>
+                </td>
+              </tr>
+              <tr *ngIf="!isLoading && tickets.length === 0">
+                <td colspan="8" class="text-center text-muted py-4">You have no tickets yet.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div *ngIf="isLoading" class="text-center py-4">
+          <div class="spinner-border text-primary" role="status"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

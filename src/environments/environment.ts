@@ -5,20 +5,19 @@
 export const environment = {
   production: false,
   appName: 'Human Resource For Health',
-  
-  apiUrl: 'http://127.0.0.1:8000/api/',
-  fileUrl: 'http://127.0.0.1:8000/uploads/Employee/PersonalFile',
-  imagePath: 'http://127.0.0.1:8000/uploads/Employee/PersonalImage/',
-  trainingfileUrl:'http://127.0.0.1:8000/uploads/Employee/TrainingFile',
-  staffAdvertisementfileUrl:'http://127.0.0.1:8000/uploads/staffAdvertisement',
 
-  // apiUrl: 'http://102.214.45.136:8081/api/',
-  // fileUrl: 'http://102.214.45.136:8081/uploads/Employee/PersonalFile',
-  // imagePath: 'http://102.214.45.136:8081/uploads/Employee/PersonalImage/',
-  // trainingfileUrl:'http://102.214.45.136:8081/uploads/Employee/TrainingFile',
-  // staffAdvertisementfileUrl:'http://102.214.45.136:8081/uploads/staffAdvertisement',
+  apiUrl: 'http://localhost:8000/api/',
+  fileUrl: 'http://localhost:8000/uploads/Employee/PersonalFile',
+  imagePath: 'http://localhost:8000/uploads/Employee/PersonalImage/',
+  trainingfileUrl:'http://localhost:8000/uploads/Employee/TrainingFile',
+  staffAdvertisementfileUrl:'http://localhost:8000/uploads/staffAdvertisement',
 
-
+  reverb: {
+    key: 'wazohub',
+    wsHost: 'localhost',
+    wsPort: 8080,
+    authEndpoint: 'http://localhost:8000/broadcasting/auth',
+  },
 
 };
 

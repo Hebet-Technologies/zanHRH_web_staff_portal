@@ -25,6 +25,9 @@ const routes: Routes = [
     {
       path: 'training', loadChildren: () => import('./training-module/training-module.module').then(m => m.TrainingModuleModule)
     },
+    {
+      path: 'help-desk', loadChildren: () => import('./help-desk-module/help-desk-module.module').then(m => m.HelpDeskModuleModule)
+    },
     // {
     //   path: 'tasks', loadChildren: () => import('./tasks/tasks.module').then(m => m.TasksModule)
     // },
