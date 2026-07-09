@@ -1,0 +1,163 @@
+<app-breadcrumbs title="Help Desk" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
+
+<!-- Tabs -->
+<ul class="nav nav-tabs mb-3">
+  <li class="nav-item">
+    <button class="nav-link" [class.active]="activeTab === 'all'" (click)="activeTab = 'all'" type="button">
+      <i class="ri-list-check-2 me-1"></i> All Tickets
+    </button>
+  </li>
+  <li class="nav-item">
+    <button class="nav-link" [class.active]="activeTab === 'my'" (click)="activeTab = 'my'" type="button">
+      <i class="ri-user-line me-1"></i> My Requests
+    </button>
+  </li>
+</ul>
+
+<!-- My Requests Tab -->
+<div *ngIf="activeTab === 'my'">
+  <app-help-desk-my-requests></app-help-desk-my-requests>
+</div>
+
+<!-- All Tickets Tab -->
+<div *ngIf="activeTab === 'all'">
+  <!-- Stat cards -->
+  <div class="row">
+    <div class="col-xl-3 col-md-6">
+      <div class="card card-animate">
+        <div class="card-body">
+          <p class="text-uppercase fw-medium text-muted mb-0">Total raised</p>
+          <h2 class="mt-3 mb-0">{{ stats.total }}</h2>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-3 col-md-6">
+      <div class="card card-animate">
+        <div class="card-body">
+          <p class="text-uppercase fw-medium text-muted mb-0">Open</p>
+          <h2 class="mt-3 mb-0 text-primary">{{ stats.open }}</h2>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-3 col-md-6">
+      <div class="card card-animate">
+        <div class="card-body">
+          <p class="text-uppercase fw-medium text-muted mb-0">Resolved / Closed</p>
+          <h2 class="mt-3 mb-0 text-success">{{ stats.closed }}</h2>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-3 col-md-6">
+      <div class="card card-animate">
+        <div class="card-body">
+          <p class="text-uppercase fw-medium text-muted mb-0">Unassigned</p>
+          <h2 class="mt-3 mb-0 text-danger">{{ stats.unassigned }}</h2>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tickets list -->
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card" id="ticketList">
+        <div class="card-header border-0">
+          <div class="row align-items-center gy-3">
+            <div class="col-sm">
+              <h5 class="card-title mb-0">All help desk tickets</h5>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-body border border-dashed border-end-0 border-start-0">
+          <form (ngSubmit)="applyFilters()">
+            <div class="row g-3">
+              <div class="col-xxl-3 col-sm-6">
+                <div class="search-box">
+                  <input type="text" class="form-control search" placeholder="Search reference / subject…"
+                    name="search" [(ngModel)]="search">
+                  <i class="ri-search-line search-icon"></i>
+                </div>
+              </div>
+              <div class="col-xxl-2 col-sm-4">
+                <select class="form-select" name="scope" [(ngModel)]="scope">
+                  <option *ngFor="let item of scopes" [value]="item.value">{{ item.label }}</option>
+                </select>
+              </div>
+              <div class="col-xxl-2 col-sm-4">
+                <select class="form-select" name="status" [(ngModel)]="status">
+                  <option *ngFor="let item of statuses" [value]="item.value">{{ item.label }}</option>
+                </select>
+              </div>
+              <div class="col-xxl-2 col-sm-4">
+                <select class="form-select" name="priority" [(ngModel)]="priority">
+                  <option *ngFor="let item of priorities" [value]="item.value">{{ item.label }}</option>
+                </select>
+              </div>
+              <div class="col-xxl-2 col-sm-6">
+                <select class="form-select" name="categoryUuid" [(ngModel)]="categoryUuid">
+                  <option value="">Any category</option>
+                  <option *ngFor="let cat of categories" [value]="cat.uuid">{{ cat.name }}</option>
+                </select>
+              </div>
+              <div class="col-xxl-1 col-sm-6 d-flex gap-1">
+                <button type="submit" class="btn btn-primary w-100"><i class="ri-equalizer-fill"></i></button>
+                <button type="button" class="btn btn-light" (click)="resetFilters()"><i class="ri-restart-line"></i></button>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <div class="card-body">
+          <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+
+          <div class="table-responsive table-card mb-1">
+            <table class="table align-middle table-nowrap">
+              <thead class="text-muted table-light">
+                <tr>
+                  <th>Reference</th>
+                  <th>Subject</th>
+                  <th>Category</th>
+                  <th>Status</th>
+                  <th>Priority</th>
+                  <th>Requester</th>
+                  <th>Assignee</th>
+                  <th>Replies</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let ticket of tickets">
+                  <td class="fw-medium">{{ ticket.reference }}</td>
+                  <td>
+                    <a [routerLink]="['/app/help-desk/tickets', ticket.uuid]" class="text-body fw-medium">
+                      {{ ticket.subject || ticket.content | slice:0:60 }}
+                    </a>
+                  </td>
+                  <td>{{ ticket.category?.name || '—' }}</td>
+                  <td><span [class]="statusClass(ticket.status)">{{ statusLabel(ticket.status) }}</span></td>
+                  <td><span [class]="priorityClass(ticket.priority)">{{ ticket.priority }}</span></td>
+                  <td>{{ ticket.requester?.full_name || '—' }}</td>
+                  <td>{{ ticket.assignee?.full_name || 'Unassigned' }}</td>
+                  <td class="text-center">{{ ticket.comments_count || 0 }}</td>
+                  <td>
+                    <a [routerLink]="['/app/help-desk/tickets', ticket.uuid]" class="btn btn-sm btn-soft-primary">
+                      Open
+                    </a>
+                  </td>
+                </tr>
+                <tr *ngIf="!isLoading && tickets.length === 0">
+                  <td colspan="9" class="text-center text-muted py-4">No tickets match the current filters.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div *ngIf="isLoading" class="text-center py-4">
+            <div class="spinner-border text-primary" role="status"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

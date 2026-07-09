@@ -1,0 +1,120 @@
+<app-breadcrumbs title="Help Desk" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
+
+<div *ngIf="successMessage" class="alert alert-success">{{ successMessage }}</div>
+<div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+
+<div class="row">
+  <!-- New category -->
+  <div class="col-xxl-4">
+    <div class="card">
+      <div class="card-header"><h5 class="card-title mb-0">New category</h5></div>
+      <div class="card-body">
+        <div class="mb-3">
+          <label class="form-label">Name</label>
+          <input type="text" class="form-control" [(ngModel)]="newCategory.name" name="catName"
+            placeholder="e.g. System Development">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Description</label>
+          <textarea class="form-control" rows="2" [(ngModel)]="newCategory.description" name="catDesc"
+            placeholder="Short description of this section"></textarea>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Icon key (optional)</label>
+          <input type="text" class="form-control" [(ngModel)]="newCategory.icon" name="catIcon"
+            placeholder="system | payroll | leave | it | training">
+        </div>
+        <button class="btn btn-primary w-100" [disabled]="isSaving || !newCategory.name.trim()" (click)="createCategory()">
+          <span *ngIf="isSaving" class="spinner-border spinner-border-sm me-1"></span>
+          Create category
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Categories list -->
+  <div class="col-xxl-8">
+    <div class="card">
+      <div class="card-header"><h5 class="card-title mb-0">Help desk categories</h5></div>
+      <div class="card-body">
+        <div *ngIf="isLoading" class="text-center py-4">
+          <div class="spinner-border text-primary" role="status"></div>
+        </div>
+
+        <div class="table-responsive" *ngIf="!isLoading">
+          <table class="table align-middle">
+            <thead class="table-light">
+              <tr>
+                <th>Name</th>
+                <th>Tickets</th>
+                <th>Open</th>
+                <th>Status</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <ng-container *ngFor="let category of categories">
+                <tr>
+                  <td>
+                    <h6 class="mb-0">{{ category.name }}</h6>
+                    <small class="text-muted">{{ category.description }}</small>
+                  </td>
+                  <td>{{ category.tickets_count || 0 }}</td>
+                  <td>{{ category.open_tickets_count || 0 }}</td>
+                  <td>
+                    <span class="badge" [ngClass]="category.is_active ? 'bg-success-subtle text-success' : 'bg-secondary-subtle text-secondary'">
+                      {{ category.is_active ? 'Active' : 'Inactive' }}
+                    </span>
+                  </td>
+                  <td class="text-end">
+                    <button class="btn btn-sm btn-soft-primary me-1" (click)="expand(category)">
+                      <i class="ri-team-line"></i> Agents
+                    </button>
+                    <button class="btn btn-sm btn-soft-secondary" (click)="toggleActive(category)">
+                      {{ category.is_active ? 'Disable' : 'Enable' }}
+                    </button>
+                  </td>
+                </tr>
+
+                <!-- Agents panel -->
+                <tr *ngIf="expandedUuid === category.uuid">
+                  <td colspan="5" class="bg-light-subtle">
+                    <div class="p-2">
+                      <h6 class="mb-2">Agents &amp; supervisors</h6>
+                      <div class="d-flex flex-wrap gap-2 mb-3">
+                        <span *ngFor="let agent of agents" class="badge bg-primary-subtle text-primary p-2">
+                          {{ agent.user?.full_name || ('User #' + agent.user_id) }}
+                          <span class="text-muted">· {{ agent.role }}</span>
+                          <i class="ri-close-line ms-1" role="button" (click)="removeAgent(category, agent)"></i>
+                        </span>
+                        <span *ngIf="agents.length === 0" class="text-muted">No agents assigned yet.</span>
+                      </div>
+                      <div class="row g-2">
+                        <div class="col-sm-4">
+                          <input type="number" class="form-control" placeholder="Staff user id"
+                            [(ngModel)]="newAgent.user_id" name="agentUserId">
+                        </div>
+                        <div class="col-sm-4">
+                          <select class="form-select" [(ngModel)]="newAgent.role" name="agentRole">
+                            <option value="AGENT">Agent</option>
+                            <option value="SUPERVISOR">Supervisor</option>
+                          </select>
+                        </div>
+                        <div class="col-sm-4">
+                          <button class="btn btn-primary w-100" (click)="addAgent(category)">Add agent</button>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </ng-container>
+              <tr *ngIf="!isLoading && categories.length === 0">
+                <td colspan="5" class="text-center text-muted py-4">No categories yet. Create one on the left.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
