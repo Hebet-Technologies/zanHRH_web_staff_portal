@@ -1,0 +1,8 @@
+.btn-check:checked + .btn-success {
+  background-color: #198754;
+  color: #fff;
+}
+.btn-check:checked + .btn-warning {
+  background-color: #ffc107;
+  color: #000;
+}

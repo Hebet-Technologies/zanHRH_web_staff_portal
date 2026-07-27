@@ -2,7 +2,7 @@
 
 <!-- Tabs -->
 <ul class="nav nav-tabs mb-3">
-  <li class="nav-item">
+  <li class="nav-item" *ngIf="isAgent">
     <button class="nav-link" [class.active]="activeTab === 'all'" (click)="activeTab = 'all'" type="button">
       <i class="ri-list-check-2 me-1"></i> All Tickets
     </button>

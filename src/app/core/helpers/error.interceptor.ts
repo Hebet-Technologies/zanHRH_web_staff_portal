@@ -19,8 +19,8 @@ export class ErrorInterceptor implements HttpInterceptor {
           this.store.dispatch(logout());
         }
 
-        const error = err.error.message || err.statusText;
-        return throwError(() => error);
+        const message = err?.error?.message || err?.error?.statusText || err?.statusText || 'An error occurred';
+        return throwError(() => ({ message, status: err?.status, error: err?.error }));
       })
     );
   }
