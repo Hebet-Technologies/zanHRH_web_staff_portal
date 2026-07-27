@@ -106,12 +106,6 @@
             <button class="btn btn-primary" (click)="changeStatus()">Apply</button>
           </div>
         </div>
-
-        <button class="btn w-100" [ngClass]="ticket.is_public ? 'btn-soft-secondary' : 'btn-soft-success'"
-          (click)="togglePublish()">
-          <i class="ri-global-line align-bottom me-1"></i>
-          {{ ticket.is_public ? 'Remove from knowledge base' : 'Publish to knowledge base' }}
-        </button>
       </div>
     </div>
 
@@ -125,7 +119,6 @@
             <tr><td class="text-muted">Requester</td><td>{{ ticket.requester?.full_name || '—' }}</td></tr>
             <tr><td class="text-muted">Assignee</td><td>{{ ticket.assignee?.full_name || 'Unassigned' }}</td></tr>
             <tr><td class="text-muted">Created</td><td>{{ ticket.created_at | date:'medium' }}</td></tr>
-            <tr><td class="text-muted">Public</td><td>{{ ticket.is_public ? 'Yes' : 'No' }}</td></tr>
           </tbody>
         </table>
       </div>

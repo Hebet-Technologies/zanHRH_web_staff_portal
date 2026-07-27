@@ -135,6 +135,30 @@ export class HelpDeskService {
     return this.http.post<any>(`${this.base}/tickets/${uuid}/comments`, data);
   }
 
+  // ---- Knowledge Posts ----------------------------------------------------
+  getKnowledgePosts(filters: { search?: string; category_uuid?: string; status?: string; created_by?: string; perPage?: number; page?: number; } = {}): Observable<any> {
+    return this.http.get<any>(`${this.base}/knowledge`, {
+      params: this.toParams({ perPage: 25, ...filters }),
+    });
+  }
+
+  getKnowledgePost(uuid: string): Observable<any> {
+    return this.http.get<any>(`${this.base}/knowledge/${uuid}`);
+  }
+
+  createKnowledgePost(data: FormData): Observable<any> {
+    return this.http.post<any>(`${this.base}/knowledge`, data);
+  }
+
+  updateKnowledgePost(uuid: string, data: FormData): Observable<any> {
+    data.append('_method', 'PUT');
+    return this.http.post<any>(`${this.base}/knowledge/${uuid}`, data);
+  }
+
+  deleteKnowledgePost(uuid: string): Observable<any> {
+    return this.http.delete<any>(`${this.base}/knowledge/${uuid}`);
+  }
+
   private toParams(values: Record<string, any>): HttpParams {
     let params = new HttpParams();
     for (const key of Object.keys(values)) {

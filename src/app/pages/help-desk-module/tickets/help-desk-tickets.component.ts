@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HelpDeskService } from 'src/app/core/services/help-desk-card/help-desk.service';
+import { PermissionService } from 'src/app/core/services/auth-card/permission.service';
 
 @Component({
   selector: 'app-help-desk-tickets',
@@ -11,7 +12,8 @@ export class HelpDeskTicketsComponent implements OnInit {
 
   isLoading = true;
   errorMessage = '';
-  activeTab = 'all';
+  activeTab = 'my';
+  isAgent = false;
 
   stats: any = {
     total: 0,
@@ -57,13 +59,24 @@ export class HelpDeskTicketsComponent implements OnInit {
     { value: 'LOW', label: 'Low' },
   ];
 
-  constructor(private helpDesk: HelpDeskService) {}
+  constructor(
+    private helpDesk: HelpDeskService,
+    private permissionService: PermissionService,
+  ) {}
 
   ngOnInit(): void {
     this.breadCrumbItems = [
       { label: 'Help Desk' },
       { label: 'Tickets', active: true },
     ];
+    this.permissionService.hasPermission('View Help Desk Ticket').subscribe(
+      (has) => {
+        this.isAgent = has;
+        if (!has) {
+          this.activeTab = 'my';
+        }
+      }
+    );
     this.loadStatistics();
     this.loadCategories();
     this.loadTickets();

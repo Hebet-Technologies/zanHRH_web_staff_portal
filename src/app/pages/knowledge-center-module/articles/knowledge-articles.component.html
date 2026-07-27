@@ -1,0 +1,105 @@
+<app-breadcrumbs title="Knowledge Center" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
+
+<div class="row">
+  <div class="col-lg-12">
+    <div class="card">
+      <div class="card-header border-0">
+        <div class="row align-items-center gy-3">
+          <div class="col-sm">
+            <h5 class="card-title mb-0">Announcements</h5>
+          </div>
+          <div class="col-sm-auto" *ngIf="canManage">
+            <a routerLink="/app/knowledge-center/articles/create" class="btn btn-primary">
+              <i class="ri-add-line me-1"></i> New Announcement
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-body border border-dashed border-end-0 border-start-0">
+        <form (ngSubmit)="applyFilters()">
+          <div class="row g-3">
+            <div class="col-xxl-4 col-sm-6">
+              <div class="search-box">
+                <input type="text" class="form-control search" placeholder="Search title or description…"
+                  name="search" [(ngModel)]="search">
+                <i class="ri-search-line search-icon"></i>
+              </div>
+            </div>
+            <div class="col-xxl-3 col-sm-4">
+              <select class="form-select" name="categoryUuid" [(ngModel)]="categoryUuid">
+                <option value="">Any category</option>
+                <option *ngFor="let cat of categories" [value]="cat.uuid">{{ cat.name }}</option>
+              </select>
+            </div>
+            <div class="col-xxl-2 col-sm-4">
+              <select class="form-select" name="status" [(ngModel)]="status">
+                <option *ngFor="let item of statuses" [value]="item.value">{{ item.label }}</option>
+              </select>
+            </div>
+            <div class="col-xxl-1 col-sm-6 d-flex gap-1">
+              <button type="submit" class="btn btn-primary w-100"><i class="ri-equalizer-fill"></i></button>
+              <button type="button" class="btn btn-light" (click)="resetFilters()"><i class="ri-restart-line"></i></button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div class="card-body">
+        <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+
+        <div class="row" *ngIf="!isLoading && articles.length > 0">
+          <div class="col-xl-4 col-md-6" *ngFor="let article of articles">
+            <div class="card h-100">
+              <div class="card-body">
+                <div class="d-flex align-items-center mb-2">
+                  <span class="badge bg-primary-subtle text-primary me-2">{{ article.category?.name || 'General' }}</span>
+                  <span [class]="statusClass(article.status)">{{ article.status }}</span>
+                </div>
+                <h6 class="card-title">
+                  <a [routerLink]="['/app/knowledge-center/articles', article.uuid]" class="text-body fw-medium text-decoration-none">
+                    {{ article.title }}
+                  </a>
+                </h6>
+                <p class="text-muted small mb-2">{{ article.body | slice:0:120 }}{{ article.body?.length > 120 ? '…' : '' }}</p>
+                <div class="d-flex align-items-center text-muted small">
+                  <span *ngIf="attachmentCount(article)" class="me-3"><i class="ri-attachment-2 me-1"></i>{{ attachmentCount(article) }}</span>
+                  <span *ngIf="article.comments_count" class="me-3"><i class="ri-chat-3-line me-1"></i>{{ article.comments_count }}</span>
+                  <span class="ms-auto">{{ article.created_at | date:'mediumDate' }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="!isLoading && !errorMessage && articles.length === 0" class="text-center text-muted py-5">
+          <i class="ri-article-line display-4"></i>
+          <p class="mt-3">No announcements found.</p>
+        </div>
+
+        <div *ngIf="isLoading" class="text-center py-4">
+          <div class="spinner-border text-primary" role="status"></div>
+        </div>
+
+        <div *ngIf="!isLoading && lastPage > 1" class="d-flex align-items-center justify-content-between flex-wrap gap-2 mt-3">
+          <div class="text-muted small">
+            Page {{ page }} of {{ lastPage }} · {{ total }} announcement{{ total === 1 ? '' : 's' }}
+          </div>
+          <nav>
+            <ul class="pagination pagination-sm mb-0">
+              <li class="page-item" [class.disabled]="page === 1">
+                <button type="button" class="page-link" (click)="goToPage(page - 1)">Previous</button>
+              </li>
+              <li class="page-item" *ngFor="let p of pageNumbers" [class.active]="p === page">
+                <button type="button" class="page-link" (click)="goToPage(p)">{{ p }}</button>
+              </li>
+              <li class="page-item" [class.disabled]="page === lastPage">
+                <button type="button" class="page-link" (click)="goToPage(page + 1)">Next</button>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

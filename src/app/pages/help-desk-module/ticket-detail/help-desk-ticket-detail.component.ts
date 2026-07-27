@@ -130,22 +130,6 @@ export class HelpDeskTicketDetailComponent implements OnInit {
       });
   }
 
-  togglePublish(): void {
-    const makePublic = !this.ticket?.is_public;
-    this.helpDesk
-      .setVisibility(this.uuid, makePublic, this.ticket?.subject)
-      .subscribe({
-        next: (res) =>
-          this.afterAction(
-            res,
-            makePublic
-              ? 'Published to the knowledge base.'
-              : 'Removed from the knowledge base.'
-          ),
-        error: (err) => this.flashError(err),
-      });
-  }
-
   private afterAction(res: any, message: string): void {
     if (res?.ticket) {
       this.ticket = res.ticket;
